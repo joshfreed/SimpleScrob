@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="13196" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13173"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view contentMode="scaleToFill" id="iN0-l3-epB" customClass="MediaAuthPrimerView" customModule="SimpleScrob" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="572" height="163"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="72t-s6-HwM">
+                    <rect key="frame" x="0.0" y="115" width="572" height="48"/>
+                    <color key="backgroundColor" red="0.12549019607843137" green="0.50588235294117645" blue="0.76470588235294112" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="48" id="m2h-u8-Gtc"/>
+                    </constraints>
+                    <fontDescription key="fontDescription" type="system" weight="medium" pointSize="21"/>
+                    <state key="normal" title="Okay">
+                        <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    </state>
+                    <connections>
+                        <action selector="tappedOkay:" destination="iN0-l3-epB" eventType="touchUpInside" id="xOK-b5-CKA"/>
+                    </connections>
+                </button>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="SimpleScrob needs access to your music library to track the songs you've played." textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="JN4-6l-b0V">
+                    <rect key="frame" x="0.0" y="0.0" width="572" height="98.5"/>
+                    <fontDescription key="fontDescription" type="system" weight="light" pointSize="21"/>
+                    <nil key="textColor"/>
+                    <nil key="highlightedColor"/>
+                </label>
+            </subviews>
+            <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <constraints>
+                <constraint firstItem="vUN-kp-3ea" firstAttribute="trailing" secondItem="72t-s6-HwM" secondAttribute="trailing" id="5yN-zR-aXx"/>
+                <constraint firstItem="72t-s6-HwM" firstAttribute="centerX" secondItem="vUN-kp-3ea" secondAttribute="centerX" id="SNd-MY-cSZ"/>
+                <constraint firstItem="vUN-kp-3ea" firstAttribute="bottom" secondItem="72t-s6-HwM" secondAttribute="bottom" id="Smo-tS-3Na"/>
+                <constraint firstItem="JN4-6l-b0V" firstAttribute="top" secondItem="vUN-kp-3ea" secondAttribute="top" id="TKd-d2-gkK"/>
+                <constraint firstItem="vUN-kp-3ea" firstAttribute="trailing" secondItem="JN4-6l-b0V" secondAttribute="trailing" id="VnL-Kf-px9"/>
+                <constraint firstItem="JN4-6l-b0V" firstAttribute="leading" secondItem="vUN-kp-3ea" secondAttribute="leading" id="a2p-ph-0r2"/>
+                <constraint firstItem="72t-s6-HwM" firstAttribute="top" secondItem="JN4-6l-b0V" secondAttribute="bottom" constant="16" id="ghn-2Y-wCS"/>
+                <constraint firstItem="72t-s6-HwM" firstAttribute="leading" secondItem="vUN-kp-3ea" secondAttribute="leading" id="xU4-lp-Hy5"/>
+            </constraints>
+            <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+            <viewLayoutGuide key="safeArea" id="vUN-kp-3ea"/>
+            <point key="canvasLocation" x="132" y="-197.5"/>
+        </view>
+    </objects>
+</document>
