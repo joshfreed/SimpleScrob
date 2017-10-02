@@ -12,9 +12,18 @@ import UIKit
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
     var window: UIWindow?
+    
+    private var _database: Database?
+    var database: Database {
+        get {
+            if _database == nil {
+                _database = MemoryDatabase()
+            }
+            return _database!
+        }
+    }
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
-        UserDefaults.standard.removeObject(forKey: "libraryHasBeenScanned")
         return true
     }
 

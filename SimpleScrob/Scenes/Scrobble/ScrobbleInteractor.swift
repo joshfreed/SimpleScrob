@@ -14,50 +14,75 @@ import UIKit
 
 protocol ScrobbleBusinessLogic {
     func refresh(request: Scrobble.Refresh.Request)
+    func initializeMusicLibrary(request: Scrobble.InitializeMusicLibrary.Request)
+    func searchForNewScrobbles(request: Scrobble.SearchForNewScrobbles.Request)
+    func submitScrobbles(request: Scrobble.SubmitScrobbles.Request)
 }
 
 protocol ScrobbleDataStore {
-    //var name: String { get set }
+    
 }
 
 class ScrobbleInteractor: ScrobbleBusinessLogic, ScrobbleDataStore {
     var presenter: ScrobblePresentationLogic?
     let mediaLibrary: MediaLibrary
+    let lastFM: LastFM
+    let database: Database
 
-    init(mediaLibrary: MediaLibrary) {
+    init(mediaLibrary: MediaLibrary, lastFM: LastFM, database: Database) {
         self.mediaLibrary = mediaLibrary
+        self.lastFM = lastFM
+        self.database = database
     }
     
     // MARK: Refresh
 
     func refresh(request: Scrobble.Refresh.Request) {
         if mediaLibrary.isAuthorized() {
-            if mediaLibrary.isInitialized {
-                presenter?.presentSearchingForNewScrobbles()
-                
-                mediaLibrary.searchForNewScrobbles { songs in
-                    if songs.count > 0 {
-                        // Start submitting the songs to last.fm
-                        // Insert the songs to the database to record the last scrobble time and play count
-                    } else {
-                        // No songs to scrobble
-                    }
-                    
-                    let response = Scrobble.Refresh.Response(currentUserName: nil, songs: songs)
-                    self.presenter?.presentSongsToScrobble(response: response)
-                }
-            } else {
-                presenter?.presentScanningMusicLibrary()
-                
-                mediaLibrary.scanMediaLibrary {
-                    let response = Scrobble.Refresh.Response(currentUserName: nil, songs: nil)
-                    self.presenter?.presentLibraryScanComplete(response: response)
-                }
-            }
+            let response = Scrobble.Refresh.Response(firstTime: !mediaLibrary.isInitialized)
+            presenter?.presentAuthorized(response: response)
         } else if mediaLibrary.authorizationDenied() {
             presenter?.presentAuthorizationDenied()
         } else {
             presenter?.presentAuthorizationPrimer()
+        }
+    }
+    
+    // MARK: Initialize music library
+    
+    func initializeMusicLibrary(request: Scrobble.InitializeMusicLibrary.Request) {
+        presenter?.presentScanningMusicLibrary()
+        
+        mediaLibrary.scanMediaLibrary {
+            self.presenter?.presentCurrentUser(response: Scrobble.GetCurrentUser.Response(user: self.lastFM.currentUser))
+            self.presenter?.presentLibraryScanComplete(response: Scrobble.InitializeMusicLibrary.Response())
+        }
+    }
+    
+    // MARK: Search for new scrobbles
+    
+    func searchForNewScrobbles(request: Scrobble.SearchForNewScrobbles.Request) {
+        presenter?.presentCurrentUser(response: Scrobble.GetCurrentUser.Response(user: self.lastFM.currentUser))
+        presenter?.presentSearchingForNewScrobbles()
+        
+        mediaLibrary.searchForNewScrobbles { songs in
+            let response = Scrobble.SearchForNewScrobbles.Response(songs: songs)
+            self.presenter?.presentSongsToScrobble(response: response)
+        }
+    }
+    
+    // MARK: Submit scrobbles
+    
+    func submitScrobbles(request: Scrobble.SubmitScrobbles.Request) {
+        guard request.songs.count > 0, lastFM.isLoggedIn else {
+            return
+        }
+        
+        presenter?.presentSubmittingToLastFM()
+        
+        lastFM.submit(songs: request.songs) {
+//            self.database.save(request.songs)
+            self.presenter?.presentScrobblingComplete()
         }
     }
 }

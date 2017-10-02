@@ -25,6 +25,8 @@
 		53825BCB1F8032CF00566F2C /* ScrobbleViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53825BC51F8032CF00566F2C /* ScrobbleViewController.swift */; };
 		53825BCC1F8032CF00566F2C /* ScrobbleInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53825BC61F8032CF00566F2C /* ScrobbleInteractor.swift */; };
 		53825BD11F803F3400566F2C /* Song.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53825BD01F803F3400566F2C /* Song.swift */; };
+		53ACED671F8160F6008BAB39 /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53ACED661F8160F6008BAB39 /* User.swift */; };
+		53ACED691F8168EB008BAB39 /* Delay.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53ACED681F8168EB008BAB39 /* Delay.swift */; };
 		53D9B5761F8156F300C8581B /* Database.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53D9B5751F8156F300C8581B /* Database.swift */; };
 /* End PBXBuildFile section */
 
@@ -70,6 +72,8 @@
 		53825BC51F8032CF00566F2C /* ScrobbleViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = ScrobbleViewController.swift; path = SimpleScrob/Scenes/Scrobble/ScrobbleViewController.swift; sourceTree = SOURCE_ROOT; };
 		53825BC61F8032CF00566F2C /* ScrobbleInteractor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = ScrobbleInteractor.swift; path = SimpleScrob/Scenes/Scrobble/ScrobbleInteractor.swift; sourceTree = SOURCE_ROOT; };
 		53825BD01F803F3400566F2C /* Song.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Song.swift; sourceTree = "<group>"; };
+		53ACED661F8160F6008BAB39 /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
+		53ACED681F8168EB008BAB39 /* Delay.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Delay.swift; sourceTree = "<group>"; };
 		53D9B5751F8156F300C8581B /* Database.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Database.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -123,7 +127,7 @@
 			children = (
 				53825BCF1F803F2400566F2C /* Models */,
 				53825BCE1F80330E00566F2C /* Services */,
-				53825BCD1F80330400566F2C /* Extensions */,
+				53825BCD1F80330400566F2C /* Utilities */,
 				53825BBF1F80325400566F2C /* Scenes */,
 				53825B871F7E8CC600566F2C /* AppDelegate.swift */,
 				53825B8B1F7E8CC600566F2C /* Main.storyboard */,
@@ -163,24 +167,25 @@
 		53825BC01F80325C00566F2C /* Scrobble */ = {
 			isa = PBXGroup;
 			children = (
+				53825BC51F8032CF00566F2C /* ScrobbleViewController.swift */,
+				53825BC61F8032CF00566F2C /* ScrobbleInteractor.swift */,
 				53825BC11F8032CF00566F2C /* ScrobblePresenter.swift */,
 				53825BC21F8032CF00566F2C /* ScrobbleWorker.swift */,
 				53825BC31F8032CF00566F2C /* ScrobbleRouter.swift */,
 				53825BC41F8032CF00566F2C /* ScrobbleModels.swift */,
-				53825BC51F8032CF00566F2C /* ScrobbleViewController.swift */,
-				53825BC61F8032CF00566F2C /* ScrobbleInteractor.swift */,
 				53825BB51F7EE22100566F2C /* MediaAuthPrimerView.xib */,
 				53825BB91F7EE53E00566F2C /* MediaAuthPrimerView.swift */,
 			);
 			path = Scrobble;
 			sourceTree = "<group>";
 		};
-		53825BCD1F80330400566F2C /* Extensions */ = {
+		53825BCD1F80330400566F2C /* Utilities */ = {
 			isa = PBXGroup;
 			children = (
 				53825BB71F7EE4FD00566F2C /* UIViewLoading.swift */,
+				53ACED681F8168EB008BAB39 /* Delay.swift */,
 			);
-			path = Extensions;
+			path = Utilities;
 			sourceTree = "<group>";
 		};
 		53825BCE1F80330E00566F2C /* Services */ = {
@@ -197,6 +202,7 @@
 			isa = PBXGroup;
 			children = (
 				53825BD01F803F3400566F2C /* Song.swift */,
+				53ACED661F8160F6008BAB39 /* User.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -342,8 +348,10 @@
 				53825BCB1F8032CF00566F2C /* ScrobbleViewController.swift in Sources */,
 				53825BCA1F8032CF00566F2C /* ScrobbleModels.swift in Sources */,
 				53825B881F7E8CC600566F2C /* AppDelegate.swift in Sources */,
+				53ACED671F8160F6008BAB39 /* User.swift in Sources */,
 				53825BC71F8032CF00566F2C /* ScrobblePresenter.swift in Sources */,
 				53825BC81F8032CF00566F2C /* ScrobbleWorker.swift in Sources */,
+				53ACED691F8168EB008BAB39 /* Delay.swift in Sources */,
 				53825BB81F7EE4FD00566F2C /* UIViewLoading.swift in Sources */,
 				53825BBC1F802A3100566F2C /* LastFM.swift in Sources */,
 				53825BCC1F8032CF00566F2C /* ScrobbleInteractor.swift in Sources */,

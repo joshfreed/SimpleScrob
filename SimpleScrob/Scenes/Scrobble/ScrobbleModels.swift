@@ -21,14 +21,96 @@ enum Scrobble {
         }
 
         struct Response {
-            var currentUserName: String?
-            var songs: [Song]?
+            var firstTime: Bool
         }
 
         struct ViewModel {
-            var currentUserName: String?
+            var firstTime: Bool
         }
 
     }
+    
+    enum InitializeMusicLibrary {
+        struct Request {
+            
+        }
+        
+        struct Response {
+            
+        }
+        
+        struct ViewModel {
+            
+        }
+    }
+    
+    enum SearchForNewScrobbles {
+        struct Request {
+            
+        }
+        
+        struct Response {
+            let songs: [Song]
+        }
+        
+        struct ViewModel {
+            let songs: [Song]
+        }
+    }
+    
+    enum SubmitScrobbles {
+        struct Request {
+            let songs: [Song]
+        }
+        
+        struct Response {
+            let songs: [Song]
+        }
+        
+        struct ViewModel {
+            let songs: [Song]
+        }
+    }
 
+    enum GetCurrentUser {
+        struct Request {
+            
+        }
+        
+        struct Response {
+            let user: User?
+        }
+        
+        struct ViewModel {
+            let username: String?
+        }
+    }
+    
+    enum SignIn {
+        struct Request {
+            
+        }
+        
+        struct Response {
+            
+        }
+        
+        struct ViewModel {
+            var username: String
+        }
+    }
+    
+    enum SignOut {
+        struct Request {
+            
+        }
+        
+        struct Response {
+            
+        }
+        
+        struct ViewModel {
+            
+        }
+    }
 }

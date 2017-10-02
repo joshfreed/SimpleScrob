@@ -13,11 +13,17 @@
 import UIKit
 
 protocol ScrobbleDisplayLogic: class {
-    func displayScanningMusicLibrary()
-    func displayLibraryScanComplete(viewModel: Scrobble.Refresh.ViewModel)
-    func displaySearchingForNewScrobbles()
+    func displayAuthorized(viewModel: Scrobble.Refresh.ViewModel)
     func displayAuthorizationPrimer()
     func displayAuthorizationDenied()
+    func displayScanningMusicLibrary()
+    func displayLibraryScanComplete(viewModel: Scrobble.InitializeMusicLibrary.ViewModel)
+    func displaySearchingForNewScrobbles()
+    func displaySongsToScrobble(viewModel: Scrobble.SearchForNewScrobbles.ViewModel)
+    func displayNoSongsToScrobble()
+    func displaySubmittingToLastFM()
+    func displayScrobblingComplete()
+    func displayCurrentUser(viewModel: Scrobble.GetCurrentUser.ViewModel)
 }
 
 class ScrobbleViewController: UIViewController, ScrobbleDisplayLogic {
@@ -30,6 +36,9 @@ class ScrobbleViewController: UIViewController, ScrobbleDisplayLogic {
     @IBOutlet weak var signInButton: UIButton!
     @IBOutlet weak var currentUserView: UIView!
     @IBOutlet weak var currentUserLabel: UILabel!
+    @IBOutlet weak var scrobbleCountLabel: UILabel!
+    @IBOutlet weak var doneLabel: UILabel!
+    @IBOutlet weak var viewScrobblesButton: UIButton!
     
     var mediaAuthPrimerView: MediaAuthPrimerView?
     
@@ -49,7 +58,11 @@ class ScrobbleViewController: UIViewController, ScrobbleDisplayLogic {
 
     private func setup() {
         let viewController = self
-        let interactor = ScrobbleInteractor(mediaLibrary: MediaLibrary.shared)
+        let interactor = ScrobbleInteractor(
+            mediaLibrary: MediaLibrary.shared,
+            lastFM: LastFM.shared,
+            database: (UIApplication.shared.delegate as! AppDelegate).database
+        )
         let presenter = ScrobblePresenter()
         let router = ScrobbleRouter()
         viewController.interactor = interactor
@@ -99,34 +112,22 @@ class ScrobbleViewController: UIViewController, ScrobbleDisplayLogic {
         signInButton.isHidden = true
         currentUserView.isHidden = true
         mediaAuthPrimerView?.isHidden = true
+        doneLabel.isHidden = true
+        viewScrobblesButton.isHidden = true
+        scrobbleCountLabel.isHidden = true
         
         let request = Scrobble.Refresh.Request()
         interactor?.refresh(request: request)
     }
     
-    func displayScanningMusicLibrary() {
-        statusLabel.isHidden = false
-        statusLabel.text = "Scanning your music library..."
-        activityIndicator.startAnimating()
-    }
-    
-    func displayLibraryScanComplete(viewModel: Scrobble.Refresh.ViewModel) {
-        statusLabel.isHidden = false
-        statusLabel.text = "Songs you listen to will be scrobbled next time you open the app."
-        activityIndicator.stopAnimating()
-        
-        if let currentUserName = viewModel.currentUserName {
-            currentUserView.isHidden = false
-            currentUserLabel.text = currentUserName
+    func displayAuthorized(viewModel: Scrobble.Refresh.ViewModel) {
+        if viewModel.firstTime {
+            let request = Scrobble.InitializeMusicLibrary.Request()
+            interactor?.initializeMusicLibrary(request: request)
         } else {
-            signInButton.isHidden = false
+            let request = Scrobble.SearchForNewScrobbles.Request()
+            interactor?.searchForNewScrobbles(request: request)
         }
-    }
-    
-    func displaySearchingForNewScrobbles() {
-        statusLabel.isHidden = false
-        statusLabel.text = "Searching for new scrobbles..."
-        activityIndicator.startAnimating()
     }
     
     func displayAuthorizationPrimer() {
@@ -137,11 +138,92 @@ class ScrobbleViewController: UIViewController, ScrobbleDisplayLogic {
         
     }
     
+    // MARK: Initialize music library
+    
+    func displayScanningMusicLibrary() {
+        statusLabel.isHidden = false
+        statusLabel.text = "Scanning your music library..."
+        activityIndicator.startAnimating()
+    }
+    
+    func displayLibraryScanComplete(viewModel: Scrobble.InitializeMusicLibrary.ViewModel) {
+        statusLabel.isHidden = false
+        statusLabel.text = "Songs you listen to will be scrobbled next time you open the app."
+        activityIndicator.stopAnimating()
+    }
+    
+    // MARK: Search for new scrobbles
+    
+    func displaySearchingForNewScrobbles() {
+        statusLabel.isHidden = false
+        statusLabel.text = "Searching for new scrobbles..."
+        activityIndicator.startAnimating()
+    }
+    
+    func displaySongsToScrobble(viewModel: Scrobble.SearchForNewScrobbles.ViewModel) {
+        scrobbleCountLabel.isHidden = false
+        statusLabel.isHidden = true
+        activityIndicator.stopAnimating()
+        
+        let message = viewModel.songs.count == 1 ? "Found 1 new scrobble." : "Found \(viewModel.songs.count) new scrobbles."
+        scrobbleCountLabel.text = message
+        
+        let request = Scrobble.SubmitScrobbles.Request(songs: viewModel.songs)
+        interactor?.submitScrobbles(request: request)
+    }
+    
+    func displayNoSongsToScrobble() {
+        statusLabel.text = "No songs to scrobble."
+        activityIndicator.stopAnimating()
+    }
+    
+    // MARK: Submit scrobbles
+    
+    func displaySubmittingToLastFM() {
+        statusLabel.isHidden = false
+        activityIndicator.startAnimating()
+        statusLabel.text = "Submitting to last.fm..."
+    }
+    
+    func displayScrobblingComplete() {
+        statusLabel.isHidden = true
+        doneLabel.isHidden = false
+        viewScrobblesButton.isHidden = false
+        activityIndicator.stopAnimating()
+    }
+    
+    // MARK: Get current user
+    
+    func displayCurrentUser(viewModel: Scrobble.GetCurrentUser.ViewModel) {
+        if let username = viewModel.username {
+            currentUserView.isHidden = false
+            currentUserLabel.text = username
+            signInButton.isHidden = true
+        } else {
+            currentUserView.isHidden = true
+            signInButton.isHidden = false
+            signInButton.alpha = 0
+            UIView.animate(withDuration: 0.25, animations: {
+                self.signInButton.alpha = 1
+            })
+        }
+    }
+    
+    // MARK: Sign In
+    
+    @IBAction func tappedSignIn(_ sender: UIButton) {
+    }
+    
     // MARK: Sign Out
     
     @IBAction func tappedSignOut(_ sender: UIButton) {
         
     }
+    
+    // MARK: View scrobbles
+    
+    @IBAction func tappedViewScrobbles(_ sender: UIButton) {
+    }    
 }
 
 extension ScrobbleViewController: MediaAuthPrimerViewDelegate {

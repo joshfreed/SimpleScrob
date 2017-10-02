@@ -9,5 +9,11 @@
 import Foundation
 
 protocol Database {
-    
+    func save(_ songs: [Song])
+}
+
+class MemoryDatabase: Database {
+    func save(_ songs: [Song]) {
+        
+    }
 }

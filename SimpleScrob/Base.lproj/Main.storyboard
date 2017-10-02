@@ -54,28 +54,48 @@
                                 </constraints>
                             </view>
                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="16" translatesAutoresizingMaskIntoConstraints="NO" id="egg-91-eEG">
-                                <rect key="frame" x="16" y="383" width="343" height="61.5"/>
+                                <rect key="frame" x="16" y="334.5" width="343" height="198.5"/>
                                 <subviews>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Scanning your music library..." textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ajG-Da-Kwb">
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Found 37 new scrobbles." textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="kzF-qV-G4Q">
                                         <rect key="frame" x="0.0" y="0.0" width="343" height="25.5"/>
                                         <fontDescription key="fontDescription" type="system" weight="light" pointSize="21"/>
                                         <nil key="textColor"/>
                                         <nil key="highlightedColor"/>
                                     </label>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Scanning your music library..." textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ajG-Da-Kwb">
+                                        <rect key="frame" x="0.0" y="41.5" width="343" height="25.5"/>
+                                        <fontDescription key="fontDescription" type="system" weight="light" pointSize="21"/>
+                                        <nil key="textColor"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
                                     <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" animating="YES" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="fVK-d3-cqL">
-                                        <rect key="frame" x="0.0" y="41.5" width="343" height="20"/>
+                                        <rect key="frame" x="0.0" y="83" width="343" height="20"/>
                                     </activityIndicatorView>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Done!" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="jLp-mu-wth">
+                                        <rect key="frame" x="0.0" y="119" width="343" height="25.5"/>
+                                        <fontDescription key="fontDescription" type="system" weight="medium" pointSize="21"/>
+                                        <nil key="textColor"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="xDb-ZO-qGZ">
+                                        <rect key="frame" x="0.0" y="160.5" width="343" height="38"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="21"/>
+                                        <state key="normal" title="View Scrobbles"/>
+                                        <connections>
+                                            <action selector="tappedViewScrobbles:" destination="BYZ-38-t0r" eventType="touchUpInside" id="PIr-RJ-Kfd"/>
+                                        </connections>
+                                    </button>
                                 </subviews>
                             </stackView>
-                            <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Lkb-yK-c3a">
-                                <rect key="frame" x="162.5" y="272" width="50" height="111"/>
+                            <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Lkb-yK-c3a" userLabel="Top Spacer">
+                                <rect key="frame" x="162.5" y="272" width="50" height="62.5"/>
                                 <color key="backgroundColor" red="0.1764705882" green="0.92156862750000001" blue="0.21176470589999999" alpha="1" colorSpace="calibratedRGB"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="50" id="xRp-n5-RJy"/>
                                 </constraints>
                             </view>
-                            <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="xoB-Uj-8Xc">
-                                <rect key="frame" x="162" y="444.5" width="50" height="222.5"/>
+                            <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="xoB-Uj-8Xc" userLabel="Bottom Spacer">
+                                <rect key="frame" x="162" y="533" width="50" height="134"/>
                                 <color key="backgroundColor" red="0.1764705882" green="0.92156862750000001" blue="0.21176470589999999" alpha="1" colorSpace="calibratedRGB"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="50" id="Adq-86-TNa"/>
@@ -85,6 +105,9 @@
                                 <rect key="frame" x="108.5" y="565" width="158" height="38"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="21"/>
                                 <state key="normal" title="Sign In to Last.fm"/>
+                                <connections>
+                                    <action selector="tappedSignIn:" destination="BYZ-38-t0r" eventType="touchUpInside" id="qrV-S5-Oco"/>
+                                </connections>
                             </button>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="EMY-GN-0CG">
                                 <rect key="frame" x="83.5" y="627" width="208" height="32"/>
@@ -128,7 +151,7 @@
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="Vgj-iz-7GN" secondAttribute="trailing" constant="16" id="7ak-07-zBO"/>
                             <constraint firstItem="EMY-GN-0CG" firstAttribute="centerX" secondItem="6Tk-OE-BBY" secondAttribute="centerX" id="BDz-Qz-jug"/>
                             <constraint firstItem="B1k-t4-Za8" firstAttribute="top" secondItem="Vgj-iz-7GN" secondAttribute="bottom" constant="16" id="Dpc-Wb-hDH"/>
-                            <constraint firstItem="xoB-Uj-8Xc" firstAttribute="height" secondItem="Lkb-yK-c3a" secondAttribute="height" multiplier="2" id="FmB-Wh-XDM"/>
+                            <constraint firstItem="xoB-Uj-8Xc" firstAttribute="height" secondItem="Lkb-yK-c3a" secondAttribute="height" multiplier="2" priority="749" id="FmB-Wh-XDM"/>
                             <constraint firstItem="B1k-t4-Za8" firstAttribute="centerX" secondItem="6Tk-OE-BBY" secondAttribute="centerX" id="Gai-UC-O2k"/>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="bottom" secondItem="Nfe-JN-Cq2" secondAttribute="bottom" constant="64" id="Mvd-oy-g1P"/>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="bottom" secondItem="EMY-GN-0CG" secondAttribute="bottom" constant="8" id="Sgq-Y1-mzH"/>
@@ -150,8 +173,11 @@
                         <outlet property="contentStackView" destination="egg-91-eEG" id="Kbo-m6-Yke"/>
                         <outlet property="currentUserLabel" destination="1FS-5K-QZH" id="zzL-nv-M7D"/>
                         <outlet property="currentUserView" destination="EMY-GN-0CG" id="Duu-TI-gw6"/>
+                        <outlet property="doneLabel" destination="jLp-mu-wth" id="iPA-0e-oEw"/>
+                        <outlet property="scrobbleCountLabel" destination="kzF-qV-G4Q" id="NOF-8P-o2G"/>
                         <outlet property="signInButton" destination="Nfe-JN-Cq2" id="KkD-Xm-OKv"/>
                         <outlet property="statusLabel" destination="ajG-Da-Kwb" id="Lhx-Y5-TVn"/>
+                        <outlet property="viewScrobblesButton" destination="xDb-ZO-qGZ" id="Nq3-Xe-3gY"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>

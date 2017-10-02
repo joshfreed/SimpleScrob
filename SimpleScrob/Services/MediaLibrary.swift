@@ -13,7 +13,7 @@ class MediaLibrary {
     static let shared = MediaLibrary()
     
     var isInitialized: Bool {
-        return UserDefaults.standard.bool(forKey: "libraryHasBeenScanned")
+        return true
     }
     
     func isAuthorized() -> Bool {
@@ -24,46 +24,52 @@ class MediaLibrary {
     func authorizationDenied() -> Bool {
         return MPMediaLibrary.authorizationStatus() == .denied
     }
-
-    func scanMediaLibrary(completion: @escaping () -> ()) {
+    
+    func iterateSongs(each: @escaping (MPMediaItem) -> (), complete: @escaping () -> ()) {
         DispatchQueue.global(qos: .background).async {
             if let items = MPMediaQuery.songs().items {
                 print(items.count)
                 
                 for item in items {
                     print("\(item.persistentID), \(item.title), \(item.playCount)")
+                    each(item)
                 }
                 
-                UserDefaults.standard.set(true, forKey: "libraryHasBeenScanned")
-                
                 DispatchQueue.main.sync {
-                    completion()
+                    complete()
                 }
             }
         }
     }
+
+    func scanMediaLibrary(completion: @escaping () -> ()) {
+        iterateSongs(each: { item in
+            
+        }, complete: {
+            delay(seconds: 2) {
+                completion()
+            }
+        })
+    }
     
     func searchForNewScrobbles(completion: @escaping ([Song]) -> ()) {
-        DispatchQueue.global(qos: .background).async {
-            if let items = MPMediaQuery.songs().items {
-                print(items.count)
-                
-                for item in items {
-                    print("\(item.persistentID), \(item.title), \(item.playCount)")
-                }
-                
-                // For each item in the music library
-                // Does it exist in the local database?
-                    // If yes - is the play count higher now?
-                        // If yes - scrobble this song. If the play count is higher by the more than one, scrobble this song multiple times (with different dates between the last scrobble time and last played time)
-                    // If no - insert it into the local database and scrobble it
-                
-                var songs: [Song] = []
-                
-                DispatchQueue.main.sync {
-                    completion(songs)
-                }
+        iterateSongs(each: { item in
+            
+        }, complete: {
+            var songs: [Song] = [
+                Song(id: 1234, playCount: 4)
+            ]
+            
+            delay(seconds: 2) {
+                completion(songs)
             }
-        }
+        })
+        
+        // For each item in the music library
+        // Does it exist in the local database?
+            // If yes - is the play count higher now?
+                // If yes - scrobble this song. If the play count is higher by the more than one, scrobble this song multiple times (with different dates between the last scrobble time and last played time)
+            // If no - insert it into the local database and scrobble it
+        
     }
 }
