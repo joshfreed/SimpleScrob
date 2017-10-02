@@ -26,7 +26,14 @@
 		53825BCC1F8032CF00566F2C /* ScrobbleInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53825BC61F8032CF00566F2C /* ScrobbleInteractor.swift */; };
 		53825BD11F803F3400566F2C /* Song.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53825BD01F803F3400566F2C /* Song.swift */; };
 		53ACED671F8160F6008BAB39 /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53ACED661F8160F6008BAB39 /* User.swift */; };
-		53ACED691F8168EB008BAB39 /* Delay.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53ACED681F8168EB008BAB39 /* Delay.swift */; };
+		53D6AD0C1F826B5E005F6972 /* SignInPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53D6AD061F826B5E005F6972 /* SignInPresenter.swift */; };
+		53D6AD0D1F826B5E005F6972 /* SignInWorker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53D6AD071F826B5E005F6972 /* SignInWorker.swift */; };
+		53D6AD0E1F826B5E005F6972 /* SignInRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53D6AD081F826B5E005F6972 /* SignInRouter.swift */; };
+		53D6AD0F1F826B5E005F6972 /* SignInModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53D6AD091F826B5E005F6972 /* SignInModels.swift */; };
+		53D6AD101F826B5E005F6972 /* SignInViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53D6AD0A1F826B5E005F6972 /* SignInViewController.swift */; };
+		53D6AD111F826B5E005F6972 /* SignInInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53D6AD0B1F826B5E005F6972 /* SignInInteractor.swift */; };
+		53D6AD1B1F82AD81005F6972 /* JFLib.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 53D6AD1A1F82AD81005F6972 /* JFLib.framework */; };
+		53D6AD1C1F82AD81005F6972 /* JFLib.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 53D6AD1A1F82AD81005F6972 /* JFLib.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		53D9B5761F8156F300C8581B /* Database.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53D9B5751F8156F300C8581B /* Database.swift */; };
 /* End PBXBuildFile section */
 
@@ -46,6 +53,20 @@
 			remoteInfo = SimpleScrob;
 		};
 /* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		53D6AD1D1F82AD82005F6972 /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				53D6AD1C1F82AD81005F6972 /* JFLib.framework in Embed Frameworks */,
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
 		53825B841F7E8CC600566F2C /* SimpleScrob.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SimpleScrob.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -73,7 +94,13 @@
 		53825BC61F8032CF00566F2C /* ScrobbleInteractor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = ScrobbleInteractor.swift; path = SimpleScrob/Scenes/Scrobble/ScrobbleInteractor.swift; sourceTree = SOURCE_ROOT; };
 		53825BD01F803F3400566F2C /* Song.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Song.swift; sourceTree = "<group>"; };
 		53ACED661F8160F6008BAB39 /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
-		53ACED681F8168EB008BAB39 /* Delay.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Delay.swift; sourceTree = "<group>"; };
+		53D6AD061F826B5E005F6972 /* SignInPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInPresenter.swift; sourceTree = "<group>"; };
+		53D6AD071F826B5E005F6972 /* SignInWorker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInWorker.swift; sourceTree = "<group>"; };
+		53D6AD081F826B5E005F6972 /* SignInRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInRouter.swift; sourceTree = "<group>"; };
+		53D6AD091F826B5E005F6972 /* SignInModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInModels.swift; sourceTree = "<group>"; };
+		53D6AD0A1F826B5E005F6972 /* SignInViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInViewController.swift; sourceTree = "<group>"; };
+		53D6AD0B1F826B5E005F6972 /* SignInInteractor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInInteractor.swift; sourceTree = "<group>"; };
+		53D6AD1A1F82AD81005F6972 /* JFLib.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = JFLib.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		53D9B5751F8156F300C8581B /* Database.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Database.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -82,6 +109,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				53D6AD1B1F82AD81005F6972 /* JFLib.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -105,6 +133,7 @@
 		53825B7B1F7E8CC600566F2C = {
 			isa = PBXGroup;
 			children = (
+				53D6AD1A1F82AD81005F6972 /* JFLib.framework */,
 				53825B861F7E8CC600566F2C /* SimpleScrob */,
 				53825B9B1F7E8CC700566F2C /* SimpleScrobTests */,
 				53825BA61F7E8CC700566F2C /* SimpleScrobUITests */,
@@ -159,6 +188,7 @@
 		53825BBF1F80325400566F2C /* Scenes */ = {
 			isa = PBXGroup;
 			children = (
+				53D6AD051F826B49005F6972 /* SignIn */,
 				53825BC01F80325C00566F2C /* Scrobble */,
 			);
 			path = Scenes;
@@ -183,7 +213,6 @@
 			isa = PBXGroup;
 			children = (
 				53825BB71F7EE4FD00566F2C /* UIViewLoading.swift */,
-				53ACED681F8168EB008BAB39 /* Delay.swift */,
 			);
 			path = Utilities;
 			sourceTree = "<group>";
@@ -207,6 +236,19 @@
 			path = Models;
 			sourceTree = "<group>";
 		};
+		53D6AD051F826B49005F6972 /* SignIn */ = {
+			isa = PBXGroup;
+			children = (
+				53D6AD061F826B5E005F6972 /* SignInPresenter.swift */,
+				53D6AD071F826B5E005F6972 /* SignInWorker.swift */,
+				53D6AD081F826B5E005F6972 /* SignInRouter.swift */,
+				53D6AD091F826B5E005F6972 /* SignInModels.swift */,
+				53D6AD0A1F826B5E005F6972 /* SignInViewController.swift */,
+				53D6AD0B1F826B5E005F6972 /* SignInInteractor.swift */,
+			);
+			path = SignIn;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -217,6 +259,7 @@
 				53825B801F7E8CC600566F2C /* Sources */,
 				53825B811F7E8CC600566F2C /* Frameworks */,
 				53825B821F7E8CC600566F2C /* Resources */,
+				53D6AD1D1F82AD82005F6972 /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
@@ -342,16 +385,21 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				53D6AD0E1F826B5E005F6972 /* SignInRouter.swift in Sources */,
+				53D6AD0C1F826B5E005F6972 /* SignInPresenter.swift in Sources */,
 				53825BD11F803F3400566F2C /* Song.swift in Sources */,
+				53D6AD0F1F826B5E005F6972 /* SignInModels.swift in Sources */,
 				53825BBA1F7EE53E00566F2C /* MediaAuthPrimerView.swift in Sources */,
+				53D6AD111F826B5E005F6972 /* SignInInteractor.swift in Sources */,
 				53825BBE1F802C7700566F2C /* MediaLibrary.swift in Sources */,
 				53825BCB1F8032CF00566F2C /* ScrobbleViewController.swift in Sources */,
 				53825BCA1F8032CF00566F2C /* ScrobbleModels.swift in Sources */,
+				53D6AD101F826B5E005F6972 /* SignInViewController.swift in Sources */,
 				53825B881F7E8CC600566F2C /* AppDelegate.swift in Sources */,
 				53ACED671F8160F6008BAB39 /* User.swift in Sources */,
+				53D6AD0D1F826B5E005F6972 /* SignInWorker.swift in Sources */,
 				53825BC71F8032CF00566F2C /* ScrobblePresenter.swift in Sources */,
 				53825BC81F8032CF00566F2C /* ScrobbleWorker.swift in Sources */,
-				53ACED691F8168EB008BAB39 /* Delay.swift in Sources */,
 				53825BB81F7EE4FD00566F2C /* UIViewLoading.swift in Sources */,
 				53825BBC1F802A3100566F2C /* LastFM.swift in Sources */,
 				53825BCC1F8032CF00566F2C /* ScrobbleInteractor.swift in Sources */,

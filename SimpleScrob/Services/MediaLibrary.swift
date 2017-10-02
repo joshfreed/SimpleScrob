@@ -8,6 +8,7 @@
 
 import Foundation
 import MediaPlayer
+import JFLib
 
 class MediaLibrary {
     static let shared = MediaLibrary()

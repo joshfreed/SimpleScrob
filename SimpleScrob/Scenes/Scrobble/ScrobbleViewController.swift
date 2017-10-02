@@ -90,6 +90,7 @@ class ScrobbleViewController: UIViewController, ScrobbleDisplayLogic {
         super.viewDidLoad()
         
         NotificationCenter.default.addObserver(self, selector: #selector(applicationDidBecomeActive), name: .UIApplicationDidBecomeActive, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(userSignedIn), name: .signedIn, object: nil)
         
         mediaAuthPrimerView = MediaAuthPrimerView.loadFromNib()
         mediaAuthPrimerView!.delegate = self
@@ -100,6 +101,14 @@ class ScrobbleViewController: UIViewController, ScrobbleDisplayLogic {
     
     @objc func applicationDidBecomeActive() {
         refresh()
+    }
+    
+    @objc func userSignedIn() {
+        interactor?.getCurrentUser()
+    }
+    
+    @IBAction func unwindToScrobble(segue: UIStoryboardSegue) {
+        
     }
 
     // MARK: Refresh

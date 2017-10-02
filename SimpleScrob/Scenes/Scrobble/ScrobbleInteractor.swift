@@ -17,6 +17,7 @@ protocol ScrobbleBusinessLogic {
     func initializeMusicLibrary(request: Scrobble.InitializeMusicLibrary.Request)
     func searchForNewScrobbles(request: Scrobble.SearchForNewScrobbles.Request)
     func submitScrobbles(request: Scrobble.SubmitScrobbles.Request)
+    func getCurrentUser()
 }
 
 protocol ScrobbleDataStore {
@@ -84,5 +85,12 @@ class ScrobbleInteractor: ScrobbleBusinessLogic, ScrobbleDataStore {
 //            self.database.save(request.songs)
             self.presenter?.presentScrobblingComplete()
         }
+    }
+    
+    // MARK: Get current user
+    
+    func getCurrentUser() {
+        let response = Scrobble.GetCurrentUser.Response(user: lastFM.currentUser)
+        presenter?.presentCurrentUser(response: response)
     }
 }
