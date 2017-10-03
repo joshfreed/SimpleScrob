@@ -13,6 +13,8 @@ typealias SongID = MPMediaEntityPersistentID
 
 struct Song {
     var id: SongID
+    var artist: String?
+    var track: String?
+    var lastPlayedDate: Date?
     var playCount: Int
-    // lastPlayedDate
 }

@@ -29,18 +29,25 @@ class ScrobbleInteractor: ScrobbleBusinessLogic, ScrobbleDataStore {
     let mediaLibrary: MediaLibrary
     let lastFM: LastFM
     let database: Database
+    let songScanner: SongScanner
 
-    init(mediaLibrary: MediaLibrary, lastFM: LastFM, database: Database) {
+    init(
+        mediaLibrary: MediaLibrary,
+        lastFM: LastFM,
+        database: Database,
+        songScanner: SongScanner
+    ) {
         self.mediaLibrary = mediaLibrary
         self.lastFM = lastFM
         self.database = database
+        self.songScanner = songScanner
     }
     
     // MARK: Refresh
 
     func refresh(request: Scrobble.Refresh.Request) {
         if mediaLibrary.isAuthorized() {
-            let response = Scrobble.Refresh.Response(firstTime: !mediaLibrary.isInitialized)
+            let response = Scrobble.Refresh.Response(firstTime: !songScanner.isInitialized)
             presenter?.presentAuthorized(response: response)
         } else if mediaLibrary.authorizationDenied() {
             presenter?.presentAuthorizationDenied()
@@ -54,9 +61,13 @@ class ScrobbleInteractor: ScrobbleBusinessLogic, ScrobbleDataStore {
     func initializeMusicLibrary(request: Scrobble.InitializeMusicLibrary.Request) {
         presenter?.presentScanningMusicLibrary()
         
-        mediaLibrary.scanMediaLibrary {
-            self.presenter?.presentCurrentUser(response: Scrobble.GetCurrentUser.Response(user: self.lastFM.currentUser))
-            self.presenter?.presentLibraryScanComplete(response: Scrobble.InitializeMusicLibrary.Response())
+        DispatchQueue.global(qos: .background).async {
+            self.songScanner.initializeSongDatabase()
+            
+            DispatchQueue.main.sync {
+                self.presenter?.presentCurrentUser(response: Scrobble.GetCurrentUser.Response(user: self.lastFM.currentUser))
+                self.presenter?.presentLibraryScanComplete(response: Scrobble.InitializeMusicLibrary.Response())
+            }
         }
     }
     
@@ -66,9 +77,13 @@ class ScrobbleInteractor: ScrobbleBusinessLogic, ScrobbleDataStore {
         presenter?.presentCurrentUser(response: Scrobble.GetCurrentUser.Response(user: self.lastFM.currentUser))
         presenter?.presentSearchingForNewScrobbles()
         
-        mediaLibrary.searchForNewScrobbles { songs in
-            let response = Scrobble.SearchForNewScrobbles.Response(songs: songs)
-            self.presenter?.presentSongsToScrobble(response: response)
+        DispatchQueue.global(qos: .background).async {
+            let songsToScrobble = self.songScanner.searchForNewScrobbles()
+            
+            DispatchQueue.main.sync {
+                let response = Scrobble.SearchForNewScrobbles.Response(songs: songsToScrobble)
+                self.presenter?.presentSongsToScrobble(response: response)
+            }
         }
     }
     

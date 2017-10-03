@@ -57,11 +57,13 @@ class ScrobbleViewController: UIViewController, ScrobbleDisplayLogic {
     // MARK: Setup
 
     private func setup() {
+        let appDelegate = UIApplication.shared.delegate as! AppDelegate
         let viewController = self
         let interactor = ScrobbleInteractor(
             mediaLibrary: MediaLibrary.shared,
             lastFM: LastFM.shared,
-            database: (UIApplication.shared.delegate as! AppDelegate).database
+            database: appDelegate.database,
+            songScanner: appDelegate.songScanner
         )
         let presenter = ScrobblePresenter()
         let router = ScrobbleRouter()
@@ -96,7 +98,7 @@ class ScrobbleViewController: UIViewController, ScrobbleDisplayLogic {
         mediaAuthPrimerView!.delegate = self
         contentStackView.addArrangedSubview(mediaAuthPrimerView!)
         
-        refresh()
+//        refresh()
     }
     
     @objc func applicationDidBecomeActive() {

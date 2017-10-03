@@ -2,9 +2,6 @@
 <Workspace
    version = "1.0">
    <FileRef
-      location = "group:../../JFLib/JFLib.xcodeproj">
-   </FileRef>
-   <FileRef
-      location = "self:">
+      location = "self:../SimpleScrob">
    </FileRef>
 </Workspace>

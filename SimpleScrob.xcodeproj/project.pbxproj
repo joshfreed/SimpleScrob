@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		5316A6511F82BFB5005193EB /* SongScanner.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5316A6501F82BFB5005193EB /* SongScanner.swift */; };
+		5316A6561F82CBD7005193EB /* SimpleScrob.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 5316A6541F82CBD6005193EB /* SimpleScrob.xcdatamodeld */; };
 		53825B881F7E8CC600566F2C /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53825B871F7E8CC600566F2C /* AppDelegate.swift */; };
 		53825B8D1F7E8CC600566F2C /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 53825B8B1F7E8CC600566F2C /* Main.storyboard */; };
 		53825B8F1F7E8CC600566F2C /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 53825B8E1F7E8CC600566F2C /* Assets.xcassets */; };
@@ -69,6 +71,8 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		5316A6501F82BFB5005193EB /* SongScanner.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SongScanner.swift; sourceTree = "<group>"; };
+		5316A6551F82CBD6005193EB /* SimpleScrob.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = SimpleScrob.xcdatamodel; sourceTree = "<group>"; };
 		53825B841F7E8CC600566F2C /* SimpleScrob.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SimpleScrob.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		53825B871F7E8CC600566F2C /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		53825B8C1F7E8CC600566F2C /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
@@ -159,6 +163,7 @@
 				53825BCD1F80330400566F2C /* Utilities */,
 				53825BBF1F80325400566F2C /* Scenes */,
 				53825B871F7E8CC600566F2C /* AppDelegate.swift */,
+				5316A6541F82CBD6005193EB /* SimpleScrob.xcdatamodeld */,
 				53825B8B1F7E8CC600566F2C /* Main.storyboard */,
 				53825B8E1F7E8CC600566F2C /* Assets.xcassets */,
 				53825B901F7E8CC600566F2C /* LaunchScreen.storyboard */,
@@ -223,6 +228,7 @@
 				53825BBB1F802A3100566F2C /* LastFM.swift */,
 				53825BBD1F802C7700566F2C /* MediaLibrary.swift */,
 				53D9B5751F8156F300C8581B /* Database.swift */,
+				5316A6501F82BFB5005193EB /* SongScanner.swift */,
 			);
 			path = Services;
 			sourceTree = "<group>";
@@ -402,7 +408,9 @@
 				53825BC81F8032CF00566F2C /* ScrobbleWorker.swift in Sources */,
 				53825BB81F7EE4FD00566F2C /* UIViewLoading.swift in Sources */,
 				53825BBC1F802A3100566F2C /* LastFM.swift in Sources */,
+				5316A6511F82BFB5005193EB /* SongScanner.swift in Sources */,
 				53825BCC1F8032CF00566F2C /* ScrobbleInteractor.swift in Sources */,
+				5316A6561F82CBD7005193EB /* SimpleScrob.xcdatamodeld in Sources */,
 				53D9B5761F8156F300C8581B /* Database.swift in Sources */,
 				53825BC91F8032CF00566F2C /* ScrobbleRouter.swift in Sources */,
 			);
@@ -702,6 +710,19 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCVersionGroup section */
+		5316A6541F82CBD6005193EB /* SimpleScrob.xcdatamodeld */ = {
+			isa = XCVersionGroup;
+			children = (
+				5316A6551F82CBD6005193EB /* SimpleScrob.xcdatamodel */,
+			);
+			currentVersion = 5316A6551F82CBD6005193EB /* SimpleScrob.xcdatamodel */;
+			path = SimpleScrob.xcdatamodeld;
+			sourceTree = "<group>";
+			versionGroupType = wrapper.xcdatamodel;
+		};
+/* End XCVersionGroup section */
 	};
 	rootObject = 53825B7C1F7E8CC600566F2C /* Project object */;
 }
