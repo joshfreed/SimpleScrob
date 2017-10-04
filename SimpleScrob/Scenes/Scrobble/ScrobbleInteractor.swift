@@ -36,6 +36,8 @@ class ScrobbleInteractor: ScrobbleBusinessLogic, ScrobbleDataStore {
     let database: Database
     let songScanner: SongScanner
 
+    private var songsToScrobble: [Song] = []
+    
     init(
         mediaLibrary: MediaLibrary,
         lastFM: LastFM,
@@ -105,10 +107,10 @@ class ScrobbleInteractor: ScrobbleBusinessLogic, ScrobbleDataStore {
         presenter?.presentSearchingForNewScrobbles()
         
         DispatchQueue.global(qos: .background).async {
-            let songsToScrobble = self.songScanner.searchForNewScrobbles()
+            self.songsToScrobble = self.songScanner.searchForNewScrobbles()
             
             DispatchQueue.main.sync {
-                let response = Scrobble.SearchForNewScrobbles.Response(songs: songsToScrobble)
+                let response = Scrobble.SearchForNewScrobbles.Response(songs: self.songsToScrobble)
                 self.presenter?.presentSongsToScrobble(response: response)
             }
         }
@@ -117,15 +119,16 @@ class ScrobbleInteractor: ScrobbleBusinessLogic, ScrobbleDataStore {
     // MARK: Submit scrobbles
     
     func submitScrobbles(request: Scrobble.SubmitScrobbles.Request) {
-        guard request.songs.count > 0, lastFM.isLoggedIn else {
+        guard songsToScrobble.count > 0, lastFM.isLoggedIn else {
             return
         }
         
         presenter?.presentSubmittingToLastFM()
         
-        lastFM.submit(songs: request.songs) {
+        lastFM.submit(songs: songsToScrobble) {
 //            self.database.save(request.songs)
             self.presenter?.presentScrobblingComplete()
+            self.songsToScrobble = []
         }
     }
     
@@ -134,6 +137,11 @@ class ScrobbleInteractor: ScrobbleBusinessLogic, ScrobbleDataStore {
     func getCurrentUser() {
         let response = Scrobble.GetCurrentUser.Response(user: lastFM.currentUser)
         presenter?.presentCurrentUser(response: response)
+        
+        if lastFM.currentUser != nil && songsToScrobble.count > 0 {
+            let request = Scrobble.SubmitScrobbles.Request()
+            submitScrobbles(request: request)
+        }
     }
     
     // MARK: Sign Out

@@ -198,7 +198,7 @@ class ScrobbleViewController: UIViewController, ScrobbleDisplayLogic {
         let message = viewModel.songs.count == 1 ? "Found 1 new scrobble." : "Found \(viewModel.songs.count) new scrobbles."
         scrobbleCountLabel.text = message
         
-        let request = Scrobble.SubmitScrobbles.Request(songs: viewModel.songs)
+        let request = Scrobble.SubmitScrobbles.Request()
         interactor?.submitScrobbles(request: request)
     }
     
