@@ -33,9 +33,23 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             return _songScanner!
         }
     }
+    
+    private var _lastFM: LastFMService?
+    var lastFM: LastFMService {
+        get {
+            if _lastFM == nil {
+                let apiKey = "f27fb27503f9aa73c6f308fd9e3bc7f0"
+                let secret = "f0ec0f81ae932843046997ef89ce60cc"
+                let api = LastFM.API(engine: LastFM.RestEngine(apiKey: apiKey, secret: secret))
+                _lastFM = LastFMService(api: api)
+            }
+            return _lastFM!
+        }
+    }
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
-        LastFM.shared.resume()
+        
+        lastFM.resume()
         return true
     }
 

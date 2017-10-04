@@ -22,25 +22,18 @@ protocol SignInDataStore {
 
 class SignInInteractor: SignInBusinessLogic, SignInDataStore {
     var presenter: SignInPresentationLogic?
-    let lastFM: LastFM
+    let lastFM: LastFMService
     
-    init(lastFM: LastFM) {
+    init(lastFM: LastFMService) {
         self.lastFM = lastFM
     }
     
     // MARK: Sign In
 
     func signIn(request: SignIn.SignIn.Request) {
-        lastFM.signIn(username: request.username, password: request.password) { result in
-            switch result {
-            case .success(let success):
-                let response = SignIn.SignIn.Response(success: success)
-                self.presenter?.presentSignIn(response: response)
-            case .failure(let error):
-                // an error occurred
-                break
-            }
-            
+        lastFM.signIn(username: request.username, password: request.password) { success in
+            let response = SignIn.SignIn.Response(success: success)
+            self.presenter?.presentSignIn(response: response)
         }
     }
 }

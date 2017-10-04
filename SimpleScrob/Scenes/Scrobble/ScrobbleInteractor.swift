@@ -32,7 +32,7 @@ class ScrobbleInteractor: ScrobbleBusinessLogic, ScrobbleDataStore {
     var presenter: ScrobblePresentationLogic?
     let logger = OSLog(subsystem: "com.joshfreed.SimpleScrob", category: "ScrobbleInteractor")
     let mediaLibrary: MediaLibrary
-    let lastFM: LastFM
+    let lastFM: LastFMService
     let database: Database
     let songScanner: SongScanner
 
@@ -40,7 +40,7 @@ class ScrobbleInteractor: ScrobbleBusinessLogic, ScrobbleDataStore {
     
     init(
         mediaLibrary: MediaLibrary,
-        lastFM: LastFM,
+        lastFM: LastFMService,
         database: Database,
         songScanner: SongScanner
     ) {

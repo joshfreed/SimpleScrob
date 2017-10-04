@@ -43,7 +43,7 @@ class SignInViewController: UIViewController, SignInDisplayLogic {
 
     private func setup() {
         let viewController = self
-        let interactor = SignInInteractor(lastFM: LastFM.shared)
+        let interactor = SignInInteractor(lastFM: (UIApplication.shared.delegate as! AppDelegate).lastFM)
         let presenter = SignInPresenter()
         let router = SignInRouter()
         viewController.interactor = interactor

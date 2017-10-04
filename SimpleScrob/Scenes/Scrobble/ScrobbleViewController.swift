@@ -63,7 +63,7 @@ class ScrobbleViewController: UIViewController, ScrobbleDisplayLogic {
         let viewController = self
         let interactor = ScrobbleInteractor(
             mediaLibrary: MediaLibrary.shared,
-            lastFM: LastFM.shared,
+            lastFM: appDelegate.lastFM,
             database: appDelegate.database,
             songScanner: appDelegate.songScanner
         )
