@@ -12,6 +12,7 @@
 		53075DEC1F85425800A19189 /* Podfile in Resources */ = {isa = PBXBuildFile; fileRef = 53075DE91F85425800A19189 /* Podfile */; };
 		5316A6511F82BFB5005193EB /* SongScanner.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5316A6501F82BFB5005193EB /* SongScanner.swift */; };
 		5316A6561F82CBD7005193EB /* SimpleScrob.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 5316A6541F82CBD6005193EB /* SimpleScrob.xcdatamodeld */; };
+		53221B3B1F8587D900FB1A0F /* LastFM_ApiTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53221B3A1F8587D900FB1A0F /* LastFM_ApiTests.swift */; };
 		53825B881F7E8CC600566F2C /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53825B871F7E8CC600566F2C /* AppDelegate.swift */; };
 		53825B8D1F7E8CC600566F2C /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 53825B8B1F7E8CC600566F2C /* Main.storyboard */; };
 		53825B8F1F7E8CC600566F2C /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 53825B8E1F7E8CC600566F2C /* Assets.xcassets */; };
@@ -95,10 +96,11 @@
 		05BB0A066C070FA24C96CF74 /* Pods_SimpleScrobUITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_SimpleScrobUITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		3E5D420393C7E496D31A4C73 /* Pods-SimpleScrob.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SimpleScrob.release.xcconfig"; path = "Pods/Target Support Files/Pods-SimpleScrob/Pods-SimpleScrob.release.xcconfig"; sourceTree = "<group>"; };
 		4834C745F470D255FABD22BB /* Pods-SimpleScrobTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SimpleScrobTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-SimpleScrobTests/Pods-SimpleScrobTests.release.xcconfig"; sourceTree = "<group>"; };
-		53075DE91F85425800A19189 /* Podfile */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Podfile; sourceTree = "<group>"; };
+		53075DE91F85425800A19189 /* Podfile */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Podfile; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
 		53075DED1F85498300A19189 /* SimpleScrob-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "SimpleScrob-Bridging-Header.h"; sourceTree = "<group>"; };
 		5316A6501F82BFB5005193EB /* SongScanner.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SongScanner.swift; sourceTree = "<group>"; };
 		5316A6551F82CBD6005193EB /* SimpleScrob.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = SimpleScrob.xcdatamodel; sourceTree = "<group>"; };
+		53221B3A1F8587D900FB1A0F /* LastFM_ApiTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LastFM_ApiTests.swift; sourceTree = "<group>"; };
 		535A949D1F83E81100375D4E /* SSTextField.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = SSTextField.xib; sourceTree = "<group>"; };
 		53825B841F7E8CC600566F2C /* SimpleScrob.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SimpleScrob.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		53825B871F7E8CC600566F2C /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -173,6 +175,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		53221B391F8587B700FB1A0F /* LastFM */ = {
+			isa = PBXGroup;
+			children = (
+				53221B3A1F8587D900FB1A0F /* LastFM_ApiTests.swift */,
+			);
+			path = LastFM;
+			sourceTree = "<group>";
+		};
 		535A949A1F83E74A00375D4E /* Views */ = {
 			isa = PBXGroup;
 			children = (
@@ -188,11 +198,11 @@
 			children = (
 				53075DE91F85425800A19189 /* Podfile */,
 				53D6AD1A1F82AD81005F6972 /* JFLib.framework */,
+				53B06FE21F83E88300FC9AB9 /* JFLib.xcodeproj */,
 				53825B861F7E8CC600566F2C /* SimpleScrob */,
 				53825B9B1F7E8CC700566F2C /* SimpleScrobTests */,
 				53825BA61F7E8CC700566F2C /* SimpleScrobUITests */,
 				53825B851F7E8CC600566F2C /* Products */,
-				53B06FE21F83E88300FC9AB9 /* JFLib.xcodeproj */,
 				728B77057A57B72B501EECBB /* Pods */,
 				A1FA56A295052E966EAACAA5 /* Frameworks */,
 			);
@@ -230,6 +240,7 @@
 		53825B9B1F7E8CC700566F2C /* SimpleScrobTests */ = {
 			isa = PBXGroup;
 			children = (
+				53221B391F8587B700FB1A0F /* LastFM */,
 				53825B9C1F7E8CC700566F2C /* SimpleScrobTests.swift */,
 				53825B9E1F7E8CC700566F2C /* Info.plist */,
 			);
@@ -617,9 +628,12 @@
 			files = (
 			);
 			inputPaths = (
+				"${SRCROOT}/Pods/Target Support Files/Pods-SimpleScrobTests/Pods-SimpleScrobTests-frameworks.sh",
+				"${BUILT_PRODUCTS_DIR}/Nimble/Nimble.framework",
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Nimble.framework",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -695,6 +709,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				53825B9D1F7E8CC700566F2C /* SimpleScrobTests.swift in Sources */,
+				53221B3B1F8587D900FB1A0F /* LastFM_ApiTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -889,7 +904,6 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 8AF97AADA51D9B4163C05B2E /* Pods-SimpleScrobTests.debug.xcconfig */;
 			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = Q96RZM5NAK;
@@ -907,7 +921,6 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 4834C745F470D255FABD22BB /* Pods-SimpleScrobTests.release.xcconfig */;
 			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = Q96RZM5NAK;

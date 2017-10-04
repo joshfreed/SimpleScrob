@@ -18,6 +18,13 @@ struct Song {
     var lastPlayedDate: Date?
     var playCount: Int
     
+    var scrobbleTimestamp: String? {
+        guard let date = lastPlayedDate else {
+            return nil
+        }
+        return String(Int(date.timeIntervalSince1970))
+    }
+    
     func updatedFrom(item: MPMediaItem) -> Song {
         return Song(
             id: item.persistentID,

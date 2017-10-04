@@ -63,11 +63,11 @@ class SongScanner {
         var songs: [Song] = []
         
         for item in mediaLibrary.items {
-            os_log("MPMediaItem %u %@", log: logger, type: .debug, item.persistentID, item.title ?? "")
+//            os_log("MPMediaItem %u %@", log: logger, type: .debug, item.persistentID, item.title ?? "")
             
             // Leaving It Behind = 3351173376
             if let song = database.findById(item.persistentID) {
-                os_log("Song %u", log: logger, type: .debug, song.id)
+//                os_log("Song %u", log: logger, type: .debug, song.id)
                 
                 if item.playCount > song.playCount {
                     os_log("Song %u %@ has new play count %i", log: logger, type: .info, item.persistentID, item.title ?? "", item.playCount)

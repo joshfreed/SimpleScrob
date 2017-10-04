@@ -11,6 +11,7 @@ target 'SimpleScrob' do
   target 'SimpleScrobTests' do
     inherit! :search_paths
     # Pods for testing
+    pod 'Nimble'
   end
 
   target 'SimpleScrobUITests' do

@@ -30,6 +30,7 @@ class LastFMService {
     
     func resume() {
         sessionKey = UserDefaults.standard.string(forKey: "sessionKey")
+        api.sessionKey = sessionKey
         
         if let username = UserDefaults.standard.string(forKey: "username") {
             currentUser = User(username: username)
@@ -58,8 +59,22 @@ class LastFMService {
         currentUser = nil
     }
     
-    func submit(songs: [Song], completion: @escaping () -> ()) {
-        completion()
+    func submit(songs: [Song], completion: @escaping ((accepted: [Song], ignored: [Song])) -> ()) {
+        // Guard: must be logged in
+        // Guard: must be connected to the network
+        // Submit in batches of 50
+        // If any batch fails; abort the operation
+        // Response is a list of accepted and ignored songs
+        
+        // Error codes 11, 16 mean we need to try again. Halt the batch submission and print a message "Temporarily unavailable, try again."
+        // Error code 9 means bad session, need to re-auth. Halt the batch and print ""
+        // All other error code mean the request was malformed in some way and should not be retried
+        
+//        completion((accepted: [], ignored: []))
+        
+        api.scrobble(songs: songs) { result in
+            completion((accepted: [], ignored: []))
+        }
     }
 }
 
@@ -80,9 +95,25 @@ struct LastFM {
         let subcriber: Bool
     }
     
+    struct ScrobbleResponse {
+        let accepted: [Scrobble]
+        let ignored: [Scrobble]
+        
+        struct Scrobble {
+            let track: String?
+            let artist: String?
+            let album: String?
+            let albumArtist: String?
+            let ignoredMessage: String?
+            let ignoredCode: Int?
+            let timestamp: Int?
+        }
+    }
+
     class API {
         let engine: RestEngine
-        
+        var sessionKey: String?
+
         init(engine: RestEngine) {
             self.engine = engine
         }
@@ -96,10 +127,54 @@ struct LastFM {
             engine.post(method: "auth.getMobileSession", params: params) { result in
                 switch result {
                 case .success(let json):
+                    self.sessionKey = json["key"] as? String
                     let response = LastFM.GetMobileSessionResponse(
                         name: json["name"] as? String,
                         key: json["key"] as? String,
                         subcriber: json["subscriber"] as? Bool ?? false
+                    )
+                    completion(.success(response))
+                case .failure(let error): completion(.failure(error))
+                }
+            }
+        }
+        
+        func scrobble(songs: [Song], completion: @escaping (Result<ScrobbleResponse>) -> ()) {
+            guard songs.count > 0 && songs.count <= 50 else {
+                return
+            }
+            
+            var params: [String: String] = [:]
+            params["sk"] = sessionKey
+            for (index, song) in songs.enumerated() {
+                params["artist[\(index)]"] = song.artist
+                params["track[\(index)]"] = song.track
+                params["timestamp[\(index)]"] = song.scrobbleTimestamp
+            }
+            
+            engine.post(method: "track.scrobble", params: params) { result in
+                switch result {
+                case .success(let json):
+                    let scrobblesTag = json["scrobbles"] as? [String: Any]
+                    let scrobbles = scrobblesTag?["scrobble"] as? [[String: Any]]
+                    var accepted: [LastFM.ScrobbleResponse.Scrobble] = []
+                    if let scrobbles = scrobbles {
+                        for scrobble in scrobbles {
+                            let s = LastFM.ScrobbleResponse.Scrobble(
+                                track: (scrobble["track"] as? [String: Any])?["#text"] as? String,
+                                artist: nil,
+                                album: nil,
+                                albumArtist: nil,
+                                ignoredMessage: nil,
+                                ignoredCode: nil,
+                                timestamp: nil
+                            )
+                            accepted.append(s)
+                        }
+                    }
+                    let response = LastFM.ScrobbleResponse(
+                        accepted: accepted,
+                        ignored: []
                     )
                     completion(.success(response))
                 case .failure(let error): completion(.failure(error))

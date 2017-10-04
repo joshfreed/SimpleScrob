@@ -38,8 +38,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     var lastFM: LastFMService {
         get {
             if _lastFM == nil {
-                let apiKey = "f27fb27503f9aa73c6f308fd9e3bc7f0"
-                let secret = "f0ec0f81ae932843046997ef89ce60cc"
+                let apiKey = ""
+                let secret = ""
                 let api = LastFM.API(engine: LastFM.RestEngine(apiKey: apiKey, secret: secret))
                 _lastFM = LastFMService(api: api)
             }

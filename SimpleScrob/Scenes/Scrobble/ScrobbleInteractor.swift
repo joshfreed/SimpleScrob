@@ -125,7 +125,10 @@ class ScrobbleInteractor: ScrobbleBusinessLogic, ScrobbleDataStore {
         
         presenter?.presentSubmittingToLastFM()
         
-        lastFM.submit(songs: songsToScrobble) {
+        lastFM.submit(songs: songsToScrobble) { scrobbles in
+            // Only save those that were accepted?
+            // How to handle those ignored?
+            
             self.database.save(self.songsToScrobble)
             self.songsToScrobble = []
             self.presenter?.presentScrobblingComplete()            
