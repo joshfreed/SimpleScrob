@@ -31,6 +31,7 @@ class ScrobbleViewController: UIViewController, ScrobbleDisplayLogic {
     var router: (NSObjectProtocol & ScrobbleRoutingLogic & ScrobbleDataPassing)?
     
     @IBOutlet weak var contentStackView: UIStackView!
+    @IBOutlet weak var footerStackView: UIStackView!
     @IBOutlet weak var statusLabel: UILabel!
     @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
     @IBOutlet weak var signInButton: UIButton!
@@ -39,6 +40,7 @@ class ScrobbleViewController: UIViewController, ScrobbleDisplayLogic {
     @IBOutlet weak var scrobbleCountLabel: UILabel!
     @IBOutlet weak var doneLabel: UILabel!
     @IBOutlet weak var viewScrobblesButton: UIButton!
+    @IBOutlet weak var requestAuthorizationButton: UIButton!
     
     var mediaAuthPrimerView: MediaAuthPrimerView?
     
@@ -91,17 +93,22 @@ class ScrobbleViewController: UIViewController, ScrobbleDisplayLogic {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        NotificationCenter.default.addObserver(self, selector: #selector(applicationDidBecomeActive), name: .UIApplicationDidBecomeActive, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(refresh), name: .UIApplicationWillEnterForeground, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(userSignedIn), name: .signedIn, object: nil)
         
         mediaAuthPrimerView = MediaAuthPrimerView.loadFromNib()
         mediaAuthPrimerView!.delegate = self
         contentStackView.addArrangedSubview(mediaAuthPrimerView!)
         
-//        refresh()
+        requestAuthorizationButton.layer.cornerRadius = 5
+        
+        activityIndicator.startAnimating()
+        
+        refresh()
     }
     
     @objc func applicationDidBecomeActive() {
+        
         refresh()
     }
     
@@ -115,9 +122,14 @@ class ScrobbleViewController: UIViewController, ScrobbleDisplayLogic {
 
     // MARK: Refresh
 
-    //@IBOutlet weak var nameTextField: UITextField!
-
-    func refresh() {
+    @objc func refresh() {
+        resetUI()
+        
+        let request = Scrobble.Refresh.Request()
+        interactor?.refresh(request: request)
+    }
+    
+    private func resetUI() {
         statusLabel.isHidden = true
         activityIndicator.stopAnimating()
         signInButton.isHidden = true
@@ -126,12 +138,12 @@ class ScrobbleViewController: UIViewController, ScrobbleDisplayLogic {
         doneLabel.isHidden = true
         viewScrobblesButton.isHidden = true
         scrobbleCountLabel.isHidden = true
-        
-        let request = Scrobble.Refresh.Request()
-        interactor?.refresh(request: request)
+        requestAuthorizationButton.isHidden = true
     }
     
     func displayAuthorized(viewModel: Scrobble.Refresh.ViewModel) {
+        requestAuthorizationButton.isHidden = true
+        
         if viewModel.firstTime {
             let request = Scrobble.InitializeMusicLibrary.Request()
             interactor?.initializeMusicLibrary(request: request)
@@ -142,11 +154,18 @@ class ScrobbleViewController: UIViewController, ScrobbleDisplayLogic {
     }
     
     func displayAuthorizationPrimer() {
-        mediaAuthPrimerView?.isHidden = false
+        statusLabel.text = "SimpleScrob needs access to your music library to track the songs you play."
+        statusLabel.isHidden = false
+        requestAuthorizationButton.isHidden = false
+//        mediaAuthPrimerView?.isHidden = false
     }
     
     func displayAuthorizationDenied() {
         
+    }
+    
+    @IBAction func tappedRequestAuthorization(_ sender: UIButton) {
+        interactor?.requestMediaLibraryAuthorization()
     }
     
     // MARK: Initialize music library
@@ -223,12 +242,23 @@ class ScrobbleViewController: UIViewController, ScrobbleDisplayLogic {
     // MARK: Sign In
     
     @IBAction func tappedSignIn(_ sender: UIButton) {
+        
     }
     
     // MARK: Sign Out
     
     @IBAction func tappedSignOut(_ sender: UIButton) {
-        
+        let activitySheet = UIAlertController(title: "Sign Out of Last.fm?", message: nil, preferredStyle: .actionSheet)
+        activitySheet.addAction(UIAlertAction(title: "Sign Out", style: .destructive, handler: { action in
+            self.signOut()
+        }))
+        activitySheet.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
+        present(activitySheet, animated: true, completion: nil)
+    }
+    
+    func signOut() {
+        let request = Scrobble.SignOut.Request()
+        interactor?.signOut(request: request)
     }
     
     // MARK: View scrobbles
@@ -239,10 +269,10 @@ class ScrobbleViewController: UIViewController, ScrobbleDisplayLogic {
 
 extension ScrobbleViewController: MediaAuthPrimerViewDelegate {
     func authorizationWasGranted() {
-        refresh()
+//        refresh()
     }
     
     func authorizationWasDenied() {
-        refresh()
+//        refresh()
     }
 }

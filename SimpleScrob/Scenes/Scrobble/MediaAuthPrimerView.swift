@@ -15,7 +15,13 @@ protocol MediaAuthPrimerViewDelegate: class {
 }
 
 class MediaAuthPrimerView: UIView {
+    @IBOutlet weak var okayButton: UIButton!
+    
     weak var delegate: MediaAuthPrimerViewDelegate?
+    
+    override func awakeFromNib() {
+        okayButton.layer.cornerRadius = 5
+    }
     
     @IBAction func tappedOkay(_ sender: UIButton) {
         MPMediaLibrary.requestAuthorization { status in

@@ -16,7 +16,6 @@ enum Scrobble {
     // MARK: Use cases
 
     enum Refresh {
-
         struct Request {
         }
 
@@ -27,7 +26,6 @@ enum Scrobble {
         struct ViewModel {
             var firstTime: Bool
         }
-
     }
     
     enum InitializeMusicLibrary {

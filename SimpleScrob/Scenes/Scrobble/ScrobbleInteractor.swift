@@ -11,13 +11,17 @@
 //
 
 import UIKit
+import MediaPlayer
+import os.log
 
 protocol ScrobbleBusinessLogic {
     func refresh(request: Scrobble.Refresh.Request)
+    func requestMediaLibraryAuthorization()
     func initializeMusicLibrary(request: Scrobble.InitializeMusicLibrary.Request)
     func searchForNewScrobbles(request: Scrobble.SearchForNewScrobbles.Request)
     func submitScrobbles(request: Scrobble.SubmitScrobbles.Request)
     func getCurrentUser()
+    func signOut(request: Scrobble.SignOut.Request)
 }
 
 protocol ScrobbleDataStore {
@@ -26,6 +30,7 @@ protocol ScrobbleDataStore {
 
 class ScrobbleInteractor: ScrobbleBusinessLogic, ScrobbleDataStore {
     var presenter: ScrobblePresentationLogic?
+    let logger = OSLog(subsystem: "com.joshfreed.SimpleScrob", category: "ScrobbleInteractor")
     let mediaLibrary: MediaLibrary
     let lastFM: LastFM
     let database: Database
@@ -46,13 +51,35 @@ class ScrobbleInteractor: ScrobbleBusinessLogic, ScrobbleDataStore {
     // MARK: Refresh
 
     func refresh(request: Scrobble.Refresh.Request) {
+        os_log("refresh", log: logger, type: .debug)
+        
         if mediaLibrary.isAuthorized() {
+            os_log("presentAuthorized", log: logger, type: .debug)
             let response = Scrobble.Refresh.Response(firstTime: !songScanner.isInitialized)
             presenter?.presentAuthorized(response: response)
         } else if mediaLibrary.authorizationDenied() {
+            os_log("presentAuthorizationDenied", log: logger, type: .debug)
             presenter?.presentAuthorizationDenied()
         } else {
+            os_log("presentAuthorizationPrimer", log: logger, type: .debug)
             presenter?.presentAuthorizationPrimer()
+        }
+    }
+    
+    // MARK: Request media library authorization
+    
+    func requestMediaLibraryAuthorization() {
+        MPMediaLibrary.requestAuthorization { status in
+            DispatchQueue.main.sync {
+                switch status {
+                case .authorized:
+                    let response = Scrobble.Refresh.Response(firstTime: !self.songScanner.isInitialized)
+                    self.presenter?.presentAuthorized(response: response)
+                case .denied: self.presenter?.presentAuthorizationDenied()
+                case .notDetermined: break
+                case .restricted: break
+                }
+            }
         }
     }
     
@@ -105,6 +132,15 @@ class ScrobbleInteractor: ScrobbleBusinessLogic, ScrobbleDataStore {
     // MARK: Get current user
     
     func getCurrentUser() {
+        let response = Scrobble.GetCurrentUser.Response(user: lastFM.currentUser)
+        presenter?.presentCurrentUser(response: response)
+    }
+    
+    // MARK: Sign Out
+    
+    func signOut(request: Scrobble.SignOut.Request) {
+        lastFM.signOut()
+        
         let response = Scrobble.GetCurrentUser.Response(user: lastFM.currentUser)
         presenter?.presentCurrentUser(response: response)
     }

@@ -28,6 +28,8 @@
 		53825BCC1F8032CF00566F2C /* ScrobbleInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53825BC61F8032CF00566F2C /* ScrobbleInteractor.swift */; };
 		53825BD11F803F3400566F2C /* Song.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53825BD01F803F3400566F2C /* Song.swift */; };
 		53ACED671F8160F6008BAB39 /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53ACED661F8160F6008BAB39 /* User.swift */; };
+		53B06FEC1F83E8B200FC9AB9 /* SSTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53B06FEB1F83E8B200FC9AB9 /* SSTextField.swift */; };
+		53B06FEF1F83EE7200FC9AB9 /* SSTextField.xib in Resources */ = {isa = PBXBuildFile; fileRef = 535A949D1F83E81100375D4E /* SSTextField.xib */; };
 		53D6AD0C1F826B5E005F6972 /* SignInPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53D6AD061F826B5E005F6972 /* SignInPresenter.swift */; };
 		53D6AD0D1F826B5E005F6972 /* SignInWorker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53D6AD071F826B5E005F6972 /* SignInWorker.swift */; };
 		53D6AD0E1F826B5E005F6972 /* SignInRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53D6AD081F826B5E005F6972 /* SignInRouter.swift */; };
@@ -37,6 +39,7 @@
 		53D6AD1B1F82AD81005F6972 /* JFLib.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 53D6AD1A1F82AD81005F6972 /* JFLib.framework */; };
 		53D6AD1C1F82AD81005F6972 /* JFLib.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 53D6AD1A1F82AD81005F6972 /* JFLib.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		53D9B5761F8156F300C8581B /* Database.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53D9B5751F8156F300C8581B /* Database.swift */; };
+		53FA51051F83F77D00F816B9 /* FloatingLabelTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53FA51041F83F77D00F816B9 /* FloatingLabelTextField.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -53,6 +56,20 @@
 			proxyType = 1;
 			remoteGlobalIDString = 53825B831F7E8CC600566F2C;
 			remoteInfo = SimpleScrob;
+		};
+		53B06FE71F83E88300FC9AB9 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 53B06FE21F83E88300FC9AB9 /* JFLib.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 537D6AC61F575C2C00E0E630;
+			remoteInfo = JFLib;
+		};
+		53B06FE91F83E88300FC9AB9 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 53B06FE21F83E88300FC9AB9 /* JFLib.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 537D6ACF1F575C2C00E0E630;
+			remoteInfo = JFLibTests;
 		};
 /* End PBXContainerItemProxy section */
 
@@ -73,6 +90,7 @@
 /* Begin PBXFileReference section */
 		5316A6501F82BFB5005193EB /* SongScanner.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SongScanner.swift; sourceTree = "<group>"; };
 		5316A6551F82CBD6005193EB /* SimpleScrob.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = SimpleScrob.xcdatamodel; sourceTree = "<group>"; };
+		535A949D1F83E81100375D4E /* SSTextField.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = SSTextField.xib; sourceTree = "<group>"; };
 		53825B841F7E8CC600566F2C /* SimpleScrob.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SimpleScrob.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		53825B871F7E8CC600566F2C /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		53825B8C1F7E8CC600566F2C /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
@@ -98,6 +116,8 @@
 		53825BC61F8032CF00566F2C /* ScrobbleInteractor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = ScrobbleInteractor.swift; path = SimpleScrob/Scenes/Scrobble/ScrobbleInteractor.swift; sourceTree = SOURCE_ROOT; };
 		53825BD01F803F3400566F2C /* Song.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Song.swift; sourceTree = "<group>"; };
 		53ACED661F8160F6008BAB39 /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
+		53B06FE21F83E88300FC9AB9 /* JFLib.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = JFLib.xcodeproj; path = ../JFLib/JFLib.xcodeproj; sourceTree = "<group>"; };
+		53B06FEB1F83E8B200FC9AB9 /* SSTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SSTextField.swift; sourceTree = "<group>"; };
 		53D6AD061F826B5E005F6972 /* SignInPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInPresenter.swift; sourceTree = "<group>"; };
 		53D6AD071F826B5E005F6972 /* SignInWorker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInWorker.swift; sourceTree = "<group>"; };
 		53D6AD081F826B5E005F6972 /* SignInRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInRouter.swift; sourceTree = "<group>"; };
@@ -106,6 +126,7 @@
 		53D6AD0B1F826B5E005F6972 /* SignInInteractor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInInteractor.swift; sourceTree = "<group>"; };
 		53D6AD1A1F82AD81005F6972 /* JFLib.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = JFLib.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		53D9B5751F8156F300C8581B /* Database.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Database.swift; sourceTree = "<group>"; };
+		53FA51041F83F77D00F816B9 /* FloatingLabelTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FloatingLabelTextField.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -134,6 +155,16 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		535A949A1F83E74A00375D4E /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				535A949D1F83E81100375D4E /* SSTextField.xib */,
+				53B06FEB1F83E8B200FC9AB9 /* SSTextField.swift */,
+				53FA51041F83F77D00F816B9 /* FloatingLabelTextField.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
 		53825B7B1F7E8CC600566F2C = {
 			isa = PBXGroup;
 			children = (
@@ -142,6 +173,7 @@
 				53825B9B1F7E8CC700566F2C /* SimpleScrobTests */,
 				53825BA61F7E8CC700566F2C /* SimpleScrobUITests */,
 				53825B851F7E8CC600566F2C /* Products */,
+				53B06FE21F83E88300FC9AB9 /* JFLib.xcodeproj */,
 			);
 			sourceTree = "<group>";
 		};
@@ -158,6 +190,7 @@
 		53825B861F7E8CC600566F2C /* SimpleScrob */ = {
 			isa = PBXGroup;
 			children = (
+				535A949A1F83E74A00375D4E /* Views */,
 				53825BCF1F803F2400566F2C /* Models */,
 				53825BCE1F80330E00566F2C /* Services */,
 				53825BCD1F80330400566F2C /* Utilities */,
@@ -240,6 +273,15 @@
 				53ACED661F8160F6008BAB39 /* User.swift */,
 			);
 			path = Models;
+			sourceTree = "<group>";
+		};
+		53B06FE31F83E88300FC9AB9 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				53B06FE81F83E88300FC9AB9 /* JFLib.framework */,
+				53B06FEA1F83E88300FC9AB9 /* JFLibTests.xctest */,
+			);
+			name = Products;
 			sourceTree = "<group>";
 		};
 		53D6AD051F826B49005F6972 /* SignIn */ = {
@@ -349,6 +391,12 @@
 			mainGroup = 53825B7B1F7E8CC600566F2C;
 			productRefGroup = 53825B851F7E8CC600566F2C /* Products */;
 			projectDirPath = "";
+			projectReferences = (
+				{
+					ProductGroup = 53B06FE31F83E88300FC9AB9 /* Products */;
+					ProjectRef = 53B06FE21F83E88300FC9AB9 /* JFLib.xcodeproj */;
+				},
+			);
 			projectRoot = "";
 			targets = (
 				53825B831F7E8CC600566F2C /* SimpleScrob */,
@@ -358,6 +406,23 @@
 		};
 /* End PBXProject section */
 
+/* Begin PBXReferenceProxy section */
+		53B06FE81F83E88300FC9AB9 /* JFLib.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = JFLib.framework;
+			remoteRef = 53B06FE71F83E88300FC9AB9 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		53B06FEA1F83E88300FC9AB9 /* JFLibTests.xctest */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.cfbundle;
+			path = JFLibTests.xctest;
+			remoteRef = 53B06FE91F83E88300FC9AB9 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+/* End PBXReferenceProxy section */
+
 /* Begin PBXResourcesBuildPhase section */
 		53825B821F7E8CC600566F2C /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
@@ -365,6 +430,7 @@
 			files = (
 				53825BB61F7EE22100566F2C /* MediaAuthPrimerView.xib in Resources */,
 				53825B921F7E8CC600566F2C /* LaunchScreen.storyboard in Resources */,
+				53B06FEF1F83EE7200FC9AB9 /* SSTextField.xib in Resources */,
 				53825B8F1F7E8CC600566F2C /* Assets.xcassets in Resources */,
 				53825B8D1F7E8CC600566F2C /* Main.storyboard in Resources */,
 			);
@@ -395,6 +461,7 @@
 				53D6AD0C1F826B5E005F6972 /* SignInPresenter.swift in Sources */,
 				53825BD11F803F3400566F2C /* Song.swift in Sources */,
 				53D6AD0F1F826B5E005F6972 /* SignInModels.swift in Sources */,
+				53FA51051F83F77D00F816B9 /* FloatingLabelTextField.swift in Sources */,
 				53825BBA1F7EE53E00566F2C /* MediaAuthPrimerView.swift in Sources */,
 				53D6AD111F826B5E005F6972 /* SignInInteractor.swift in Sources */,
 				53825BBE1F802C7700566F2C /* MediaLibrary.swift in Sources */,
@@ -402,6 +469,7 @@
 				53825BCA1F8032CF00566F2C /* ScrobbleModels.swift in Sources */,
 				53D6AD101F826B5E005F6972 /* SignInViewController.swift in Sources */,
 				53825B881F7E8CC600566F2C /* AppDelegate.swift in Sources */,
+				53B06FEC1F83E8B200FC9AB9 /* SSTextField.swift in Sources */,
 				53ACED671F8160F6008BAB39 /* User.swift in Sources */,
 				53D6AD0D1F826B5E005F6972 /* SignInWorker.swift in Sources */,
 				53825BC71F8032CF00566F2C /* ScrobblePresenter.swift in Sources */,

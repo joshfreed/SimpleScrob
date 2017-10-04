@@ -35,7 +35,7 @@
 		<string>UIInterfaceOrientationLandscapeRight</string>
 	</array>
 	<key>NSAppleMusicUsageDescription</key>
-	<string>SimpleScrob needs to track the songs you&apos;ve played.</string>
+	<string>SimpleScrob needs to track the songs you play.</string>
 	<key>UISupportedInterfaceOrientations~ipad</key>
 	<array>
 		<string>UIInterfaceOrientationPortrait</string>
