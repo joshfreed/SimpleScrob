@@ -7,6 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		18C6D8AE86E6F68E803FFABA /* Pods_SimpleScrobUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 05BB0A066C070FA24C96CF74 /* Pods_SimpleScrobUITests.framework */; };
+		50A7359987A4C112D17A5535 /* Pods_SimpleScrobTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FA95CEA86793508E6B319928 /* Pods_SimpleScrobTests.framework */; };
+		53075DEC1F85425800A19189 /* Podfile in Resources */ = {isa = PBXBuildFile; fileRef = 53075DE91F85425800A19189 /* Podfile */; };
 		5316A6511F82BFB5005193EB /* SongScanner.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5316A6501F82BFB5005193EB /* SongScanner.swift */; };
 		5316A6561F82CBD7005193EB /* SimpleScrob.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 5316A6541F82CBD6005193EB /* SimpleScrob.xcdatamodeld */; };
 		53825B881F7E8CC600566F2C /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53825B871F7E8CC600566F2C /* AppDelegate.swift */; };
@@ -40,6 +43,7 @@
 		53D6AD1C1F82AD81005F6972 /* JFLib.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 53D6AD1A1F82AD81005F6972 /* JFLib.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		53D9B5761F8156F300C8581B /* Database.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53D9B5751F8156F300C8581B /* Database.swift */; };
 		53FA51051F83F77D00F816B9 /* FloatingLabelTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53FA51041F83F77D00F816B9 /* FloatingLabelTextField.swift */; };
+		FB72D7E700FB5B3BD29D5C22 /* Pods_SimpleScrob.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B994350F573FE6631D75B10A /* Pods_SimpleScrob.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -88,6 +92,10 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		05BB0A066C070FA24C96CF74 /* Pods_SimpleScrobUITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_SimpleScrobUITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		3E5D420393C7E496D31A4C73 /* Pods-SimpleScrob.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SimpleScrob.release.xcconfig"; path = "Pods/Target Support Files/Pods-SimpleScrob/Pods-SimpleScrob.release.xcconfig"; sourceTree = "<group>"; };
+		4834C745F470D255FABD22BB /* Pods-SimpleScrobTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SimpleScrobTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-SimpleScrobTests/Pods-SimpleScrobTests.release.xcconfig"; sourceTree = "<group>"; };
+		53075DE91F85425800A19189 /* Podfile */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Podfile; sourceTree = "<group>"; };
 		5316A6501F82BFB5005193EB /* SongScanner.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SongScanner.swift; sourceTree = "<group>"; };
 		5316A6551F82CBD6005193EB /* SimpleScrob.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = SimpleScrob.xcdatamodel; sourceTree = "<group>"; };
 		535A949D1F83E81100375D4E /* SSTextField.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = SSTextField.xib; sourceTree = "<group>"; };
@@ -127,6 +135,12 @@
 		53D6AD1A1F82AD81005F6972 /* JFLib.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = JFLib.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		53D9B5751F8156F300C8581B /* Database.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Database.swift; sourceTree = "<group>"; };
 		53FA51041F83F77D00F816B9 /* FloatingLabelTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FloatingLabelTextField.swift; sourceTree = "<group>"; };
+		6D10BF47460D0F29D65529E7 /* Pods-SimpleScrob.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SimpleScrob.debug.xcconfig"; path = "Pods/Target Support Files/Pods-SimpleScrob/Pods-SimpleScrob.debug.xcconfig"; sourceTree = "<group>"; };
+		7D35E46A2C0AB96A2F7067B1 /* Pods-SimpleScrobUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SimpleScrobUITests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-SimpleScrobUITests/Pods-SimpleScrobUITests.debug.xcconfig"; sourceTree = "<group>"; };
+		8AF97AADA51D9B4163C05B2E /* Pods-SimpleScrobTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SimpleScrobTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-SimpleScrobTests/Pods-SimpleScrobTests.debug.xcconfig"; sourceTree = "<group>"; };
+		8C9D817B21A4FCEEB779CFFE /* Pods-SimpleScrobUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SimpleScrobUITests.release.xcconfig"; path = "Pods/Target Support Files/Pods-SimpleScrobUITests/Pods-SimpleScrobUITests.release.xcconfig"; sourceTree = "<group>"; };
+		B994350F573FE6631D75B10A /* Pods_SimpleScrob.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_SimpleScrob.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		FA95CEA86793508E6B319928 /* Pods_SimpleScrobTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_SimpleScrobTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -135,6 +149,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				53D6AD1B1F82AD81005F6972 /* JFLib.framework in Frameworks */,
+				FB72D7E700FB5B3BD29D5C22 /* Pods_SimpleScrob.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -142,6 +157,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				50A7359987A4C112D17A5535 /* Pods_SimpleScrobTests.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -149,6 +165,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				18C6D8AE86E6F68E803FFABA /* Pods_SimpleScrobUITests.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -168,12 +185,15 @@
 		53825B7B1F7E8CC600566F2C = {
 			isa = PBXGroup;
 			children = (
+				53075DE91F85425800A19189 /* Podfile */,
 				53D6AD1A1F82AD81005F6972 /* JFLib.framework */,
 				53825B861F7E8CC600566F2C /* SimpleScrob */,
 				53825B9B1F7E8CC700566F2C /* SimpleScrobTests */,
 				53825BA61F7E8CC700566F2C /* SimpleScrobUITests */,
 				53825B851F7E8CC600566F2C /* Products */,
 				53B06FE21F83E88300FC9AB9 /* JFLib.xcodeproj */,
+				728B77057A57B72B501EECBB /* Pods */,
+				A1FA56A295052E966EAACAA5 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -297,6 +317,29 @@
 			path = SignIn;
 			sourceTree = "<group>";
 		};
+		728B77057A57B72B501EECBB /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				6D10BF47460D0F29D65529E7 /* Pods-SimpleScrob.debug.xcconfig */,
+				3E5D420393C7E496D31A4C73 /* Pods-SimpleScrob.release.xcconfig */,
+				8AF97AADA51D9B4163C05B2E /* Pods-SimpleScrobTests.debug.xcconfig */,
+				4834C745F470D255FABD22BB /* Pods-SimpleScrobTests.release.xcconfig */,
+				7D35E46A2C0AB96A2F7067B1 /* Pods-SimpleScrobUITests.debug.xcconfig */,
+				8C9D817B21A4FCEEB779CFFE /* Pods-SimpleScrobUITests.release.xcconfig */,
+			);
+			name = Pods;
+			sourceTree = "<group>";
+		};
+		A1FA56A295052E966EAACAA5 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				B994350F573FE6631D75B10A /* Pods_SimpleScrob.framework */,
+				FA95CEA86793508E6B319928 /* Pods_SimpleScrobTests.framework */,
+				05BB0A066C070FA24C96CF74 /* Pods_SimpleScrobUITests.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -304,10 +347,13 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 53825BAC1F7E8CC700566F2C /* Build configuration list for PBXNativeTarget "SimpleScrob" */;
 			buildPhases = (
+				AAEE1CBC0B9A04F23AC252AB /* [CP] Check Pods Manifest.lock */,
 				53825B801F7E8CC600566F2C /* Sources */,
 				53825B811F7E8CC600566F2C /* Frameworks */,
 				53825B821F7E8CC600566F2C /* Resources */,
 				53D6AD1D1F82AD82005F6972 /* Embed Frameworks */,
+				0AC90B05616E7874942B2D6F /* [CP] Embed Pods Frameworks */,
+				0C32E4B76EAAE77095D80CE2 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -322,9 +368,12 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 53825BAF1F7E8CC700566F2C /* Build configuration list for PBXNativeTarget "SimpleScrobTests" */;
 			buildPhases = (
+				638ED93FDF6FE92BC230EDB1 /* [CP] Check Pods Manifest.lock */,
 				53825B941F7E8CC700566F2C /* Sources */,
 				53825B951F7E8CC700566F2C /* Frameworks */,
 				53825B961F7E8CC700566F2C /* Resources */,
+				B8BC72ACF413D51FDCF53E02 /* [CP] Embed Pods Frameworks */,
+				C8024E4D49C368ABCDE9D327 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -340,9 +389,12 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 53825BB21F7E8CC700566F2C /* Build configuration list for PBXNativeTarget "SimpleScrobUITests" */;
 			buildPhases = (
+				15F8FE463CB68D42D6BA4368 /* [CP] Check Pods Manifest.lock */,
 				53825B9F1F7E8CC700566F2C /* Sources */,
 				53825BA01F7E8CC700566F2C /* Frameworks */,
 				53825BA11F7E8CC700566F2C /* Resources */,
+				F55D1E58F6759F7B3E559129 /* [CP] Embed Pods Frameworks */,
+				88CFA439D99042F0B34568B5 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -428,6 +480,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				53075DEC1F85425800A19189 /* Podfile in Resources */,
 				53825BB61F7EE22100566F2C /* MediaAuthPrimerView.xib in Resources */,
 				53825B921F7E8CC600566F2C /* LaunchScreen.storyboard in Resources */,
 				53B06FEF1F83EE7200FC9AB9 /* SSTextField.xib in Resources */,
@@ -451,6 +504,156 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		0AC90B05616E7874942B2D6F /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"${SRCROOT}/Pods/Target Support Files/Pods-SimpleScrob/Pods-SimpleScrob-frameworks.sh",
+				"${BUILT_PRODUCTS_DIR}/Alamofire/Alamofire.framework",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputPaths = (
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Alamofire.framework",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-SimpleScrob/Pods-SimpleScrob-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		0C32E4B76EAAE77095D80CE2 /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Copy Pods Resources";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-SimpleScrob/Pods-SimpleScrob-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		15F8FE463CB68D42D6BA4368 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-SimpleScrobUITests-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		638ED93FDF6FE92BC230EDB1 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-SimpleScrobTests-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		88CFA439D99042F0B34568B5 /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Copy Pods Resources";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-SimpleScrobUITests/Pods-SimpleScrobUITests-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		AAEE1CBC0B9A04F23AC252AB /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-SimpleScrob-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		B8BC72ACF413D51FDCF53E02 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-SimpleScrobTests/Pods-SimpleScrobTests-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		C8024E4D49C368ABCDE9D327 /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Copy Pods Resources";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-SimpleScrobTests/Pods-SimpleScrobTests-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		F55D1E58F6759F7B3E559129 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-SimpleScrobUITests/Pods-SimpleScrobUITests-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		53825B801F7E8CC600566F2C /* Sources */ = {
@@ -644,6 +847,7 @@
 		};
 		53825BAD1F7E8CC700566F2C /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 6D10BF47460D0F29D65529E7 /* Pods-SimpleScrob.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
@@ -659,6 +863,7 @@
 		};
 		53825BAE1F7E8CC700566F2C /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 3E5D420393C7E496D31A4C73 /* Pods-SimpleScrob.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
@@ -674,6 +879,7 @@
 		};
 		53825BB01F7E8CC700566F2C /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 8AF97AADA51D9B4163C05B2E /* Pods-SimpleScrobTests.debug.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
@@ -691,6 +897,7 @@
 		};
 		53825BB11F7E8CC700566F2C /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 4834C745F470D255FABD22BB /* Pods-SimpleScrobTests.release.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
@@ -708,6 +915,7 @@
 		};
 		53825BB31F7E8CC700566F2C /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 7D35E46A2C0AB96A2F7067B1 /* Pods-SimpleScrobUITests.debug.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				CODE_SIGN_STYLE = Automatic;
@@ -724,6 +932,7 @@
 		};
 		53825BB41F7E8CC700566F2C /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 8C9D817B21A4FCEEB779CFFE /* Pods-SimpleScrobUITests.release.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				CODE_SIGN_STYLE = Automatic;
