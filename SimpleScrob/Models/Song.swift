@@ -17,4 +17,14 @@ struct Song {
     var track: String?
     var lastPlayedDate: Date?
     var playCount: Int
+    
+    func updatedFrom(item: MPMediaItem) -> Song {
+        return Song(
+            id: item.persistentID,
+            artist: item.artist,
+            track: item.title,
+            lastPlayedDate: item.lastPlayedDate,
+            playCount: item.playCount
+        )
+    }
 }

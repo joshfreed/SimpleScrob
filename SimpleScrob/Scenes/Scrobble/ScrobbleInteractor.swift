@@ -126,9 +126,9 @@ class ScrobbleInteractor: ScrobbleBusinessLogic, ScrobbleDataStore {
         presenter?.presentSubmittingToLastFM()
         
         lastFM.submit(songs: songsToScrobble) {
-//            self.database.save(request.songs)
-            self.presenter?.presentScrobblingComplete()
+            self.database.save(self.songsToScrobble)
             self.songsToScrobble = []
+            self.presenter?.presentScrobblingComplete()            
         }
     }
     

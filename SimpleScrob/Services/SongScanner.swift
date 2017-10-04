@@ -71,7 +71,7 @@ class SongScanner {
                 
                 if item.playCount > song.playCount {
                     os_log("Song %u %@ has new play count %i", log: logger, type: .info, item.persistentID, item.title ?? "", item.playCount)
-                    songs.append(song)
+                    songs.append(song.updatedFrom(item: item))
                 }
             }
         }
