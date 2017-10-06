@@ -10,72 +10,14 @@ import Foundation
 import JFLib
 import Alamofire
 
-extension Notification.Name {
-    static let signedIn = Notification.Name("signedIn")
+protocol LastFMAPI {
+    var sessionKey: String? { get set }
+    func getMobileSession(username: String, password: String, completion: @escaping (LastFM.Result<LastFM.GetMobileSessionResponse>) -> ())
+    func scrobble(songs: [Song], completion: @escaping (LastFM.Result<LastFM.ScrobbleResponse>) -> ())
 }
 
-class LastFMService {
-    let api: LastFM.API
-    
-    private(set) var sessionKey: String?
-    private(set) var currentUser: User?
-    
-    var isLoggedIn: Bool {
-        return currentUser != nil
-    }
-    
-    init(api: LastFM.API) {
-        self.api = api
-    }
-    
-    func resume() {
-        sessionKey = UserDefaults.standard.string(forKey: "sessionKey")
-        api.sessionKey = sessionKey
-        
-        if let username = UserDefaults.standard.string(forKey: "username") {
-            currentUser = User(username: username)
-        }
-    }
-    
-    func signIn(username: String, password: String, completion: @escaping (_ success: Bool) -> ()) {
-        api.getMobileSession(username: username, password: password) { result in
-            switch result {
-            case .success(let session):
-                print("Login success with session key \(String(describing: self.sessionKey))")
-                self.sessionKey = session.key
-                self.currentUser = User(username: username)
-                UserDefaults.standard.set(self.sessionKey, forKey: "sessionKey")
-                UserDefaults.standard.set(username, forKey: "username")
-                NotificationCenter.default.post(name: .signedIn, object: nil)
-                completion(true)
-            case .failure: completion(false)
-            }
-        }
-    }
-    
-    func signOut() {
-        UserDefaults.standard.removeObject(forKey: "username")
-        UserDefaults.standard.removeObject(forKey: "sessionKey")
-        currentUser = nil
-    }
-    
-    func submit(songs: [Song], completion: @escaping ((accepted: [Song], ignored: [Song])) -> ()) {
-        // Guard: must be logged in
-        // Guard: must be connected to the network
-        // Submit in batches of 50
-        // If any batch fails; abort the operation
-        // Response is a list of accepted and ignored songs
-        
-        // Error codes 11, 16 mean we need to try again. Halt the batch submission and print a message "Temporarily unavailable, try again."
-        // Error code 9 means bad session, need to re-auth. Halt the batch and print ""
-        // All other error code mean the request was malformed in some way and should not be retried
-        
-//        completion((accepted: [], ignored: []))
-        
-        api.scrobble(songs: songs) { result in
-            completion((accepted: [], ignored: []))
-        }
-    }
+protocol LastFMAPIEngine {
+    func post(method: String, params: [String: String], completion: @escaping (LastFM.Result<[String: Any]>) -> ())
 }
 
 struct LastFM {
@@ -110,11 +52,11 @@ struct LastFM {
         }
     }
 
-    class API {
-        let engine: RestEngine
+    class API: LastFMAPI {
+        let engine: LastFMAPIEngine
         var sessionKey: String?
 
-        init(engine: RestEngine) {
+        init(engine: LastFMAPIEngine) {
             self.engine = engine
         }
         
@@ -158,6 +100,7 @@ struct LastFM {
                     let scrobblesTag = json["scrobbles"] as? [String: Any]
                     let scrobbles = scrobblesTag?["scrobble"] as? [[String: Any]]
                     var accepted: [LastFM.ScrobbleResponse.Scrobble] = []
+                    var ignored: [LastFM.ScrobbleResponse.Scrobble] = []
                     if let scrobbles = scrobbles {
                         for scrobble in scrobbles {
                             let s = LastFM.ScrobbleResponse.Scrobble(
@@ -174,7 +117,7 @@ struct LastFM {
                     }
                     let response = LastFM.ScrobbleResponse(
                         accepted: accepted,
-                        ignored: []
+                        ignored: ignored
                     )
                     completion(.success(response))
                 case .failure(let error): completion(.failure(error))
@@ -183,7 +126,7 @@ struct LastFM {
         }
     }
     
-    class RestEngine {
+    class RestEngine: LastFMAPIEngine {
         let apiKey: String
         let secret: String
         
@@ -249,5 +192,23 @@ struct LastFM {
             
             return digestData.map { String(format: "%02hhx", $0) }.joined()
         }
+    }
+}
+
+class FakeLastFM: LastFMAPI {
+    var sessionKey: String?
+    
+    func getMobileSession(username: String, password: String, completion: @escaping (LastFM.Result<LastFM.GetMobileSessionResponse>) -> ()) {
+        print("getMobileSession. Username = '\(username)', Password = '\(password)'")
+        completion(.success(LastFM.GetMobileSessionResponse(name: username, key: "123456", subcriber: false)))
+    }
+    
+    func scrobble(songs: [Song], completion: @escaping (LastFM.Result<LastFM.ScrobbleResponse>) -> ()) {
+        print("Scrobbling \(songs.count) songs")
+        for song in songs {
+            print("Scrobbling \(song.track ?? "") by \(song.artist ?? "")")
+        }
+//        completion(.failure(.error(code: 77, message: "YOU SUCK")))
+        completion(.success(LastFM.ScrobbleResponse(accepted: [], ignored: [])))
     }
 }

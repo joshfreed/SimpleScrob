@@ -58,15 +58,15 @@ enum Scrobble {
     
     enum SubmitScrobbles {
         struct Request {
-//            let songs: [Song]
+
         }
         
         struct Response {
-//            let songs: [Song]
+            let error: Error?
         }
         
         struct ViewModel {
-//            let songs: [Song]
+            let error: String?
         }
     }
 

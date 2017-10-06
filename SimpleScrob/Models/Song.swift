@@ -11,7 +11,7 @@ import MediaPlayer
 
 typealias SongID = MPMediaEntityPersistentID
 
-struct Song {
+struct Song: Equatable {
     var id: SongID
     var artist: String?
     var track: String?
@@ -33,5 +33,9 @@ struct Song {
             lastPlayedDate: item.lastPlayedDate,
             playCount: item.playCount
         )
+    }
+    
+    static func ==(lhs: Song, rhs: Song) -> Bool {
+        return lhs.id == rhs.id
     }
 }

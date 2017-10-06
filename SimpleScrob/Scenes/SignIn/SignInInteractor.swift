@@ -22,16 +22,16 @@ protocol SignInDataStore {
 
 class SignInInteractor: SignInBusinessLogic, SignInDataStore {
     var presenter: SignInPresentationLogic?
-    let lastFM: LastFMService
+    let worker: SignInWorker
     
-    init(lastFM: LastFMService) {
-        self.lastFM = lastFM
+    init(worker: SignInWorker) {
+        self.worker = worker
     }
     
     // MARK: Sign In
 
     func signIn(request: SignIn.SignIn.Request) {
-        lastFM.signIn(username: request.username, password: request.password) { success in
+        worker.signIn(username: request.username, password: request.password) { success in
             let response = SignIn.SignIn.Response(success: success)
             self.presenter?.presentSignIn(response: response)
         }

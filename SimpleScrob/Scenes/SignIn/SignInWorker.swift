@@ -13,6 +13,23 @@
 import UIKit
 
 class SignInWorker {
-    func doSomeWork() {
+    let lastFM: LastFMAPI
+    let session: Session
+    
+    init(lastFM: LastFMAPI, session: Session) {
+        self.lastFM = lastFM
+        self.session = session
+    }
+    
+    func signIn(username: String, password: String, completion: @escaping (_ success: Bool) -> ()) {
+        lastFM.getMobileSession(username: username, password: password) { result in
+            switch result {
+            case .success(let session):
+                self.session.start(sessionKey: session.key, username: username)                
+                completion(true)
+            case .failure:
+                completion(false)
+            }
+        }
     }
 }

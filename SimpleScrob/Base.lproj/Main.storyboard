@@ -14,7 +14,7 @@
         <!--Scrobble View Controller-->
         <scene sceneID="tne-QT-ifu">
             <objects>
-                <viewController id="BYZ-38-t0r" customClass="ScrobbleViewController" customModule="SimpleScrob" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="ScrobbleViewController" id="BYZ-38-t0r" customClass="ScrobbleViewController" customModule="SimpleScrob" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="8bC-Xf-vdC">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -53,32 +53,46 @@
                                     <constraint firstItem="hfc-M6-8pG" firstAttribute="top" secondItem="B1k-t4-Za8" secondAttribute="top" id="try-V7-sOW"/>
                                 </constraints>
                             </view>
-                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="16" translatesAutoresizingMaskIntoConstraints="NO" id="egg-91-eEG">
-                                <rect key="frame" x="32" y="295.5" width="311" height="198.5"/>
+                            <stackView opaque="NO" contentMode="scaleToFill" ambiguous="YES" axis="vertical" spacing="16" translatesAutoresizingMaskIntoConstraints="NO" id="egg-91-eEG">
+                                <rect key="frame" x="32" y="250" width="311" height="293"/>
                                 <subviews>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Found 37 new scrobbles." textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="kzF-qV-G4Q">
-                                        <rect key="frame" x="0.0" y="0.0" width="311" height="25.5"/>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" text="Found 37 new scrobbles." textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="kzF-qV-G4Q">
+                                        <rect key="frame" x="0.0" y="0.0" width="311" height="24.5"/>
                                         <fontDescription key="fontDescription" type="system" weight="light" pointSize="21"/>
                                         <nil key="textColor"/>
                                         <nil key="highlightedColor"/>
                                     </label>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Scanning your music library..." textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ajG-Da-Kwb">
-                                        <rect key="frame" x="0.0" y="41.5" width="311" height="25.5"/>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" text="Scanning your music library..." textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ajG-Da-Kwb">
+                                        <rect key="frame" x="0.0" y="40.5" width="311" height="25.5"/>
                                         <fontDescription key="fontDescription" type="system" weight="light" pointSize="21"/>
                                         <nil key="textColor"/>
                                         <nil key="highlightedColor"/>
                                     </label>
-                                    <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" animating="YES" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="fVK-d3-cqL">
-                                        <rect key="frame" x="0.0" y="83" width="311" height="20"/>
+                                    <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" ambiguous="YES" hidesWhenStopped="YES" animating="YES" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="fVK-d3-cqL">
+                                        <rect key="frame" x="0.0" y="82" width="311" height="20"/>
                                     </activityIndicatorView>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Done!" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="jLp-mu-wth">
-                                        <rect key="frame" x="0.0" y="119" width="311" height="25.5"/>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" text="Done!" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="jLp-mu-wth">
+                                        <rect key="frame" x="0.0" y="118" width="311" height="25.5"/>
                                         <fontDescription key="fontDescription" type="system" weight="medium" pointSize="21"/>
                                         <nil key="textColor"/>
                                         <nil key="highlightedColor"/>
                                     </label>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="xDb-ZO-qGZ">
-                                        <rect key="frame" x="0.0" y="160.5" width="311" height="38"/>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" text="Error" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="SSE-H1-ayl">
+                                        <rect key="frame" x="0.0" y="159.5" width="311" height="25.5"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="21"/>
+                                        <color key="textColor" red="1" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <button opaque="NO" contentMode="scaleToFill" ambiguous="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="EH6-D6-GGa">
+                                        <rect key="frame" x="0.0" y="201" width="311" height="38"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="21"/>
+                                        <state key="normal" title="Retry"/>
+                                        <connections>
+                                            <action selector="tappedRetry:" destination="BYZ-38-t0r" eventType="touchUpInside" id="Uqc-rc-Kc3"/>
+                                        </connections>
+                                    </button>
+                                    <button opaque="NO" contentMode="scaleToFill" ambiguous="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="xDb-ZO-qGZ">
+                                        <rect key="frame" x="0.0" y="255" width="311" height="38"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="21"/>
                                         <state key="normal" title="View Scrobbles"/>
                                         <connections>
@@ -88,14 +102,14 @@
                                 </subviews>
                             </stackView>
                             <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Lkb-yK-c3a" userLabel="Top Spacer">
-                                <rect key="frame" x="162.5" y="248" width="50" height="47.5"/>
+                                <rect key="frame" x="162.5" y="248" width="50" height="0.0"/>
                                 <color key="backgroundColor" red="0.1764705882" green="0.92156862750000001" blue="0.21176470589999999" alpha="1" colorSpace="calibratedRGB"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="50" id="xRp-n5-RJy"/>
                                 </constraints>
                             </view>
-                            <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="xoB-Uj-8Xc" userLabel="Bottom Spacer">
-                                <rect key="frame" x="163" y="494" width="50" height="47"/>
+                            <view hidden="YES" contentMode="scaleToFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="xoB-Uj-8Xc" userLabel="Bottom Spacer">
+                                <rect key="frame" x="163" y="539" width="50" height="2"/>
                                 <color key="backgroundColor" red="0.1764705882" green="0.92156862750000001" blue="0.21176470589999999" alpha="1" colorSpace="calibratedRGB"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="50" id="Adq-86-TNa"/>
@@ -132,10 +146,10 @@
                                     <constraint firstAttribute="bottom" secondItem="1FS-5K-QZH" secondAttribute="bottom" id="ypX-VA-va2"/>
                                 </constraints>
                             </view>
-                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="tbj-Uj-IHU">
+                            <stackView opaque="NO" contentMode="scaleToFill" ambiguous="YES" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="tbj-Uj-IHU">
                                 <rect key="frame" x="32" y="541" width="311" height="94"/>
                                 <subviews>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Nfe-JN-Cq2">
+                                    <button opaque="NO" contentMode="scaleToFill" ambiguous="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Nfe-JN-Cq2">
                                         <rect key="frame" x="0.0" y="0.0" width="311" height="38"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="21"/>
                                         <state key="normal" title="Sign In to Last.fm"/>
@@ -197,8 +211,10 @@
                         <outlet property="currentUserLabel" destination="1FS-5K-QZH" id="zzL-nv-M7D"/>
                         <outlet property="currentUserView" destination="EMY-GN-0CG" id="Duu-TI-gw6"/>
                         <outlet property="doneLabel" destination="jLp-mu-wth" id="iPA-0e-oEw"/>
+                        <outlet property="errorLabel" destination="SSE-H1-ayl" id="9Fq-3l-di1"/>
                         <outlet property="footerStackView" destination="tbj-Uj-IHU" id="HHu-cP-RcA"/>
                         <outlet property="requestAuthorizationButton" destination="5xL-WN-wAM" id="i2w-Jg-gLK"/>
+                        <outlet property="retryButton" destination="EH6-D6-GGa" id="mkc-oe-c7N"/>
                         <outlet property="scrobbleCountLabel" destination="kzF-qV-G4Q" id="NOF-8P-o2G"/>
                         <outlet property="signInButton" destination="Nfe-JN-Cq2" id="KkD-Xm-OKv"/>
                         <outlet property="statusLabel" destination="ajG-Da-Kwb" id="Lhx-Y5-TVn"/>

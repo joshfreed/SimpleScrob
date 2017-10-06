@@ -21,7 +21,7 @@ protocol ScrobblePresentationLogic {
     func presentSearchingForNewScrobbles()
     func presentSongsToScrobble(response: Scrobble.SearchForNewScrobbles.Response)
     func presentSubmittingToLastFM()
-    func presentScrobblingComplete()
+    func presentScrobblingComplete(response: Scrobble.SubmitScrobbles.Response)
     func presentCurrentUser(response: Scrobble.GetCurrentUser.Response)
 }
 
@@ -76,8 +76,18 @@ class ScrobblePresenter: ScrobblePresentationLogic {
         viewController?.displaySubmittingToLastFM()
     }
     
-    func presentScrobblingComplete() {
-        viewController?.displayScrobblingComplete()
+    func presentScrobblingComplete(response: Scrobble.SubmitScrobbles.Response) {
+        var errorMsg: String?
+        
+        if let error = response.error {
+            switch error {
+            case LastFM.ErrorType.error(let code, let message): errorMsg = "Error \(code): \(message ?? "Unknown error")"
+            default: errorMsg = "\(error)"
+            }
+        }
+        
+        let viewModel = Scrobble.SubmitScrobbles.ViewModel(error: errorMsg)
+        viewController?.displayScrobblingComplete(viewModel: viewModel)
     }
     
     // MARK: Get current user

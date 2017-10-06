@@ -13,6 +13,68 @@
 import UIKit
 
 class ScrobbleWorker {
-    func doSomeWork() {
+    let api: LastFMAPI
+    let database: Database
+    let session: Session
+    
+    var currentUser: User? {
+        return session.currentUser
+    }
+    
+    var isLoggedIn: Bool {
+        return session.currentUser != nil
+    }
+    
+    init(
+        api: LastFMAPI,
+        database: Database,
+        session: Session
+    ) {
+        self.api = api
+        self.database = database
+        self.session = session
+    }
+
+    func signOut() {
+        session.end()
+    }
+    
+    func submit(songs: [Song], completion: @escaping (Error?) -> ()) {
+        // Guard: must be logged in
+        // Guard: must be connected to the network
+
+        submitBatch(start: 0, songs: songs, completion: completion)        
+    }
+    
+    func submitBatch(start: Int, songs: [Song], completion: @escaping (Error?) -> ()) {
+        guard songs.count > 0 else {
+            return completion(nil)
+        }
+        guard start < songs.count else {
+            return completion(nil)
+        }
+        
+        let end = min(start + 50, songs.count)
+        let batch = Array(songs[start..<end])
+        
+        guard batch.count > 0 else {
+            return completion(nil)
+        }
+        
+        api.scrobble(songs: batch) { result in
+            // Error codes 11, 16 mean we need to try again. Halt the batch submission and print a message "Temporarily unavailable, try again."
+            // Error code 9 means bad session, need to re-auth. Halt the batch and print ""
+            // All other error code mean the request was malformed in some way and should not be retried
+            // All of the above should halt the batch and inform the interactor to present an error.
+            // However, any songs that WERE scrobbled should be remembered - updated in the database; NOT scrobbled again
+            
+            switch result {
+            case .success:
+                self.database.save(batch)
+                self.submitBatch(start: end, songs: songs, completion: completion)
+            case .failure(let error):
+                completion(error)
+            }
+        }
     }
 }

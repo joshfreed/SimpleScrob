@@ -32,7 +32,7 @@ class ScrobbleInteractor: ScrobbleBusinessLogic, ScrobbleDataStore {
     var presenter: ScrobblePresentationLogic?
     let logger = OSLog(subsystem: "com.joshfreed.SimpleScrob", category: "ScrobbleInteractor")
     let mediaLibrary: MediaLibrary
-    let lastFM: LastFMService
+    let worker: ScrobbleWorker
     let database: Database
     let songScanner: SongScanner
 
@@ -40,12 +40,12 @@ class ScrobbleInteractor: ScrobbleBusinessLogic, ScrobbleDataStore {
     
     init(
         mediaLibrary: MediaLibrary,
-        lastFM: LastFMService,
+        worker: ScrobbleWorker,
         database: Database,
         songScanner: SongScanner
     ) {
         self.mediaLibrary = mediaLibrary
-        self.lastFM = lastFM
+        self.worker = worker
         self.database = database
         self.songScanner = songScanner
     }
@@ -94,7 +94,7 @@ class ScrobbleInteractor: ScrobbleBusinessLogic, ScrobbleDataStore {
             self.songScanner.initializeSongDatabase()
             
             DispatchQueue.main.sync {
-                self.presenter?.presentCurrentUser(response: Scrobble.GetCurrentUser.Response(user: self.lastFM.currentUser))
+                self.presenter?.presentCurrentUser(response: Scrobble.GetCurrentUser.Response(user: self.worker.currentUser))
                 self.presenter?.presentLibraryScanComplete(response: Scrobble.InitializeMusicLibrary.Response())
             }
         }
@@ -103,7 +103,7 @@ class ScrobbleInteractor: ScrobbleBusinessLogic, ScrobbleDataStore {
     // MARK: Search for new scrobbles
     
     func searchForNewScrobbles(request: Scrobble.SearchForNewScrobbles.Request) {
-        presenter?.presentCurrentUser(response: Scrobble.GetCurrentUser.Response(user: self.lastFM.currentUser))
+        presenter?.presentCurrentUser(response: Scrobble.GetCurrentUser.Response(user: self.worker.currentUser))
         presenter?.presentSearchingForNewScrobbles()
         
         DispatchQueue.global(qos: .background).async {
@@ -119,29 +119,29 @@ class ScrobbleInteractor: ScrobbleBusinessLogic, ScrobbleDataStore {
     // MARK: Submit scrobbles
     
     func submitScrobbles(request: Scrobble.SubmitScrobbles.Request) {
-        guard songsToScrobble.count > 0, lastFM.isLoggedIn else {
+        guard songsToScrobble.count > 0, worker.isLoggedIn else {
             return
         }
         
         presenter?.presentSubmittingToLastFM()
-        
-        lastFM.submit(songs: songsToScrobble) { scrobbles in
-            // Only save those that were accepted?
-            // How to handle those ignored?
+
+        worker.submit(songs: songsToScrobble) { error in
+            if error == nil {
+                self.songsToScrobble = []
+            }
             
-            self.database.save(self.songsToScrobble)
-            self.songsToScrobble = []
-            self.presenter?.presentScrobblingComplete()            
+            let response = Scrobble.SubmitScrobbles.Response(error: error)
+            self.presenter?.presentScrobblingComplete(response: response)
         }
     }
     
     // MARK: Get current user
     
     func getCurrentUser() {
-        let response = Scrobble.GetCurrentUser.Response(user: lastFM.currentUser)
+        let response = Scrobble.GetCurrentUser.Response(user: worker.currentUser)
         presenter?.presentCurrentUser(response: response)
         
-        if lastFM.currentUser != nil && songsToScrobble.count > 0 {
+        if worker.currentUser != nil && songsToScrobble.count > 0 {
             let request = Scrobble.SubmitScrobbles.Request()
             submitScrobbles(request: request)
         }
@@ -150,9 +150,9 @@ class ScrobbleInteractor: ScrobbleBusinessLogic, ScrobbleDataStore {
     // MARK: Sign Out
     
     func signOut(request: Scrobble.SignOut.Request) {
-        lastFM.signOut()
+        worker.signOut()
         
-        let response = Scrobble.GetCurrentUser.Response(user: lastFM.currentUser)
+        let response = Scrobble.GetCurrentUser.Response(user: worker.currentUser)
         presenter?.presentCurrentUser(response: response)
     }
 }

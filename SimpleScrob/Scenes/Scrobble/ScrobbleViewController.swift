@@ -22,7 +22,7 @@ protocol ScrobbleDisplayLogic: class {
     func displaySongsToScrobble(viewModel: Scrobble.SearchForNewScrobbles.ViewModel)
     func displayNoSongsToScrobble()
     func displaySubmittingToLastFM()
-    func displayScrobblingComplete()
+    func displayScrobblingComplete(viewModel: Scrobble.SubmitScrobbles.ViewModel)
     func displayCurrentUser(viewModel: Scrobble.GetCurrentUser.ViewModel)
 }
 
@@ -41,6 +41,8 @@ class ScrobbleViewController: UIViewController, ScrobbleDisplayLogic {
     @IBOutlet weak var doneLabel: UILabel!
     @IBOutlet weak var viewScrobblesButton: UIButton!
     @IBOutlet weak var requestAuthorizationButton: UIButton!
+    @IBOutlet weak var errorLabel: UILabel!
+    @IBOutlet weak var retryButton: UIButton!
     
     var mediaAuthPrimerView: MediaAuthPrimerView?
     
@@ -63,7 +65,11 @@ class ScrobbleViewController: UIViewController, ScrobbleDisplayLogic {
         let viewController = self
         let interactor = ScrobbleInteractor(
             mediaLibrary: MediaLibrary.shared,
-            lastFM: appDelegate.lastFM,
+            worker: ScrobbleWorker(
+                api: appDelegate.lastFM,
+                database: appDelegate.database,
+                session: appDelegate.session
+            ),
             database: appDelegate.database,
             songScanner: appDelegate.songScanner
         )
@@ -139,6 +145,8 @@ class ScrobbleViewController: UIViewController, ScrobbleDisplayLogic {
         viewScrobblesButton.isHidden = true
         scrobbleCountLabel.isHidden = true
         requestAuthorizationButton.isHidden = true
+        errorLabel.isHidden = true
+        retryButton.isHidden = true
     }
     
     func displayAuthorized(viewModel: Scrobble.Refresh.ViewModel) {
@@ -209,17 +217,31 @@ class ScrobbleViewController: UIViewController, ScrobbleDisplayLogic {
     
     // MARK: Submit scrobbles
     
+    @IBAction func tappedRetry(_ sender: UIButton) {
+        let request = Scrobble.SubmitScrobbles.Request()
+        interactor?.submitScrobbles(request: request)
+    }
+    
     func displaySubmittingToLastFM() {
+        retryButton.isHidden = true
+        errorLabel.isHidden = true
         statusLabel.isHidden = false
         activityIndicator.startAnimating()
         statusLabel.text = "Submitting to last.fm..."
     }
     
-    func displayScrobblingComplete() {
-        statusLabel.isHidden = true
-        doneLabel.isHidden = false
-        viewScrobblesButton.isHidden = false
-        activityIndicator.stopAnimating()
+    func displayScrobblingComplete(viewModel: Scrobble.SubmitScrobbles.ViewModel) {
+        if let error = viewModel.error {
+            activityIndicator.stopAnimating()
+            errorLabel.text = error
+            retryButton.isHidden = false
+            errorLabel.isHidden = false
+        } else {
+            statusLabel.isHidden = true
+            doneLabel.isHidden = false
+            viewScrobblesButton.isHidden = false
+            activityIndicator.stopAnimating()
+        }        
     }
     
     // MARK: Get current user

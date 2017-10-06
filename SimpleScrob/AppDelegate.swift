@@ -34,22 +34,27 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         }
     }
     
-    private var _lastFM: LastFMService?
-    var lastFM: LastFMService {
+    private var _lastFM: LastFMAPI?
+    var lastFM: LastFMAPI {
         get {
             if _lastFM == nil {
-                let apiKey = ""
-                let secret = ""
-                let api = LastFM.API(engine: LastFM.RestEngine(apiKey: apiKey, secret: secret))
-                _lastFM = LastFMService(api: api)
+                #if DEBUG
+                    _lastFM = FakeLastFM()
+                #else
+                    let apiKey = ""
+                    let secret = ""
+                    _lastFM = LastFM.API(engine: LastFM.RestEngine(apiKey: apiKey, secret: secret))
+                #endif
             }
             return _lastFM!
         }
     }
 
+    let session = Session()
+
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
-        
-        lastFM.resume()
+        session.resume()
+        _lastFM!.sessionKey = session.sessionKey
         return true
     }
 
