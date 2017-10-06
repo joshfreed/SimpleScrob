@@ -17,6 +17,16 @@ class SongScanner {
     var isInitialized: Bool {
         return UserDefaults.standard.bool(forKey: "musicLibraryIsInitialized")
     }
+
+    var scrobbleSearchDate: Date? {
+        let timestamp = UserDefaults.standard.double(forKey: "lastScrobbleDate")
+        if timestamp > 0 {
+            let lastScrobbleDate = Date(timeIntervalSince1970: timestamp)
+            return lastScrobbleDate.addingTimeInterval(-86400)
+        } else {
+            return nil
+        }
+    }
     
     init(mediaLibrary: MediaLibrary, database: Database) {
         self.mediaLibrary = mediaLibrary
@@ -53,6 +63,7 @@ class SongScanner {
         database.insert(Array(songs.values))
         
         UserDefaults.standard.set(true, forKey: "musicLibraryIsInitialized")
+        UserDefaults.standard.set(Date().timeIntervalSince1970, forKey: "lastScrobbleDate")
         
         os_log("initializeSongDatabase complete", log: logger, type: .debug)
     }
@@ -62,8 +73,8 @@ class SongScanner {
         
         var songs: [Song] = []
         
-        for item in mediaLibrary.items {
-//            os_log("MPMediaItem %u %@", log: logger, type: .debug, item.persistentID, item.title ?? "")
+        for item in mediaLibrary.items(since: scrobbleSearchDate) {
+            os_log("MPMediaItem %u %@", log: logger, type: .debug, item.persistentID, item.title ?? "")
             
             // Leaving It Behind = 3351173376
             if let song = database.findById(item.persistentID) {
@@ -77,6 +88,8 @@ class SongScanner {
         }
         
         os_log("Found %i songs to scrobble", log: logger, type: .debug, songs.count)
+        
+        UserDefaults.standard.set(Date().timeIntervalSince1970, forKey: "lastScrobbleDate")
         
         return songs
     }

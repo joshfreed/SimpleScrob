@@ -13,12 +13,21 @@ import JFLib
 class MediaLibrary {
     static let shared = MediaLibrary()
     
-//    var isInitialized: Bool {
-//        return true
-//    }
-    
     var items: [MPMediaItem] {
         return MPMediaQuery.songs().items ?? []
+    }
+    
+    func items(since date: Date?) -> [MPMediaItem] {
+        guard let date = date else {
+            return items
+        }
+        
+        return items.filter({
+            guard let lastPlayedDate = $0.lastPlayedDate else {
+                return false
+            }
+            return lastPlayedDate.timeIntervalSince1970 >= date.timeIntervalSince1970
+        })
     }
     
     func isAuthorized() -> Bool {
@@ -46,35 +55,4 @@ class MediaLibrary {
             }
         }
     }
-
-//    func scanMediaLibrary(completion: @escaping () -> ()) {
-//        iterateSongs(each: { item in
-//            
-//        }, complete: {
-//            delay(seconds: 2) {
-//                completion()
-//            }
-//        })
-//    }
-    
-//    func searchForNewScrobbles(completion: @escaping ([Song]) -> ()) {
-//        iterateSongs(each: { item in
-//            
-//        }, complete: {
-//            var songs: [Song] = [
-//                
-//            ]
-//            
-//            delay(seconds: 2) {
-//                completion(songs)
-//            }
-//        })
-//        
-//        // For each item in the music library
-//        // Does it exist in the local database?
-//            // If yes - is the play count higher now?
-//                // If yes - scrobble this song. If the play count is higher by the more than one, scrobble this song multiple times (with different dates between the last scrobble time and last played time)
-//            // If no - insert it into the local database and scrobble it
-//        
-//    }
 }
