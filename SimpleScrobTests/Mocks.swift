@@ -8,14 +8,44 @@
 
 import Foundation
 @testable import SimpleScrob
+import MediaPlayer
 
 class MockMediaLibrary: MediaLibrary {
     override init() {
         super.init()
     }
+    
+    var _items: [MPMediaItem] = []
+    
+    override var items: [MPMediaItem] {
+        return _items
+    }
+    
+    override func items(since date: Date?) -> [MPMediaItem] {
+        return _items
+    }
 }
 
 class MockDatabase: Database {
+    func findById(_ id: PlayedSongId) -> PlayedSong? {
+        return nil
+    }
+    
+    func findUnscrobbledSongs(completion: @escaping ([PlayedSong]) -> ()) {
+        
+    }
+    
+    func insert(playedSongs: [PlayedSong], completion: @escaping () -> ()) {
+        
+    }
+    
+    var saveCallCount = 0
+    var savedSongs: [[PlayedSong]] = []
+    func save(playedSongs: [PlayedSong], completion: @escaping () -> ()) {
+        savedSongs.append(playedSongs)
+        saveCallCount += 1
+    }
+    
     func clear() {
         
     }
@@ -28,17 +58,17 @@ class MockDatabase: Database {
         
     }
     
-    var saveCallCount = 0
-    var savedSongs: [[Song]] = []
+    var old_saveCallCount = 0
+    var old_savedSongs: [[Song]] = []
     func save(_ songs: [Song]) {
-        savedSongs.append(songs)
-        saveCallCount += 1
+        old_savedSongs.append(songs)
+        old_saveCallCount += 1
     }
 }
 
 class MockSongScanner: SongScanner {
     init() {
-        super.init(mediaLibrary: MockMediaLibrary(), database: MockDatabase())
+        super.init(mediaLibrary: MockMediaLibrary(), database: MockDatabase(), dateGenerator: MockDateGenerator())
     }
 }
 
@@ -56,9 +86,9 @@ class MockLastFMApi: LastFMAPI {
     }
     
     var scrobbleCallCount = 0
-    var scrobbleSongs: [[Song]] = []
+    var scrobbleSongs: [[PlayedSong]] = []
     var scrobbleResults: [LastFM.Result<LastFM.ScrobbleResponse>] = []
-    func scrobble(songs: [Song], completion: @escaping (LastFM.Result<LastFM.ScrobbleResponse>) -> ()) {
+    func scrobble(songs: [PlayedSong], completion: @escaping (LastFM.Result<LastFM.ScrobbleResponse>) -> ()) {
         DispatchQueue.global(qos: .background).async {
             self.scrobbleSongs.append(songs)
             let result = self.scrobbleResults[self.scrobbleCallCount]
@@ -71,5 +101,29 @@ class MockLastFMApi: LastFMAPI {
 class MockSession: Session {
     override init() {
         super.init()
+    }
+}
+
+class MockDateGenerator: DateGenerator {
+    private var date = Date()
+    
+    func tick(_ seconds: TimeInterval) {
+        date = date.addingTimeInterval(seconds)
+    }
+    
+    func rewind(_ seconds: TimeInterval) {
+        date = date.addingTimeInterval(-1 * seconds)
+    }
+    
+    func advance(_ seconds: TimeInterval) {
+        date = date.addingTimeInterval(seconds)
+    }
+    
+    override func currentDate() -> Date {
+        return date
+    }
+    
+    override func date(timeIntervalSince1970: TimeInterval) -> Date {
+        return Date(timeIntervalSince1970: timeIntervalSince1970)
     }
 }

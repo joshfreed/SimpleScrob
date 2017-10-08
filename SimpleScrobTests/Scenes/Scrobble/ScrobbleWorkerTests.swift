@@ -21,6 +21,7 @@ class ScrobbleWorkerTests: XCTestCase {
     let api = MockLastFMApi()
     let database = MockDatabase()
     let session = MockSession()
+    let songScanner = MockSongScanner()
 
     // MARK: Test lifecycle
 
@@ -40,7 +41,8 @@ class ScrobbleWorkerTests: XCTestCase {
         sut = ScrobbleWorker(
             api: api,
             database: database,
-            session: session
+            session: session,
+            songScanner: songScanner
         )
     }
 
@@ -51,8 +53,8 @@ class ScrobbleWorkerTests: XCTestCase {
     func testSubmitLessThan50Songs() {
         // Given
         let songs = [
-            Song(id: 1, artist: "Beardfish", track: "Sunrise", lastPlayedDate: nil, playCount: 1),
-            Song(id: 2, artist: "Beardfish", track: "Afternoon Conversation", lastPlayedDate: nil, playCount: 1)
+            PlayedSong(persistentId: 1, date: Date(), artist: "Beardfish", album: "Sleeping in Traffic", track: "Sunrise"),
+            PlayedSong(persistentId: 2, date: Date(), artist: "Beardfish", album: "Sleeping in Traffic", track: "Afternoon Conversation")
         ]
         let response = LastFM.ScrobbleResponse(accepted: [], ignored: [])
         api.scrobbleResults.append(.success(response))
@@ -80,7 +82,7 @@ class ScrobbleWorkerTests: XCTestCase {
         let batch1 = makeSongs(count: 50)
         let batch2 = makeSongs(count: 50)
         let batch3 = makeSongs(count: 26)
-        var allSongs: [Song] = []
+        var allSongs: [PlayedSong] = []
         allSongs.append(contentsOf: batch1)
         allSongs.append(contentsOf: batch2)
         allSongs.append(contentsOf: batch3)
@@ -110,13 +112,16 @@ class ScrobbleWorkerTests: XCTestCase {
         expect(self.database.savedSongs[0]).to(equal(batch1))
         expect(self.database.savedSongs[1]).to(equal(batch2))
         expect(self.database.savedSongs[2]).to(equal(batch3))
+        expect(self.database.savedSongs[0]).to(allPass { $0?.status == .scrobbled })
+        expect(self.database.savedSongs[1]).to(allPass { $0?.status == .scrobbled })
+        expect(self.database.savedSongs[2]).to(allPass { $0?.status == .scrobbled })
     }
     
     func testSubmitHadErrors() {
         let batch1 = makeSongs(count: 50)
         let batch2 = makeSongs(count: 50)
         let batch3 = makeSongs(count: 26)
-        var allSongs: [Song] = []
+        var allSongs: [PlayedSong] = []
         allSongs.append(contentsOf: batch1)
         allSongs.append(contentsOf: batch2)
         allSongs.append(contentsOf: batch3)
@@ -139,16 +144,21 @@ class ScrobbleWorkerTests: XCTestCase {
         expect(completionCalled).to(beTrue())
         expect(completionError).to(matchError(LastFM.ErrorType.error(code: 11, message: "Whatever")))
         expect(self.api.scrobbleCallCount).to(equal(2))
-        expect(self.database.saveCallCount).to(equal(1))
+        expect(self.database.saveCallCount).to(equal(2))
+        expect(self.database.savedSongs[0]).to(equal(batch1))
+        expect(self.database.savedSongs[1]).to(equal(batch2))
+        expect(self.database.savedSongs[0]).to(allPass { $0?.status == .scrobbled })
+        expect(self.database.savedSongs[1]).to(allPass { $0?.status == .failed })        
     }
     
     // MARK: Helper Funcs
     
     private var _songId: SongID = 1
-    func makeSongs(count: Int) -> [Song] {
-        var songs: [Song] = []
+    func makeSongs(count: Int) -> [PlayedSong] {
+        var songs: [PlayedSong] = []
         for _ in 0..<count {
-            songs.append(Song(id: _songId, artist: "Artist\(_songId)", track: "Track\(_songId)", lastPlayedDate: nil, playCount: 1))
+            let playedSong = PlayedSong(persistentId: _songId, date: Date(), artist: "Artist\(_songId)", album: "Album_\(_songId)", track: "Track\(_songId)")
+            songs.append(playedSong)
             _songId += 1
         }
         return songs

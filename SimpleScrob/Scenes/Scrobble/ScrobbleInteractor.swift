@@ -37,6 +37,7 @@ class ScrobbleInteractor: ScrobbleBusinessLogic, ScrobbleDataStore {
     let songScanner: SongScanner
 
     private var songsToScrobble: [Song] = []
+    var playedSongs: [PlayedSong] = []
     
     init(
         mediaLibrary: MediaLibrary,
@@ -105,31 +106,24 @@ class ScrobbleInteractor: ScrobbleBusinessLogic, ScrobbleDataStore {
     func searchForNewScrobbles(request: Scrobble.SearchForNewScrobbles.Request) {
         presenter?.presentCurrentUser(response: Scrobble.GetCurrentUser.Response(user: self.worker.currentUser))
         presenter?.presentSearchingForNewScrobbles()
-        
-        DispatchQueue.global(qos: .background).async {
-            self.songsToScrobble = self.songScanner.searchForNewScrobbles()
-            
-            DispatchQueue.main.sync {
-                let response = Scrobble.SearchForNewScrobbles.Response(songs: self.songsToScrobble)
-                self.presenter?.presentSongsToScrobble(response: response)
-            }
+
+        worker.searchForNewSongsToScrobble() { playedSongs in
+            self.playedSongs = playedSongs
+            let response = Scrobble.SearchForNewScrobbles.Response(songs: self.playedSongs)
+            self.presenter?.presentSongsToScrobble(response: response)
         }
     }
     
     // MARK: Submit scrobbles
     
     func submitScrobbles(request: Scrobble.SubmitScrobbles.Request) {
-        guard songsToScrobble.count > 0, worker.isLoggedIn else {
+        guard playedSongs.count > 0, worker.isLoggedIn else {
             return
         }
         
         presenter?.presentSubmittingToLastFM()
 
-        worker.submit(songs: songsToScrobble) { error in
-            if error == nil {
-                self.songsToScrobble = []
-            }
-            
+        worker.submit(songs: playedSongs) { error in
             let response = Scrobble.SubmitScrobbles.Response(error: error)
             self.presenter?.presentScrobblingComplete(response: response)
         }

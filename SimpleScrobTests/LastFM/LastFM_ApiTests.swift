@@ -47,10 +47,10 @@ class LastFM_ApiTests: XCTestCase {
         cmp.hour = -1
         let calendar = Calendar.current
         let date = Date()
-        let lastPlayedDate = calendar.date(byAdding: cmp, to: date)
+        let lastPlayedDate = calendar.date(byAdding: cmp, to: date)!
         
         let songs = [
-            Song(id: 1, artist: "Beardfish", track: "Sunrise", lastPlayedDate: lastPlayedDate, playCount: 1)
+            PlayedSong(persistentId: 1, date: lastPlayedDate, artist: "Beardfish", album: "Sleeping in Traffic", track: "Sunrise")
         ]
         
         sut.scrobble(songs: songs) { _ in }
@@ -58,6 +58,7 @@ class LastFM_ApiTests: XCTestCase {
         expect(self.engine.post_params).toNot(beNil())
         let params = engine.post_params!
         expect(params["artist[0]"]).to(equal("Beardfish"))
+        expect(params["album[0]"]).to(equal("Sleeping in Traffic"))
         expect(params["track[0]"]).to(equal("Sunrise"))
         expect(params["timestamp[0]"]).to(equal(songs[0].scrobbleTimestamp))
     }
@@ -82,8 +83,8 @@ class LastFM_ApiTests: XCTestCase {
         engine.post_result = .success(json)
         
         var response: LastFM.ScrobbleResponse?
-        let songs = [Song(id: 1, artist: "Beardfish", track: "Sunrise", lastPlayedDate: nil, playCount: 1)]
-        sut.scrobble(songs:songs) { result in
+        let songs = [PlayedSong(persistentId: 1, date: Date(), artist: "Beardfish", album: "Sleeping in Traffic", track: "Sunrise")]
+        sut.scrobble(songs: songs) { result in
             if case let .success(_response) = result {
                 response = _response
             }

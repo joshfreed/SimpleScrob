@@ -12,6 +12,7 @@ import os.log
 class SongScanner {
     let mediaLibrary: MediaLibrary
     let database: Database
+    let dateGenerator: DateGenerator
     let logger = OSLog(subsystem: "com.joshfreed.SimpleScrob", category: "SongScanner")
     
     var isInitialized: Bool {
@@ -19,77 +20,58 @@ class SongScanner {
     }
 
     var scrobbleSearchDate: Date? {
-        let timestamp = UserDefaults.standard.double(forKey: "lastScrobbleDate")
-        if timestamp > 0 {
-            let lastScrobbleDate = Date(timeIntervalSince1970: timestamp)
-            return lastScrobbleDate.addingTimeInterval(-86400)
+        let lastSearchedAt = UserDefaults.standard.double(forKey: "lastScrobbleDate")
+        let initializedAt = UserDefaults.standard.double(forKey: "initlizationDate")
+        if lastSearchedAt > 0 {
+            let date = Date(timeIntervalSince1970: lastSearchedAt)
+            return date.addingTimeInterval(-3600)
+        } else if initializedAt > 0 {
+            return Date(timeIntervalSince1970: initializedAt)
         } else {
             return nil
         }
     }
     
-    init(mediaLibrary: MediaLibrary, database: Database) {
+    init(mediaLibrary: MediaLibrary, database: Database, dateGenerator: DateGenerator) {
         self.mediaLibrary = mediaLibrary
         self.database = database
-        
-//        UserDefaults.standard.removeObject(forKey: "musicLibraryIsInitialized")
+        self.dateGenerator = dateGenerator
+    }
+    
+    func reset() {
+        UserDefaults.standard.removeObject(forKey: "initlizationDate")
+        UserDefaults.standard.removeObject(forKey: "lastScrobbleDate")
+        UserDefaults.standard.removeObject(forKey: "musicLibraryIsInitialized")
     }
     
     func initializeSongDatabase() {
-        os_log("initializeSongDatabase", log: logger, type: .debug)
-        
-        os_log("Clearing the song database", log: logger, type: .debug)
-        
-        database.clear()
-        
-        var songs: [SongID: Song] = [:]
-        
-        for item in mediaLibrary.items {
-            let song = Song(
-                id: item.persistentID,
-                artist: item.artist,
-                track: item.title,
-                lastPlayedDate: item.lastPlayedDate,
-                playCount: item.playCount
-            )
-            
-            songs[song.id] = song
-            
-            os_log("Found song %@ by %@ with play count %i", log: logger, type: .debug, song.track ?? "", song.artist ?? "", song.playCount)
-        }
-        
-        os_log("Inserting %i songs to the database", log: logger, type: .debug, songs.count)
-        
-        database.insert(Array(songs.values))
-        
         UserDefaults.standard.set(true, forKey: "musicLibraryIsInitialized")
-        UserDefaults.standard.set(Date().timeIntervalSince1970, forKey: "lastScrobbleDate")
-        
-        os_log("initializeSongDatabase complete", log: logger, type: .debug)
+        UserDefaults.standard.set(dateGenerator.currentDate().timeIntervalSince1970, forKey: "initlizationDate")
     }
     
-    func searchForNewScrobbles() -> [Song] {
+    func searchForNewScrobbles() -> [PlayedSong] {
         os_log("searchForNewScrobbles", log: logger, type: .debug)
         
-        var songs: [Song] = []
+        var songs: [PlayedSong] = []
+        
+        if let scrobbleSearchDate = scrobbleSearchDate {
+            let df = DateFormatter()
+            df.dateFormat = "yyyy-MM-dd HH:mm:ss"
+            os_log("Last scan date: %@", log: logger, type: .info, df.string(from: scrobbleSearchDate))
+        }
         
         for item in mediaLibrary.items(since: scrobbleSearchDate) {
-            os_log("MPMediaItem %u %@", log: logger, type: .debug, item.persistentID, item.title ?? "")
-            
-            // Leaving It Behind = 3351173376
-            if let song = database.findById(item.persistentID) {
-//                os_log("Song %u", log: logger, type: .debug, song.id)
-                
-                if item.playCount > song.playCount {
-                    os_log("Song %u %@ has new play count %i", log: logger, type: .info, item.persistentID, item.title ?? "", item.playCount)
-                    songs.append(song.updatedFrom(item: item))
-                }
+            if let playedSong = PlayedSong(from: item) {
+                os_log("Song %@ - %u - %@", log: logger, type: .debug, playedSong.track ?? "", playedSong.persistentId, playedSong.date as NSDate)
+                songs.append(playedSong)
+            } else {
+                os_log("Failed to create played song instance for %@ %@", log: logger, type: .error, item.title ?? "", item.artist ?? "")
             }
         }
         
         os_log("Found %i songs to scrobble", log: logger, type: .debug, songs.count)
         
-        UserDefaults.standard.set(Date().timeIntervalSince1970, forKey: "lastScrobbleDate")
+        UserDefaults.standard.set(dateGenerator.currentDate().timeIntervalSince1970, forKey: "lastScrobbleDate")
         
         return songs
     }

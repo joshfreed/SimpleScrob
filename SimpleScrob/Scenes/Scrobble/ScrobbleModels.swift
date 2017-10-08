@@ -48,11 +48,11 @@ enum Scrobble {
         }
         
         struct Response {
-            let songs: [Song]
+            let songs: [PlayedSong]
         }
         
         struct ViewModel {
-            let songs: [Song]
+            let numberOfSongs: Int
         }
     }
     

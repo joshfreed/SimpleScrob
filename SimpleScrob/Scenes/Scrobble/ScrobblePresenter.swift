@@ -66,7 +66,7 @@ class ScrobblePresenter: ScrobblePresentationLogic {
             return
         }
 
-        let viewModel = Scrobble.SearchForNewScrobbles.ViewModel(songs: response.songs)
+        let viewModel = Scrobble.SearchForNewScrobbles.ViewModel(numberOfSongs: response.songs.count)
         viewController?.displaySongsToScrobble(viewModel: viewModel)
     }
     

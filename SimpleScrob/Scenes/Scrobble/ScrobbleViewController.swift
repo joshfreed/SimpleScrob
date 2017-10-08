@@ -68,7 +68,8 @@ class ScrobbleViewController: UIViewController, ScrobbleDisplayLogic {
             worker: ScrobbleWorker(
                 api: appDelegate.lastFM,
                 database: appDelegate.database,
-                session: appDelegate.session
+                session: appDelegate.session,
+                songScanner: appDelegate.songScanner
             ),
             database: appDelegate.database,
             songScanner: appDelegate.songScanner
@@ -203,7 +204,7 @@ class ScrobbleViewController: UIViewController, ScrobbleDisplayLogic {
         statusLabel.isHidden = true
         activityIndicator.stopAnimating()
         
-        let message = viewModel.songs.count == 1 ? "Found 1 new scrobble." : "Found \(viewModel.songs.count) new scrobbles."
+        let message = viewModel.numberOfSongs == 1 ? "Found 1 new scrobble." : "Found \(viewModel.numberOfSongs) new scrobbles."
         scrobbleCountLabel.text = message
         
         let request = Scrobble.SubmitScrobbles.Request()
@@ -248,7 +249,8 @@ class ScrobbleViewController: UIViewController, ScrobbleDisplayLogic {
     
     func displayCurrentUser(viewModel: Scrobble.GetCurrentUser.ViewModel) {
         if let username = viewModel.username {
-            currentUserView.isHidden = false
+//            currentUserView.isHidden = false
+            currentUserView.isHidden = true
             currentUserLabel.text = username
             signInButton.isHidden = true
         } else {

@@ -13,7 +13,7 @@ import Alamofire
 protocol LastFMAPI {
     var sessionKey: String? { get set }
     func getMobileSession(username: String, password: String, completion: @escaping (LastFM.Result<LastFM.GetMobileSessionResponse>) -> ())
-    func scrobble(songs: [Song], completion: @escaping (LastFM.Result<LastFM.ScrobbleResponse>) -> ())
+    func scrobble(songs: [PlayedSong], completion: @escaping (LastFM.Result<LastFM.ScrobbleResponse>) -> ())
 }
 
 protocol LastFMAPIEngine {
@@ -81,7 +81,7 @@ struct LastFM {
             }
         }
         
-        func scrobble(songs: [Song], completion: @escaping (Result<ScrobbleResponse>) -> ()) {
+        func scrobble(songs: [PlayedSong], completion: @escaping (Result<ScrobbleResponse>) -> ()) {
             guard songs.count > 0 && songs.count <= 50 else {
                 return
             }
@@ -90,6 +90,7 @@ struct LastFM {
             params["sk"] = sessionKey
             for (index, song) in songs.enumerated() {
                 params["artist[\(index)]"] = song.artist
+                params["album[\(index)]"] = song.album
                 params["track[\(index)]"] = song.track
                 params["timestamp[\(index)]"] = song.scrobbleTimestamp
             }
@@ -203,12 +204,14 @@ class FakeLastFM: LastFMAPI {
         completion(.success(LastFM.GetMobileSessionResponse(name: username, key: "123456", subcriber: false)))
     }
     
-    func scrobble(songs: [Song], completion: @escaping (LastFM.Result<LastFM.ScrobbleResponse>) -> ()) {
+    func scrobble(songs: [PlayedSong], completion: @escaping (LastFM.Result<LastFM.ScrobbleResponse>) -> ()) {
         print("Scrobbling \(songs.count) songs")
         for song in songs {
             print("Scrobbling \(song.track ?? "") by \(song.artist ?? "")")
         }
 //        completion(.failure(.error(code: 77, message: "YOU SUCK")))
-        completion(.success(LastFM.ScrobbleResponse(accepted: [], ignored: [])))
+        delay(seconds: 1.2) {
+            completion(.success(LastFM.ScrobbleResponse(accepted: [], ignored: [])))
+        }
     }
 }
