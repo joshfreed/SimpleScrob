@@ -21,6 +21,7 @@ protocol Database {
     func findUnscrobbledSongs(completion: @escaping ([PlayedSong]) -> ())
     func insert(playedSongs: [PlayedSong], completion: @escaping () -> ())
     func save(playedSongs: [PlayedSong], completion: @escaping () -> ())
+    func getRecentScrobbles(completion: @escaping ([PlayedSong]) -> ())
 }
 
 class CoreDataDatabase: Database {
@@ -253,7 +254,7 @@ class CoreDataDatabase: Database {
             }
             
             do {
-                try context.save()
+//                try context.save()
             } catch {
                 fatalError("Failure to save context: \(error)")
             }
@@ -275,5 +276,19 @@ class CoreDataDatabase: Database {
             fatalError("Unresolved error \(nserror), \(nserror.userInfo)")
         }
         return managedSongs
+    }
+    
+    func getRecentScrobbles(completion: @escaping ([PlayedSong]) -> ()) {
+        let request: NSFetchRequest<ManagedPlayedSong> = ManagedPlayedSong.fetchRequest()
+        
+        var scrobbles: [ManagedPlayedSong]
+        do {
+            scrobbles = try container.viewContext.fetch(request)
+        } catch {
+            let nserror = error as NSError
+            fatalError("Unresolved error \(nserror), \(nserror.userInfo)")
+        }
+        
+        completion(scrobbles.flatMap(makePlayedSong).sorted(by: { $1.date < $0.date }))
     }
 }

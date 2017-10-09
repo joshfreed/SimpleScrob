@@ -7,6 +7,7 @@ target 'SimpleScrob' do
 
   # Pods for SimpleScrob
   pod 'Alamofire'
+  pod 'DateToolsSwift'
 
   target 'SimpleScrobTests' do
     inherit! :search_paths

@@ -55,4 +55,12 @@ class MediaLibrary {
             }
         }
     }
+    
+    func artwork(for persistentId: MPMediaEntityPersistentID) -> MPMediaItemArtwork? {
+        if let item = items.first(where: { $0.persistentID == persistentId }) {
+            return item.artwork
+        } else {
+            return nil
+        }
+    }
 }

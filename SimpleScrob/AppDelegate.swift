@@ -28,7 +28,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     var songScanner: SongScanner {
         get {
             if _songScanner == nil {
-                _songScanner = SongScanner(mediaLibrary: MediaLibrary.shared, database: database)
+                _songScanner = SongScanner(
+                    mediaLibrary: MediaLibrary.shared,
+                    database: database,
+                    dateGenerator: DateGenerator()
+                )
             }
             return _songScanner!
         }
