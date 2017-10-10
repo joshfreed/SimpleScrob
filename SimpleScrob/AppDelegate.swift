@@ -42,13 +42,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     var lastFM: LastFMAPI {
         get {
             if _lastFM == nil {
-                #if DEBUG
-                    _lastFM = FakeLastFM()
-                #else
-                    let apiKey = ""
-                    let secret = ""
-                    _lastFM = LastFM.API(engine: LastFM.RestEngine(apiKey: apiKey, secret: secret))
-                #endif
+//                _lastFM = FakeLastFM()
+                let apiKey = ""
+                let secret = ""
+                _lastFM = LastFM.API(engine: LastFM.RestEngine(apiKey: apiKey, secret: secret))
             }
             return _lastFM!
         }

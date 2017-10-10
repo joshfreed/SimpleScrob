@@ -12,11 +12,6 @@ import os.log
 import MediaPlayer
 
 protocol Database {
-    func clear()
-    func findById(_ id: SongID) -> Song?
-    func insert(_ songs: [Song])
-    func save(_ songs: [Song])
-    
     func findById(_ id: PlayedSongId) -> PlayedSong?
     func findUnscrobbledSongs(completion: @escaping ([PlayedSong]) -> ())
     func insert(playedSongs: [PlayedSong], completion: @escaping () -> ())
@@ -32,11 +27,7 @@ class CoreDataDatabase: Database {
         self.container = container
 //        clearPlayedSongs()
     }
-    
-    func clear() {
-        deleteAllEntity("Song")
-    }
-    
+
     func clearPlayedSongs() {
         deleteAllEntity("PlayedSong")
     }
@@ -51,29 +42,7 @@ class CoreDataDatabase: Database {
             fatalError("Unresolved error \(nserror), \(nserror.userInfo)")
         }
     }
-    
-    func findById(_ id: SongID) -> Song? {
-        let request: NSFetchRequest<ManagedSong> = ManagedSong.fetchRequest()
-        request.predicate = NSPredicate(format: "persistentID == %@", String(id))
-        
-        var managedSong: ManagedSong?
-        do {
-            let managedSongs: [ManagedSong] = try container.viewContext.fetch(request)
-            if managedSongs.count == 1 {
-                managedSong = managedSongs.first
-            }
-        } catch {
-            let nserror = error as NSError
-            fatalError("Unresolved error \(nserror), \(nserror.userInfo)")
-        }
-        
-        if let managedSong = managedSong {
-            return makeSong(from: managedSong)
-        } else {
-            return nil
-        }
-    }
-    
+
     func findById(_ id: PlayedSongId) -> PlayedSong? {
         let request: NSFetchRequest<ManagedPlayedSong> = ManagedPlayedSong.fetchRequest()
         request.predicate = NSPredicate(format: "persistentId == %@ AND datePlayed == %@", String(id.persistentId), id.date as NSDate)
@@ -83,6 +52,8 @@ class CoreDataDatabase: Database {
             let managedSongs: [ManagedPlayedSong] = try container.viewContext.fetch(request)
             if managedSongs.count == 1 {
                 managedSong = managedSongs.first
+            } else if managedSongs.count > 1 {
+                os_log("Found %i songs with the same id.", log: logger, type: .error, managedSongs.count)
             }
         } catch {
             let nserror = error as NSError
@@ -94,82 +65,6 @@ class CoreDataDatabase: Database {
         } else {
             return nil
         }
-    }
-    
-    private func makeSong(from entity: ManagedSong) -> Song {
-        return Song(
-            id: SongID(entity.persistentID!)!,
-            artist: entity.artist,
-            track: entity.track,
-            lastPlayedDate: entity.lastPlayedDate,
-            playCount: Int(entity.lastPlayCount)
-        )
-    }
-    
-    private func makeEntity(from song: Song, into context: NSManagedObjectContext) -> ManagedSong {
-        let entity = NSEntityDescription.insertNewObject(forEntityName: "Song", into: context) as! ManagedSong
-        entity.persistentID = String(song.id)
-        entity.artist = song.artist
-        entity.track = song.track
-        entity.lastPlayedDate = song.lastPlayedDate
-        entity.lastPlayCount = Int16(song.playCount)
-        return entity
-    }
-    
-    func insert(_ songs: [Song]) {
-        container.performBackgroundTask { context in
-            for song in songs {
-                let _ = self.makeEntity(from: song, into: context)
-            }
-            
-            do {
-                try context.save()
-            } catch {
-                fatalError("Failure to save context: \(error)")
-            }
-        }
-    }
-    
-    func save(_ songs: [Song]) {
-        os_log("Saving %i songs", log: logger, type: .info, songs.count)
-        
-        container.performBackgroundTask { context in
-            let managedSongs = self.fetchManagedSongs(for: songs, in: context)
-            
-            for song in songs {
-                if let managedSong = managedSongs.first(where: { $0.persistentID == String(song.id) }) {
-                    managedSong.artist = song.artist
-                    managedSong.track = song.track
-                    managedSong.lastPlayedDate = song.lastPlayedDate
-                    managedSong.lastPlayCount = Int16(song.playCount)
-                    os_log("Updating song entity %@ %@ %i", log: self.logger, type: .debug, managedSong.persistentID ?? "", managedSong.track ?? "", managedSong.lastPlayCount)
-                }
-            }
-            
-            #if DEBUG
-            #else
-            do {
-                try context.save()
-            } catch {
-                fatalError("Failure to save context: \(error)")
-            }
-            #endif
-            
-            os_log("Save complete", log: self.logger, type: .debug)
-        }
-    }
-    
-    private func fetchManagedSongs(for songs: [Song], in context: NSManagedObjectContext) -> [ManagedSong] {
-        let request: NSFetchRequest<ManagedSong> = ManagedSong.fetchRequest()
-        request.predicate = NSPredicate(format: "persistentID IN %@", songs.map({ String($0.id) }))
-        let managedSongs: [ManagedSong]
-        do {
-            managedSongs = try context.fetch(request)
-        } catch {
-            let nserror = error as NSError
-            fatalError("Unresolved error \(nserror), \(nserror.userInfo)")
-        }
-        return managedSongs
     }
     
     func findUnscrobbledSongs(completion: @escaping ([PlayedSong]) -> ()) {
@@ -243,18 +138,20 @@ class CoreDataDatabase: Database {
             let managedSongs = self.fetchManagedPlayedSongs(for: playedSongs, in: context)
             
             for song in playedSongs {
-                if let managedSong = managedSongs.first(where: { $0.persistentId == String(song.persistentId) }) {
-                    managedSong.artist = song.artist
-                    managedSong.album = song.album
-                    managedSong.track = song.track
-                    managedSong.datePlayed = song.date
+                if let managedSong = managedSongs.first(where: {
+                    $0.persistentId == String(song.persistentId) && $0.datePlayed == song.date
+                }) {
+//                    managedSong.artist = song.artist
+//                    managedSong.album = song.album
+//                    managedSong.track = song.track
+//                    managedSong.datePlayed = song.date
                     managedSong.status = song.status.rawValue
-                    os_log("Updating song entity %@ %@ %i", log: self.logger, type: .debug, managedSong.persistentId ?? "", managedSong.track ?? "", managedSong.status ?? "")
+                    os_log("Updating song entity %@ %@ %@ %@", log: self.logger, type: .debug, managedSong.persistentId ?? "", managedSong.track ?? "", managedSong.status ?? "", (managedSong.datePlayed as? NSDate) ?? NSDate(timeIntervalSince1970: 0))
                 }
             }
             
             do {
-//                try context.save()
+                try context.save()
             } catch {
                 fatalError("Failure to save context: \(error)")
             }

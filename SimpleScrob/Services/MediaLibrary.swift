@@ -13,11 +13,28 @@ import JFLib
 class MediaLibrary {
     static let shared = MediaLibrary()
     
-    var items: [MPMediaItem] {
-        return MPMediaQuery.songs().items ?? []
+    var items: [MediaItem] {
+//        #if DEBUG
+//            return [
+//                MediaItem(persistentId: 5, lastPlayedDate: makeDate(string: "2017-10-09 21:31:00"), artist: "Beardfish", album: "Sleeping in Traffic: Part One", title: "Harmony", artwork: nil),
+//                MediaItem(persistentId: 5, lastPlayedDate: makeDate(string: "2017-10-09 18:50:00"), artist: "Beardfish", album: "Sleeping in Traffic: Part One", title: "The Ungodly Slob", artwork: nil),
+//                MediaItem(persistentId: 4, lastPlayedDate: makeDate(string: "2017-10-09 18:45:00"), artist: "Beardfish", album: "Sleeping in Traffic: Part One", title: "Roulette", artwork: nil),
+//                MediaItem(persistentId: 3, lastPlayedDate: makeDate(string: "2017-10-09 18:40:00"), artist: "Beardfish", album: "Sleeping in Traffic: Part One", title: "And Never Know", artwork: nil),
+//                MediaItem(persistentId: 2, lastPlayedDate: makeDate(string: "2017-10-09 18:30:00"), artist: "Beardfish", album: "Sleeping in Traffic: Part One", title: "Afternoon Conversation", artwork: nil),
+//                MediaItem(persistentId: 1, lastPlayedDate: makeDate(string: "2017-10-09 18:20:00"), artist: "Beardfish", album: "Sleeping in Traffic: Part One", title: "Sunrise", artwork: nil)
+//            ]
+//        #else
+            return (MPMediaQuery.songs().items ?? []).map { MediaItem(item: $0) }
+//        #endif
     }
     
-    func items(since date: Date?) -> [MPMediaItem] {
+    private func makeDate(string: String) -> Date? {
+        let df = DateFormatter()
+        df.dateFormat = "yyyy-MM-dd HH:mm:ss"
+        return df.date(from: string)
+    }
+    
+    func items(since date: Date?) -> [MediaItem] {
         guard let date = date else {
             return items
         }
@@ -57,7 +74,7 @@ class MediaLibrary {
     }
     
     func artwork(for persistentId: MPMediaEntityPersistentID) -> MPMediaItemArtwork? {
-        if let item = items.first(where: { $0.persistentID == persistentId }) {
+        if let item = items.first(where: { $0.persistentId == persistentId }) {
             return item.artwork
         } else {
             return nil

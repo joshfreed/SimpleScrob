@@ -57,15 +57,15 @@ struct PlayedSong: Equatable {
         self.track = track
     }
     
-    init?(from item: MPMediaItem) {
+    init?(from item: MediaItem) {
         guard let date = item.lastPlayedDate else {
             return nil
         }
         
-        persistentId = item.persistentID
+        persistentId = item.persistentId
         self.date = date
         artist = item.artist
-        album = item.albumTitle
+        album = item.album
         track = item.title
         artwork = item.artwork
         id = PlayedSongId(persistentId: persistentId, date: date)

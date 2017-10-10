@@ -36,7 +36,6 @@ class ScrobbleInteractor: ScrobbleBusinessLogic, ScrobbleDataStore {
     let database: Database
     let songScanner: SongScanner
 
-    private var songsToScrobble: [Song] = []
     var playedSongs: [PlayedSong] = []
     
     init(
@@ -135,7 +134,7 @@ class ScrobbleInteractor: ScrobbleBusinessLogic, ScrobbleDataStore {
         let response = Scrobble.GetCurrentUser.Response(user: worker.currentUser)
         presenter?.presentCurrentUser(response: response)
         
-        if worker.currentUser != nil && songsToScrobble.count > 0 {
+        if worker.currentUser != nil && playedSongs.count > 0 {
             let request = Scrobble.SubmitScrobbles.Request()
             submitScrobbles(request: request)
         }

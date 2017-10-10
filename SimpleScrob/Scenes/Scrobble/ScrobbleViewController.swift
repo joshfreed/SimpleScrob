@@ -39,7 +39,7 @@ class ScrobbleViewController: UIViewController, ScrobbleDisplayLogic {
     @IBOutlet weak var currentUserLabel: UILabel!
     @IBOutlet weak var scrobbleCountLabel: UILabel!
     @IBOutlet weak var doneLabel: UILabel!
-    @IBOutlet weak var viewScrobblesButton: UIButton!
+//    @IBOutlet weak var viewScrobblesButton: UIButton!
     @IBOutlet weak var requestAuthorizationButton: UIButton!
     @IBOutlet weak var errorLabel: UILabel!
     @IBOutlet weak var retryButton: UIButton!
@@ -143,7 +143,7 @@ class ScrobbleViewController: UIViewController, ScrobbleDisplayLogic {
         currentUserView.isHidden = true
         mediaAuthPrimerView?.isHidden = true
         doneLabel.isHidden = true
-        viewScrobblesButton.isHidden = true
+//        viewScrobblesButton.isHidden = true
         scrobbleCountLabel.isHidden = true
         requestAuthorizationButton.isHidden = true
         errorLabel.isHidden = true
@@ -238,9 +238,9 @@ class ScrobbleViewController: UIViewController, ScrobbleDisplayLogic {
             retryButton.isHidden = false
             errorLabel.isHidden = false
         } else {
-            statusLabel.isHidden = true
+//            statusLabel.isHidden = true
             doneLabel.isHidden = false
-            viewScrobblesButton.isHidden = false
+//            viewScrobblesButton.isHidden = false
             activityIndicator.stopAnimating()
         }        
     }
@@ -249,8 +249,7 @@ class ScrobbleViewController: UIViewController, ScrobbleDisplayLogic {
     
     func displayCurrentUser(viewModel: Scrobble.GetCurrentUser.ViewModel) {
         if let username = viewModel.username {
-//            currentUserView.isHidden = false
-            currentUserView.isHidden = true
+            currentUserView.isHidden = false
             currentUserLabel.text = username
             signInButton.isHidden = true
         } else {

@@ -69,13 +69,17 @@ struct LastFM {
             engine.post(method: "auth.getMobileSession", params: params) { result in
                 switch result {
                 case .success(let json):
-                    self.sessionKey = json["key"] as? String
-                    let response = LastFM.GetMobileSessionResponse(
-                        name: json["name"] as? String,
-                        key: json["key"] as? String,
-                        subcriber: json["subscriber"] as? Bool ?? false
-                    )
-                    completion(.success(response))
+                    if let session = json["session"] as? [String: Any], let key = session["key"] as? String {
+                        self.sessionKey = key
+                        let response = LastFM.GetMobileSessionResponse(
+                            name: session["name"] as? String,
+                            key: key,
+                            subcriber: session["subscriber"] as? Bool ?? false
+                        )
+                        completion(.success(response))
+                    } else {
+                        completion(.failure(.badResponse))
+                    }
                 case .failure(let error): completion(.failure(error))
                 }
             }
@@ -150,12 +154,12 @@ struct LastFM {
                         
                         if let code = json["error"] as? Int {
                             let error = LastFM.ErrorType.error(code: code, message: json["message"] as? String)
-                            return completion(.failure(error))
+                            completion(.failure(error))
                         } else{
-                            return completion(.success(json))
+                            completion(.success(json))
                         }
                     } else {
-                        return completion(.failure(LastFM.ErrorType.badResponse))
+                        completion(.failure(LastFM.ErrorType.badResponse))
                     }
             }
         }
