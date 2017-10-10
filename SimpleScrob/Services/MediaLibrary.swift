@@ -13,6 +13,10 @@ import JFLib
 class MediaLibrary {
     static let shared = MediaLibrary()
     
+    private var _items: [MPMediaItem] {
+        return MPMediaQuery.songs().items ?? []
+    }
+    
     var items: [MediaItem] {
 //        #if DEBUG
 //            return [
@@ -24,7 +28,7 @@ class MediaLibrary {
 //                MediaItem(persistentId: 1, lastPlayedDate: makeDate(string: "2017-10-09 18:20:00"), artist: "Beardfish", album: "Sleeping in Traffic: Part One", title: "Sunrise", artwork: nil)
 //            ]
 //        #else
-            return (MPMediaQuery.songs().items ?? []).map { MediaItem(item: $0) }
+            return _items.map { MediaItem(item: $0) }
 //        #endif
     }
     
@@ -74,7 +78,7 @@ class MediaLibrary {
     }
     
     func artwork(for persistentId: MPMediaEntityPersistentID) -> MPMediaItemArtwork? {
-        if let item = items.first(where: { $0.persistentId == persistentId }) {
+        if let item = _items.first(where: { $0.persistentID == persistentId }) {
             return item.artwork
         } else {
             return nil

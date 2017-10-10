@@ -17,7 +17,7 @@ protocol ViewScrobblesBusinessLogic {
 }
 
 protocol ViewScrobblesDataStore {
-    //var name: String { get set }
+    
 }
 
 class ViewScrobblesInteractor: ViewScrobblesBusinessLogic, ViewScrobblesDataStore {
@@ -27,9 +27,11 @@ class ViewScrobblesInteractor: ViewScrobblesBusinessLogic, ViewScrobblesDataStor
     // MARK: Get scrobble history
 
     func getScrobbleHistory(request: ViewScrobbles.GetScrobbleHistory.Request) {
-        worker?.getScrobbleHistory { songs in
-            let response = ViewScrobbles.GetScrobbleHistory.Response(scrobbles: songs)
-            self.presenter?.presentSomething(response: response)
+        worker?.getScrobbleHistory { songs in            
+            DispatchQueue.main.async {
+                let response = ViewScrobbles.GetScrobbleHistory.Response(scrobbles: songs)
+                self.presenter?.presentSomething(response: response)
+            }
         }
     }
 }

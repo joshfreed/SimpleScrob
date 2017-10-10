@@ -176,16 +176,18 @@ class CoreDataDatabase: Database {
     }
     
     func getRecentScrobbles(completion: @escaping ([PlayedSong]) -> ()) {
-        let request: NSFetchRequest<ManagedPlayedSong> = ManagedPlayedSong.fetchRequest()
-        
-        var scrobbles: [ManagedPlayedSong]
-        do {
-            scrobbles = try container.viewContext.fetch(request)
-        } catch {
-            let nserror = error as NSError
-            fatalError("Unresolved error \(nserror), \(nserror.userInfo)")
+        container.performBackgroundTask { context in
+            let request: NSFetchRequest<ManagedPlayedSong> = ManagedPlayedSong.fetchRequest()
+            
+            var scrobbles: [ManagedPlayedSong]
+            do {
+                scrobbles = try context.fetch(request)
+            } catch {
+                let nserror = error as NSError
+                fatalError("Unresolved error \(nserror), \(nserror.userInfo)")
+            }
+            
+            completion(scrobbles.flatMap(self.makePlayedSong).sorted(by: { $1.date < $0.date }))
         }
-        
-        completion(scrobbles.flatMap(makePlayedSong).sorted(by: { $1.date < $0.date }))
     }
 }
