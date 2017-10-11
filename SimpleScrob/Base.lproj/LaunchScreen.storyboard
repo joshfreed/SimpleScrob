@@ -19,14 +19,14 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Logo" translatesAutoresizingMaskIntoConstraints="NO" id="eUZ-pb-yef">
-                                <rect key="frame" x="80" y="52" width="215" height="128"/>
+                                <rect key="frame" x="80" y="84" width="215" height="128"/>
                                 <constraints>
                                     <constraint firstAttribute="width" secondItem="eUZ-pb-yef" secondAttribute="height" multiplier="220:131" id="RMf-qw-W6W"/>
                                     <constraint firstAttribute="height" constant="128" id="aKJ-gl-XFN"/>
                                 </constraints>
                             </imageView>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Zde-oM-mNQ" userLabel="Title View">
-                                <rect key="frame" x="42" y="188" width="291" height="60"/>
+                                <rect key="frame" x="42" y="220" width="291" height="60"/>
                                 <subviews>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Scrob" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hju-6q-HpN">
                                         <rect key="frame" x="172" y="0.0" width="119" height="60"/>
@@ -53,17 +53,17 @@
                                 </constraints>
                             </view>
                             <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Une-YW-ase">
-                                <rect key="frame" x="163" y="451.5" width="50" height="183.5"/>
+                                <rect key="frame" x="163" y="467.5" width="50" height="167.5"/>
                                 <color key="backgroundColor" red="0.1764705882" green="0.92156862750000001" blue="0.21176470589999999" alpha="1" colorSpace="calibratedRGB"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="50" id="yJs-Gw-rVi"/>
                                 </constraints>
                             </view>
                             <activityIndicatorView hidden="YES" opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="kvw-ci-pIy">
-                                <rect key="frame" x="178" y="431.5" width="20" height="20"/>
+                                <rect key="frame" x="178" y="447.5" width="20" height="20"/>
                             </activityIndicatorView>
                             <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="TDf-Du-pzD">
-                                <rect key="frame" x="162" y="248" width="50" height="183.5"/>
+                                <rect key="frame" x="162" y="280" width="50" height="167.5"/>
                                 <color key="backgroundColor" red="0.1764705882" green="0.92156862750000001" blue="0.21176470589999999" alpha="1" colorSpace="calibratedRGB"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="50" id="bF2-CA-vVK"/>
@@ -73,7 +73,7 @@
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
                             <constraint firstItem="Une-YW-ase" firstAttribute="top" secondItem="kvw-ci-pIy" secondAttribute="bottom" id="81r-ao-yTv"/>
-                            <constraint firstItem="eUZ-pb-yef" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" constant="32" id="EUf-Ii-uV4"/>
+                            <constraint firstItem="eUZ-pb-yef" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" constant="64" id="EUf-Ii-uV4"/>
                             <constraint firstItem="Une-YW-ase" firstAttribute="height" secondItem="TDf-Du-pzD" secondAttribute="height" id="INb-xn-ue6"/>
                             <constraint firstItem="Zde-oM-mNQ" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="8" id="N6R-Sp-lOq"/>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="bottom" secondItem="Une-YW-ase" secondAttribute="bottom" constant="32" id="Sif-tj-rU2"/>

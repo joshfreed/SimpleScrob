@@ -102,7 +102,25 @@ class ScrobbleViewControllerTests: XCTestCase {
         sut.displayCurrentUser(viewModel: viewModel)
 
         // Then
-        expect(self.sut.currentUserView.isHidden).to(beFalse())
+        expect(self.sut.currentUserButton.isHidden).to(beFalse())
+        expect(self.sut.isLoggedIn).to(beTrue())
+    }
+    
+    func testDisplayCurrentUser_hides_user_on_logout() {
+        // Given
+        loadView()
+        sut.isLoggedIn = true
+        sut.currentUserButton.isHidden = false
+        sut.signInButton.isHidden = true
+        let viewModel = Scrobble.GetCurrentUser.ViewModel(username: nil)
+        
+        // When        
+        sut.displayCurrentUser(viewModel: viewModel)
+        
+        // Then
+        expect(self.sut.currentUserButton.isHidden).to(beTrue())
+        expect(self.sut.isLoggedIn).to(beFalse())
+        expect(self.sut.signInButton.isHidden).to(beFalse())
     }
     
     func testDisplaySubmittingToLastFM() {
@@ -133,9 +151,8 @@ class ScrobbleViewControllerTests: XCTestCase {
         sut.displayScrobblingComplete(viewModel: viewModel)
         
         // Then
-        expect(self.sut.statusLabel.isHidden).to(beTrue())
+        expect(self.sut.statusLabel.isHidden).to(beFalse())
         expect(self.sut.doneLabel.isHidden).to(beFalse())
-        expect(self.sut.viewScrobblesButton.isHidden).to(beFalse())
         expect(self.sut.activityIndicator.isAnimating).to(beFalse())
         expect(self.sut.activityIndicator.isHidden).to(beTrue())
         expect(self.sut.errorLabel.isHidden).to(beTrue())
@@ -154,7 +171,6 @@ class ScrobbleViewControllerTests: XCTestCase {
         expect(self.sut.activityIndicator.isAnimating).to(beFalse())
         expect(self.sut.activityIndicator.isHidden).to(beTrue())
         expect(self.sut.doneLabel.isHidden).to(beTrue())
-        expect(self.sut.viewScrobblesButton.isHidden).to(beTrue())
         expect(self.sut.errorLabel.isHidden).to(beFalse())
         expect(self.sut.retryButton.isHidden).to(beFalse())
         expect(self.sut.errorLabel.text).to(equal(viewModel.error))

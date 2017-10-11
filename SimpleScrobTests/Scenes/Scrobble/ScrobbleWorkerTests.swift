@@ -13,6 +13,7 @@
 @testable import SimpleScrob
 import XCTest
 import Nimble
+import MediaPlayer
 
 class ScrobbleWorkerTests: XCTestCase {
     // MARK: Subject under test
@@ -153,7 +154,7 @@ class ScrobbleWorkerTests: XCTestCase {
     
     // MARK: Helper Funcs
     
-    private var _songId: SongID = 1
+    private var _songId: MPMediaEntityPersistentID = 1
     func makeSongs(count: Int) -> [PlayedSong] {
         var songs: [PlayedSong] = []
         for _ in 0..<count {

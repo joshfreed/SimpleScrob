@@ -15,13 +15,13 @@ class MockMediaLibrary: MediaLibrary {
         super.init()
     }
     
-    var _items: [MPMediaItem] = []
+    var _items: [MediaItem] = []
     
-    override var items: [MPMediaItem] {
+    override var items: [MediaItem] {
         return _items
     }
     
-    override func items(since date: Date?) -> [MPMediaItem] {
+    override func items(since date: Date?) -> [MediaItem] {
         return _items
     }
 }
@@ -44,25 +44,11 @@ class MockDatabase: Database {
     func save(playedSongs: [PlayedSong], completion: @escaping () -> ()) {
         savedSongs.append(playedSongs)
         saveCallCount += 1
+        completion()
     }
-    
-    func clear() {
+
+    func getRecentScrobbles(completion: @escaping ([PlayedSong]) -> ()) {
         
-    }
-    
-    func findById(_ id: SongID) -> Song? {
-        return nil
-    }
-    
-    func insert(_ songs: [Song]) {
-        
-    }
-    
-    var old_saveCallCount = 0
-    var old_savedSongs: [[Song]] = []
-    func save(_ songs: [Song]) {
-        old_savedSongs.append(songs)
-        old_saveCallCount += 1
     }
 }
 

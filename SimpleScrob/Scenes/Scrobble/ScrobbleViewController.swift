@@ -35,14 +35,12 @@ class ScrobbleViewController: UIViewController, ScrobbleDisplayLogic {
     @IBOutlet weak var statusLabel: UILabel!
     @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
     @IBOutlet weak var signInButton: UIButton!
-    @IBOutlet weak var currentUserView: UIView!
-    @IBOutlet weak var currentUserLabel: UILabel!
     @IBOutlet weak var scrobbleCountLabel: UILabel!
     @IBOutlet weak var doneLabel: UILabel!
-//    @IBOutlet weak var viewScrobblesButton: UIButton!
     @IBOutlet weak var requestAuthorizationButton: UIButton!
     @IBOutlet weak var errorLabel: UILabel!
     @IBOutlet weak var retryButton: UIButton!
+    @IBOutlet weak var currentUserButton: UIButton!
     
     var mediaAuthPrimerView: MediaAuthPrimerView?
     
@@ -126,6 +124,14 @@ class ScrobbleViewController: UIViewController, ScrobbleDisplayLogic {
     @IBAction func unwindToScrobble(segue: UIStoryboardSegue) {
         
     }
+    
+    @IBAction func tappedUserButton(_ sender: UIButton) {
+        guard isLoggedIn else {
+            return
+        }
+        
+        displaySignOutConfirmation()
+    }
 
     // MARK: Refresh
 
@@ -140,10 +146,9 @@ class ScrobbleViewController: UIViewController, ScrobbleDisplayLogic {
         statusLabel.isHidden = true
         activityIndicator.stopAnimating()
         signInButton.isHidden = true
-        currentUserView.isHidden = true
+        currentUserButton.isHidden = true
         mediaAuthPrimerView?.isHidden = true
         doneLabel.isHidden = true
-//        viewScrobblesButton.isHidden = true
         scrobbleCountLabel.isHidden = true
         requestAuthorizationButton.isHidden = true
         errorLabel.isHidden = true
@@ -238,22 +243,23 @@ class ScrobbleViewController: UIViewController, ScrobbleDisplayLogic {
             retryButton.isHidden = false
             errorLabel.isHidden = false
         } else {
-//            statusLabel.isHidden = true
             doneLabel.isHidden = false
-//            viewScrobblesButton.isHidden = false
             activityIndicator.stopAnimating()
         }        
     }
     
     // MARK: Get current user
     
+    var isLoggedIn = false
+    
     func displayCurrentUser(viewModel: Scrobble.GetCurrentUser.ViewModel) {
         if let username = viewModel.username {
-            currentUserView.isHidden = false
-            currentUserLabel.text = username
+            isLoggedIn = true
+            currentUserButton.isHidden = false
             signInButton.isHidden = true
         } else {
-            currentUserView.isHidden = true
+            isLoggedIn = false
+            currentUserButton.isHidden = true
             signInButton.isHidden = false
             signInButton.alpha = 0
             UIView.animate(withDuration: 0.25, animations: {
@@ -262,15 +268,9 @@ class ScrobbleViewController: UIViewController, ScrobbleDisplayLogic {
         }
     }
     
-    // MARK: Sign In
-    
-    @IBAction func tappedSignIn(_ sender: UIButton) {
-        
-    }
-    
     // MARK: Sign Out
     
-    @IBAction func tappedSignOut(_ sender: UIButton) {
+    func displaySignOutConfirmation() {
         let activitySheet = UIAlertController(title: "Sign Out of Last.fm?", message: nil, preferredStyle: .actionSheet)
         activitySheet.addAction(UIAlertAction(title: "Sign Out", style: .destructive, handler: { action in
             self.signOut()
@@ -283,11 +283,6 @@ class ScrobbleViewController: UIViewController, ScrobbleDisplayLogic {
         let request = Scrobble.SignOut.Request()
         interactor?.signOut(request: request)
     }
-    
-    // MARK: View scrobbles
-    
-    @IBAction func tappedViewScrobbles(_ sender: UIButton) {
-    }    
 }
 
 extension ScrobbleViewController: MediaAuthPrimerViewDelegate {
