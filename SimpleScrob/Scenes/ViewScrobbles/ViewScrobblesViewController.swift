@@ -69,6 +69,8 @@ class ViewScrobblesViewController: UITableViewController, ViewScrobblesDisplayLo
         super.viewDidLoad()
         
         tableView.tableFooterView = UIView(frame: CGRect.zero)
+        tableView.rowHeight = UITableViewAutomaticDimension
+        tableView.estimatedRowHeight = 80
         
         getScrobbleHistory()
     }
@@ -81,22 +83,36 @@ class ViewScrobblesViewController: UITableViewController, ViewScrobblesDisplayLo
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "SongCell", for: indexPath) as! SongCell
-        
         let scrobble = scrobbles[indexPath.row]
-        cell.artistLabel.text = scrobble.track
-        cell.albumLabel.text = scrobble.artist
-        cell.trackLabel.text = scrobble.album
-        cell.artworkImageView.image = scrobble.artwork?.image(at: CGSize(width: 64, height: 64))
-        cell.datePlayedLabel.text = scrobble.date.shortTimeAgoSinceNow
-        
-        switch scrobble.status {
-        case .scrobbled: cell.statusImageView.image = #imageLiteral(resourceName: "scrobbled")
-        case .failed: cell.statusImageView.image = #imageLiteral(resourceName: "failed")
-        case .notScrobbled: cell.statusImageView.image = #imageLiteral(resourceName: "not-scrobbled")
-        case .ignored: cell.statusImageView.image = #imageLiteral(resourceName: "not-scrobbled")
-        }
-        
+        cell.configure(scrobble: scrobble)        
         return cell
+    }
+    
+    override func tableView(_ tableView: UITableView, willSelectRowAt indexPath: IndexPath) -> IndexPath? {
+        if let cell = tableView.cellForRow(at: indexPath) as? SongCell, cell.expanded {
+            let _ = tableView.delegate?.tableView?(tableView, willDeselectRowAt: indexPath)
+            tableView.deselectRow(at: indexPath, animated: true)
+            tableView.delegate?.tableView?(tableView, didDeselectRowAt: indexPath)
+            return nil
+        } else {
+            return indexPath
+        }
+    }
+    
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        if let cell = tableView.cellForRow(at: indexPath) as? SongCell {
+            cell.expand()
+            tableView.beginUpdates()
+            tableView.endUpdates()
+        }
+    }
+    
+    override func tableView(_ tableView: UITableView, didDeselectRowAt indexPath: IndexPath) {
+        if let cell = tableView.cellForRow(at: indexPath) as? SongCell {
+            cell.collapse()
+            tableView.beginUpdates()
+            tableView.endUpdates()
+        }
     }
     
     // MARK: Get scrobble history

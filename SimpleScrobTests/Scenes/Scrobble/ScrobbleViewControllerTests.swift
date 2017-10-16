@@ -58,8 +58,9 @@ class ScrobbleViewControllerTests: XCTestCase {
             
         }
         
+        var initializeMusicLibraryCalled = false
         func initializeMusicLibrary(request: Scrobble.InitializeMusicLibrary.Request) {
-            
+            initializeMusicLibraryCalled = true
         }
         
         func searchForNewScrobbles(request: Scrobble.SearchForNewScrobbles.Request) {
@@ -93,6 +94,39 @@ class ScrobbleViewControllerTests: XCTestCase {
         XCTAssertTrue(spy.refreshCalled, "viewDidLoad() should ask the interactor to do something")
     }
 
+    func test_displayAuthorizationPrimer() {
+        // When
+        loadView()
+        sut.displayAuthorizationPrimer()
+        
+        // Then
+        expect(self.sut.statusLabel.isHidden).to(beFalse())
+        expect(self.sut.statusLabel.text).to(equal("SimpleScrob needs access to your music library to track the songs you play."))
+        expect(self.sut.requestAuthorizationButton.isHidden).to(beFalse())
+        expect(self.sut.viewScrobblesButton.isHidden).to(beTrue())
+        expect(self.sut.viewScrobblesHitAreaButton.isHidden).to(beTrue())
+    }
+    
+    func test_displayAuthorized_firstTime() {
+        // Given
+        let spy = ScrobbleBusinessLogicSpy()
+        sut.interactor = spy
+        let viewModel = Scrobble.Refresh.ViewModel(firstTime: true)
+        loadView()
+        sut.viewScrobblesButton.isHidden = true
+        sut.viewScrobblesHitAreaButton.isHidden = true
+        
+        // When
+        sut.displayAuthorized(viewModel: viewModel)
+        
+        // Then
+        expect(self.sut.requestAuthorizationButton.isHidden).to(beTrue())
+        expect(self.sut.statusLabel.text).to(equal(""))
+        expect(self.sut.viewScrobblesButton.isHidden).to(beFalse())
+        expect(self.sut.viewScrobblesHitAreaButton.isHidden).to(beFalse())
+        expect(spy.initializeMusicLibraryCalled).to(beTrue())
+    }
+    
     func testDisplayCurrentUser() {
         // Given
         let viewModel = Scrobble.GetCurrentUser.ViewModel(username: "Brad")

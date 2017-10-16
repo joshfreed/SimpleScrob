@@ -48,7 +48,7 @@ class ScrobbleInteractorTests: XCTestCase {
 
     class MockScrobbleWorker: ScrobbleWorker {
         init() {
-            super.init(api: MockLastFMApi(), database: MockDatabase(), session: MockSession(), songScanner: MockSongScanner())
+            super.init(api: MockLastFMApi(), database: MockDatabase(), session: MockSession(), songScanner: MockSongScanner(), batchUpdater: MockSongUpdater())
         }
         
         override func submit(songs: [PlayedSong], completion: @escaping (Error?) -> ()) {

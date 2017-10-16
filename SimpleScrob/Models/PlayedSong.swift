@@ -27,6 +27,7 @@ struct PlayedSong: Equatable {
     let id: PlayedSongId
     let persistentId: MPMediaEntityPersistentID
     var status: ScrobbleStatus = .notScrobbled
+    var reason: LastFM.ErrorType?
     var date: Date
     var artist: String?
     var album: String?
@@ -77,6 +78,11 @@ struct PlayedSong: Equatable {
     
     mutating func scrobbled() {
         status = .scrobbled
+    }
+    
+    mutating func notScrobbled(reason: LastFM.ErrorType) {
+        status = .notScrobbled
+        self.reason = reason
     }
     
     mutating func failedToScrobble(error: LastFM.ErrorType) {

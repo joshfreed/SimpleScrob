@@ -24,6 +24,7 @@ struct LastFM {
     enum ErrorType: Error {
         case error(code: Int, message: String?)
         case badResponse
+        case notSignedIn
     }
 
     enum Result<T> {

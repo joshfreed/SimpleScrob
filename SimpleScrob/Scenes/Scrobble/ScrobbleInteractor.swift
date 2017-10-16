@@ -13,6 +13,7 @@
 import UIKit
 import MediaPlayer
 import os.log
+import JFLib
 
 protocol ScrobbleBusinessLogic {
     func refresh(request: Scrobble.Refresh.Request)
@@ -116,15 +117,17 @@ class ScrobbleInteractor: ScrobbleBusinessLogic, ScrobbleDataStore {
     // MARK: Submit scrobbles
     
     func submitScrobbles(request: Scrobble.SubmitScrobbles.Request) {
-        guard playedSongs.count > 0, worker.isLoggedIn else {
+        guard playedSongs.count > 0 else {
             return
         }
         
         presenter?.presentSubmittingToLastFM()
 
-        worker.submit(songs: playedSongs) { error in
-            let response = Scrobble.SubmitScrobbles.Response(error: error)
-            self.presenter?.presentScrobblingComplete(response: response)
+        delay(seconds: 0.5) {
+            self.worker.submit(songs: self.playedSongs) { error in
+                let response = Scrobble.SubmitScrobbles.Response(error: error)
+                self.presenter?.presentScrobblingComplete(response: response)
+            }
         }
     }
     

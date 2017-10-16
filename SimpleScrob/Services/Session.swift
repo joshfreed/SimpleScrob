@@ -16,6 +16,10 @@ class Session {
     private(set) var sessionKey: String?
     private(set) var currentUser: User?
     
+    var isLoggedIn: Bool {
+        return currentUser != nil
+    }
+    
     func start(sessionKey: String?, username: String) {
         self.sessionKey = sessionKey
         self.currentUser = User(username: username)

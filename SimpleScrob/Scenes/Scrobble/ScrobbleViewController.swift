@@ -41,6 +41,8 @@ class ScrobbleViewController: UIViewController, ScrobbleDisplayLogic {
     @IBOutlet weak var errorLabel: UILabel!
     @IBOutlet weak var retryButton: UIButton!
     @IBOutlet weak var currentUserButton: UIButton!
+    @IBOutlet weak var viewScrobblesButton: UIButton!
+    @IBOutlet weak var viewScrobblesHitAreaButton: UIButton!
     
     var mediaAuthPrimerView: MediaAuthPrimerView?
     
@@ -67,7 +69,8 @@ class ScrobbleViewController: UIViewController, ScrobbleDisplayLogic {
                 api: appDelegate.lastFM,
                 database: appDelegate.database,
                 session: appDelegate.session,
-                songScanner: appDelegate.songScanner
+                songScanner: appDelegate.songScanner,
+                batchUpdater: BatchSongUpdater(database: appDelegate.database)
             ),
             database: appDelegate.database,
             songScanner: appDelegate.songScanner
@@ -157,6 +160,9 @@ class ScrobbleViewController: UIViewController, ScrobbleDisplayLogic {
     
     func displayAuthorized(viewModel: Scrobble.Refresh.ViewModel) {
         requestAuthorizationButton.isHidden = true
+        statusLabel.text = ""
+        viewScrobblesButton.isHidden = false
+        viewScrobblesHitAreaButton.isHidden = false
         
         if viewModel.firstTime {
             let request = Scrobble.InitializeMusicLibrary.Request()
@@ -171,7 +177,8 @@ class ScrobbleViewController: UIViewController, ScrobbleDisplayLogic {
         statusLabel.text = "SimpleScrob needs access to your music library to track the songs you play."
         statusLabel.isHidden = false
         requestAuthorizationButton.isHidden = false
-//        mediaAuthPrimerView?.isHidden = false
+        viewScrobblesButton.isHidden = true
+        viewScrobblesHitAreaButton.isHidden = true
     }
     
     func displayAuthorizationDenied() {
@@ -211,7 +218,7 @@ class ScrobbleViewController: UIViewController, ScrobbleDisplayLogic {
         
         let message = viewModel.numberOfSongs == 1 ? "Found 1 new scrobble." : "Found \(viewModel.numberOfSongs) new scrobbles."
         scrobbleCountLabel.text = message
-        
+//
         let request = Scrobble.SubmitScrobbles.Request()
         interactor?.submitScrobbles(request: request)
     }
@@ -225,7 +232,7 @@ class ScrobbleViewController: UIViewController, ScrobbleDisplayLogic {
     
     @IBAction func tappedRetry(_ sender: UIButton) {
         let request = Scrobble.SubmitScrobbles.Request()
-        interactor?.submitScrobbles(request: request)
+        self.interactor?.submitScrobbles(request: request)
     }
     
     func displaySubmittingToLastFM() {
@@ -276,6 +283,11 @@ class ScrobbleViewController: UIViewController, ScrobbleDisplayLogic {
             self.signOut()
         }))
         activitySheet.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
+        
+        let popoverPresenter = activitySheet.popoverPresentationController
+        popoverPresenter?.sourceView = currentUserButton
+        popoverPresenter?.sourceRect = currentUserButton.bounds
+        
         present(activitySheet, animated: true, completion: nil)
     }
     

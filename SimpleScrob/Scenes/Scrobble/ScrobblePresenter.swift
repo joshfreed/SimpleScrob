@@ -82,6 +82,7 @@ class ScrobblePresenter: ScrobblePresentationLogic {
         if let error = response.error {
             switch error {
             case LastFM.ErrorType.error(let code, let message): errorMsg = "Error \(code): \(message ?? "Unknown error")"
+            case LastFM.ErrorType.notSignedIn: errorMsg = "Not signed in to last.fm"
             default: errorMsg = "\(error)"
             }
         }

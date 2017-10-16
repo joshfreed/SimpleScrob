@@ -18,18 +18,20 @@ class MediaLibrary {
     }
     
     var items: [MediaItem] {
-//        #if DEBUG
-//            return [
-//                MediaItem(persistentId: 5, lastPlayedDate: makeDate(string: "2017-10-09 21:31:00"), artist: "Beardfish", album: "Sleeping in Traffic: Part One", title: "Harmony", artwork: nil),
-//                MediaItem(persistentId: 5, lastPlayedDate: makeDate(string: "2017-10-09 18:50:00"), artist: "Beardfish", album: "Sleeping in Traffic: Part One", title: "The Ungodly Slob", artwork: nil),
-//                MediaItem(persistentId: 4, lastPlayedDate: makeDate(string: "2017-10-09 18:45:00"), artist: "Beardfish", album: "Sleeping in Traffic: Part One", title: "Roulette", artwork: nil),
-//                MediaItem(persistentId: 3, lastPlayedDate: makeDate(string: "2017-10-09 18:40:00"), artist: "Beardfish", album: "Sleeping in Traffic: Part One", title: "And Never Know", artwork: nil),
-//                MediaItem(persistentId: 2, lastPlayedDate: makeDate(string: "2017-10-09 18:30:00"), artist: "Beardfish", album: "Sleeping in Traffic: Part One", title: "Afternoon Conversation", artwork: nil),
-//                MediaItem(persistentId: 1, lastPlayedDate: makeDate(string: "2017-10-09 18:20:00"), artist: "Beardfish", album: "Sleeping in Traffic: Part One", title: "Sunrise", artwork: nil)
-//            ]
-//        #else
+        #if DEBUG
+            return [
+                MediaItem(persistentId: 8, lastPlayedDate: makeDate(string: "2017-10-16 14:18:00"), artist: "Beardfish", album: "Sleeping in Traffic: Part One", title: "Year of the Knife", artwork: nil),
+                MediaItem(persistentId: 7, lastPlayedDate: makeDate(string: "2017-10-11 10:15:00"), artist: "Coheed and Camria", album: "Good Apollo I'm Burning Star IV, Vol 1 - From Fear Through the Eyes of Madness", title: "The Willing Well I: Fuel for the Feeding End", artwork: nil),
+                MediaItem(persistentId: 6, lastPlayedDate: makeDate(string: "2017-10-11 10:10:00"), artist: "Coheed and Camria", album: "Good Apollo I'm Burning Star IV, Vol 1 - From Fear Through the Eyes of Madness", title: "Welcome Home", artwork: nil),
+                MediaItem(persistentId: 5, lastPlayedDate: makeDate(string: "2017-10-09 18:50:00"), artist: "Beardfish", album: "Sleeping in Traffic: Part One", title: "The Ungodly Slob", artwork: nil),
+                MediaItem(persistentId: 4, lastPlayedDate: makeDate(string: "2017-10-09 18:45:00"), artist: "Beardfish", album: "Sleeping in Traffic: Part One", title: "Roulette", artwork: nil),
+                MediaItem(persistentId: 3, lastPlayedDate: makeDate(string: "2017-10-09 18:40:00"), artist: "Beardfish", album: "Sleeping in Traffic: Part One", title: "And Never Know", artwork: nil),
+                MediaItem(persistentId: 2, lastPlayedDate: makeDate(string: "2017-10-09 18:30:00"), artist: "Beardfish", album: "Sleeping in Traffic: Part One", title: "Afternoon Conversation", artwork: nil),
+                MediaItem(persistentId: 1, lastPlayedDate: makeDate(string: "2017-10-09 18:20:00"), artist: "Beardfish", album: "Sleeping in Traffic: Part One", title: "Sunrise", artwork: nil)
+            ]
+        #else
             return _items.map { MediaItem(item: $0) }
-//        #endif
+        #endif
     }
     
     private func makeDate(string: String) -> Date? {

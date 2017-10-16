@@ -17,6 +17,7 @@ class ScrobbleWorker {
     let database: Database
     let session: Session
     let songScanner: SongScanner
+    let batchUpdater: BatchSongUpdater
     
     var currentUser: User? {
         return session.currentUser
@@ -30,12 +31,14 @@ class ScrobbleWorker {
         api: LastFMAPI,
         database: Database,
         session: Session,
-        songScanner: SongScanner
+        songScanner: SongScanner,
+        batchUpdater: BatchSongUpdater
     ) {
         self.api = api
         self.database = database
         self.session = session
         self.songScanner = songScanner
+        self.batchUpdater = batchUpdater
     }
 
     func signOut() {
@@ -48,11 +51,6 @@ class ScrobbleWorker {
 
             print("Found \(playedSongs.count) played songs")
             
-            // Remove any that are already in the database
-//            let filteredSongs = playedSongs.filter({ self.database.findById($0.id) != nil })
-            
-//            print("Found \(filteredSongs.count) songs to insert")
-            
             self.database.insert(playedSongs: playedSongs) {
                 self.database.findUnscrobbledSongs { playedSongs in
                     DispatchQueue.main.async {
@@ -64,8 +62,11 @@ class ScrobbleWorker {
     }
 
     func submit(songs: [PlayedSong], completion: @escaping (Error?) -> ()) {
-        // Guard: must be logged in
-        // Guard: must be connected to the network
+        guard session.isLoggedIn else {
+            batchUpdater.markNotScrobbled(songs: songs, with: .notSignedIn)
+            return completion(LastFM.ErrorType.notSignedIn)
+        }
+        // todo : must be connected to the network
 
         submitBatch(start: 0, songs: songs, completion: completion)        
     }
@@ -79,7 +80,7 @@ class ScrobbleWorker {
         }
         
         let end = min(start + 50, songs.count)
-        var batch = Array(songs[start..<end])
+        let batch = Array(songs[start..<end])
         
         guard batch.count > 0 else {
             return completion(nil)
@@ -94,18 +95,44 @@ class ScrobbleWorker {
             
             switch result {
             case .success:
-                for i in 0..<batch.count {
-                    batch[i].scrobbled()
-                }
-                self.database.save(playedSongs: batch) {}
+                self.batchUpdater.markScrobbled(songs: batch)
                 self.submitBatch(start: end, songs: songs, completion: completion)
             case .failure(let error):
-                for i in 0..<batch.count {
-                    batch[i].failedToScrobble(error: error)                    
-                }
-                self.database.save(playedSongs: batch) {}
+                self.batchUpdater.markFailed(songs: batch, with: error)
                 completion(error)
             }
         }
+    }
+}
+
+class BatchSongUpdater {
+    let database: Database
+    
+    init(database: Database) {
+        self.database = database
+    }
+    
+    func markScrobbled(songs: [PlayedSong]) {
+        var _songs = songs
+        for i in 0..<_songs.count {
+            _songs[i].scrobbled()
+        }
+        database.save(playedSongs: _songs) {}
+    }
+    
+    func markFailed(songs: [PlayedSong], with error: LastFM.ErrorType) {
+        var _songs = songs
+        for i in 0..<_songs.count {
+            _songs[i].failedToScrobble(error: error)
+        }
+        database.save(playedSongs: _songs) {}
+    }
+    
+    func markNotScrobbled(songs: [PlayedSong], with error: LastFM.ErrorType) {
+        var _songs = songs
+        for i in 0..<_songs.count {
+            _songs[i].notScrobbled(reason: error)
+        }
+        database.save(playedSongs: _songs) {}
     }
 }
