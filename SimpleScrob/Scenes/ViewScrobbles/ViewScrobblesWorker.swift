@@ -12,20 +12,28 @@
 
 import UIKit
 
+protocol ViewScrobblesArtworkFetcher {
+    func artwork(for persistentId: MediaEntityPersistentId) -> MediaItemArtwork?
+}
+
+protocol GetRecentScrobbles {
+    func getRecentScrobbles(completion: @escaping ([PlayedSong]) -> ())
+}
+
 class ViewScrobblesWorker {
-    let database: Database
-    let mediaLibrary: MediaLibrary
+    let database: GetRecentScrobbles
+    let artworkService: ViewScrobblesArtworkFetcher
     
-    init(database: Database, mediaLibrary: MediaLibrary) {
+    init(database: GetRecentScrobbles, artworkService: ViewScrobblesArtworkFetcher) {
         self.database = database
-        self.mediaLibrary = mediaLibrary
+        self.artworkService = artworkService
     }
     
     func getScrobbleHistory(completion: @escaping ([PlayedSong]) -> ()) {
         database.getRecentScrobbles { scrobbles in
             var scrobblesWithArtwork = scrobbles
             for i in 0..<scrobblesWithArtwork.count {
-                scrobblesWithArtwork[i].artwork = self.mediaLibrary.artwork(for: scrobblesWithArtwork[i].persistentId)
+                scrobblesWithArtwork[i].artwork = self.artworkService.artwork(for: scrobblesWithArtwork[i].persistentId)
             }
             completion(scrobblesWithArtwork)
         }

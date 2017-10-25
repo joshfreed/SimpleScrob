@@ -11,7 +11,6 @@
 //
 
 import UIKit
-import MediaPlayer
 import os.log
 import JFLib
 
@@ -34,7 +33,6 @@ class ScrobbleInteractor: ScrobbleBusinessLogic, ScrobbleDataStore {
     let logger = OSLog(subsystem: "com.joshfreed.SimpleScrob", category: "ScrobbleInteractor")
     let mediaLibrary: MediaLibrary
     let worker: ScrobbleWorker
-    let database: Database
     let songScanner: SongScanner
 
     var playedSongs: [PlayedSong] = []
@@ -42,20 +40,14 @@ class ScrobbleInteractor: ScrobbleBusinessLogic, ScrobbleDataStore {
     init(
         mediaLibrary: MediaLibrary,
         worker: ScrobbleWorker,
-        database: Database,
         songScanner: SongScanner
     ) {
         self.mediaLibrary = mediaLibrary
         self.worker = worker
-        self.database = database
         self.songScanner = songScanner
     }
     
-    // MARK: Refresh
-
-    func refresh(request: Scrobble.Refresh.Request) {
-        os_log("refresh", log: logger, type: .debug)
-        
+    private func presentMainScreen() {
         if mediaLibrary.isAuthorized() {
             os_log("presentAuthorized", log: logger, type: .debug)
             let response = Scrobble.Refresh.Response(firstTime: !songScanner.isInitialized)
@@ -69,21 +61,20 @@ class ScrobbleInteractor: ScrobbleBusinessLogic, ScrobbleDataStore {
         }
     }
     
+    // MARK: Refresh
+
+    func refresh(request: Scrobble.Refresh.Request) {
+        os_log("refresh", log: logger, type: .debug)
+        
+        presentMainScreen()
+    }
+    
     // MARK: Request media library authorization
     
     func requestMediaLibraryAuthorization() {
-        MPMediaLibrary.requestAuthorization { status in
-            DispatchQueue.main.sync {
-                switch status {
-                case .authorized:
-                    let response = Scrobble.Refresh.Response(firstTime: !self.songScanner.isInitialized)
-                    self.presenter?.presentAuthorized(response: response)
-                case .denied: self.presenter?.presentAuthorizationDenied()
-                case .notDetermined: break
-                case .restricted: break
-                }
-            }
-        }
+        mediaLibrary.requestAuthorization {
+            self.presentMainScreen()
+        }        
     }
     
     // MARK: Initialize music library

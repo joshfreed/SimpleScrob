@@ -39,7 +39,6 @@ class ScrobbleInteractorTests: XCTestCase {
         sut = ScrobbleInteractor(
             mediaLibrary: mediaLibrary,
             worker: worker,
-            database: database,
             songScanner: songScanner
         )
     }

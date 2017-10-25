@@ -10,7 +10,10 @@ import Foundation
 import MediaPlayer
 import JFLib
 
-class MediaLibrary {
+typealias MediaEntityPersistentId = MPMediaEntityPersistentID
+typealias MediaItemArtwork = MPMediaItemArtwork
+
+class MediaLibrary: ViewScrobblesArtworkFetcher {
     static let shared = MediaLibrary()
     
     private var _items: [MPMediaItem] {
@@ -62,24 +65,15 @@ class MediaLibrary {
         return MPMediaLibrary.authorizationStatus() == .denied
     }
     
-    func iterateSongs(each: @escaping (MPMediaItem) -> (), complete: @escaping () -> ()) {
-        DispatchQueue.global(qos: .background).async {
-            if let items = MPMediaQuery.songs().items {
-                print(items.count)
-                
-                for item in items {
-                    print("\(item.persistentID), \(item.title), \(item.playCount)")
-                    each(item)
-                }
-                
-                DispatchQueue.main.sync {
-                    complete()
-                }
+    func requestAuthorization(complete: @escaping () -> ()) {
+        MPMediaLibrary.requestAuthorization { _ in
+            DispatchQueue.main.sync {
+                complete()
             }
         }
     }
     
-    func artwork(for persistentId: MPMediaEntityPersistentID) -> MPMediaItemArtwork? {
+    func artwork(for persistentId: MediaEntityPersistentId) -> MediaItemArtwork? {
         if let item = _items.first(where: { $0.persistentID == persistentId }) {
             return item.artwork
         } else {

@@ -24,7 +24,7 @@ class ScrobbleWorker {
     }
     
     var isLoggedIn: Bool {
-        return session.currentUser != nil
+        return session.isLoggedIn
     }
     
     init(

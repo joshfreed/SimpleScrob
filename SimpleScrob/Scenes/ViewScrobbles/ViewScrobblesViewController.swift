@@ -14,7 +14,7 @@ import UIKit
 import DateToolsSwift
 
 protocol ViewScrobblesDisplayLogic: class {
-    func displaySomething(viewModel: ViewScrobbles.GetScrobbleHistory.ViewModel)
+    func displayScrobbleHistory(viewModel: ViewScrobbles.GetScrobbleHistory.ViewModel)
 }
 
 class ViewScrobblesViewController: UITableViewController, ViewScrobblesDisplayLogic {
@@ -45,7 +45,7 @@ class ViewScrobblesViewController: UITableViewController, ViewScrobblesDisplayLo
         interactor.presenter = presenter
         interactor.worker = ViewScrobblesWorker(
             database: (UIApplication.shared.delegate as! AppDelegate).database,
-            mediaLibrary: MediaLibrary.shared
+            artworkService: (UIApplication.shared.delegate as! AppDelegate).mediaLibrary
         )
         presenter.viewController = viewController
         router.viewController = viewController
@@ -117,14 +117,14 @@ class ViewScrobblesViewController: UITableViewController, ViewScrobblesDisplayLo
     
     // MARK: Get scrobble history
 
-    var scrobbles: [PlayedSong] = []
+    var scrobbles: [ViewScrobbles.DisplayedScrobble] = []
 
     func getScrobbleHistory() {
         let request = ViewScrobbles.GetScrobbleHistory.Request()
         interactor?.getScrobbleHistory(request: request)
     }
 
-    func displaySomething(viewModel: ViewScrobbles.GetScrobbleHistory.ViewModel) {
+    func displayScrobbleHistory(viewModel: ViewScrobbles.GetScrobbleHistory.ViewModel) {
         scrobbles = viewModel.scrobbles
         tableView.reloadData()
     }

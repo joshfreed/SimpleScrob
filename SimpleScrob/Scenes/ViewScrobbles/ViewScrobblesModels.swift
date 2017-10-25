@@ -13,6 +13,17 @@
 import UIKit
 
 enum ViewScrobbles {
+    struct DisplayedScrobble {
+        let artist: String?
+        let album: String?
+        let track: String?
+        let artwork: UIImage?
+        let datePlayed: String
+        let statusMessage: String
+        let statusImageName: String
+        let statusColor: UIColor
+    }
+    
     // MARK: Use cases
 
     enum GetScrobbleHistory {
@@ -24,7 +35,7 @@ enum ViewScrobbles {
         }
 
         struct ViewModel {
-            let scrobbles: [PlayedSong]
+            let scrobbles: [DisplayedScrobble]
         }
     }
 }

@@ -42,13 +42,28 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     var lastFM: LastFMAPI {
         get {
             if _lastFM == nil {
-//                _lastFM = FakeLastFM()
+                #if DEBUG
+                _lastFM = FakeLastFM()
+                #else
                 let apiKey = ""
                 let secret = ""
                 _lastFM = LastFM.API(engine: LastFM.RestEngine(apiKey: apiKey, secret: secret))
+                #endif
             }
             return _lastFM!
         }
+    }
+    
+    private var _batchSongUpdater: BatchSongUpdater?
+    var batchSongUpdater: BatchSongUpdater {
+        if _batchSongUpdater == nil {
+            _batchSongUpdater = BatchSongUpdater(database: database)
+        }
+        return _batchSongUpdater!
+    }
+    
+    var mediaLibrary: MediaLibrary {
+        return MediaLibrary.shared
     }
 
     let session = Session()

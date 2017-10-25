@@ -64,15 +64,14 @@ class ScrobbleViewController: UIViewController, ScrobbleDisplayLogic {
         let appDelegate = UIApplication.shared.delegate as! AppDelegate
         let viewController = self
         let interactor = ScrobbleInteractor(
-            mediaLibrary: MediaLibrary.shared,
+            mediaLibrary: appDelegate.mediaLibrary,
             worker: ScrobbleWorker(
                 api: appDelegate.lastFM,
                 database: appDelegate.database,
                 session: appDelegate.session,
                 songScanner: appDelegate.songScanner,
-                batchUpdater: BatchSongUpdater(database: appDelegate.database)
+                batchUpdater: appDelegate.batchSongUpdater
             ),
-            database: appDelegate.database,
             songScanner: appDelegate.songScanner
         )
         let presenter = ScrobblePresenter()

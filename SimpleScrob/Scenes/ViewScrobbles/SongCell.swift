@@ -31,7 +31,7 @@ class SongCell: UITableViewCell {
         // Configure the view for the selected state
     }
 
-    func configure(scrobble: PlayedSong) {
+    func configure(scrobble: ViewScrobbles.DisplayedScrobble) {
         selectionStyle = .none
         
         expanded = false
@@ -40,28 +40,11 @@ class SongCell: UITableViewCell {
         artistLabel.text = scrobble.track
         albumLabel.text = scrobble.artist
         trackLabel.text = scrobble.album
-        artworkImageView.image = scrobble.artwork?.image(at: CGSize(width: 64, height: 64))
-        datePlayedLabel.text = scrobble.date.shortTimeAgoSinceNow
-        
-        switch scrobble.status {
-        case .scrobbled:
-            statusImageView.image = #imageLiteral(resourceName: "scrobbled")
-            statusLabel.text = "Scrobbled!"
-//            statusLabel.textColor = .green
-            statusLabel.textColor = UIColor(red: 46/255, green: 162/255, blue: 66/255, alpha: 1)
-        case .failed:
-            statusImageView.image = #imageLiteral(resourceName: "failed")
-            statusLabel.text = "Error"
-            statusLabel.textColor = .red
-        case .notScrobbled:
-            statusImageView.image = #imageLiteral(resourceName: "not-scrobbled")
-            statusLabel.text = "Not Scrobbled"
-            statusLabel.textColor = .lightGray
-        case .ignored:
-            statusImageView.image = #imageLiteral(resourceName: "not-scrobbled")
-            statusLabel.text = "Ignored"
-            statusLabel.textColor = .yellow
-        }
+        artworkImageView.image = scrobble.artwork
+        datePlayedLabel.text = scrobble.datePlayed
+        statusLabel.text = scrobble.statusMessage
+        statusLabel.textColor = scrobble.statusColor
+        statusImageView.image = UIImage(named: scrobble.statusImageName)
     }
     
     func expand() {

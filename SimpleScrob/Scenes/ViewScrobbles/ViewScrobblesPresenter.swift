@@ -13,16 +13,61 @@
 import UIKit
 
 protocol ViewScrobblesPresentationLogic {
-    func presentSomething(response: ViewScrobbles.GetScrobbleHistory.Response)
+    func presentScrobbleHistory(response: ViewScrobbles.GetScrobbleHistory.Response)
 }
 
 class ViewScrobblesPresenter: ViewScrobblesPresentationLogic {
     weak var viewController: ViewScrobblesDisplayLogic?
 
-    // MARK: Do something
+    // MARK: Get scrobble history
 
-    func presentSomething(response: ViewScrobbles.GetScrobbleHistory.Response) {
-        let viewModel = ViewScrobbles.GetScrobbleHistory.ViewModel(scrobbles: response.scrobbles)
-        viewController?.displaySomething(viewModel: viewModel)
+    func presentScrobbleHistory(response: ViewScrobbles.GetScrobbleHistory.Response) {
+        let scrobbles: [ViewScrobbles.DisplayedScrobble] = response.scrobbles.map {
+            var imageName: String
+            var statusColor: UIColor
+            switch $0.status {
+            case .scrobbled:
+                imageName = "scrobbled"
+                statusColor = UIColor(red: 46/255, green: 162/255, blue: 66/255, alpha: 1)
+            case .failed:
+                imageName = "failed"
+                statusColor = .red
+            case .notScrobbled:
+                imageName = "not-scrobbled"
+                statusColor = .lightGray
+            case .ignored:
+                imageName = "not-scrobbled"
+                statusColor = .yellow
+            }
+            
+            return ViewScrobbles.DisplayedScrobble(
+                artist: $0.artist,
+                album: $0.album,
+                track: $0.track,
+                artwork: $0.artwork?.image(at: CGSize(width: 64, height: 64)),
+                datePlayed: $0.date.shortTimeAgoSinceNow,
+                statusMessage: makeStatusMessage($0),
+                statusImageName: imageName,
+                statusColor: statusColor
+            )
+        }
+        let viewModel = ViewScrobbles.GetScrobbleHistory.ViewModel(scrobbles: scrobbles)
+        viewController?.displayScrobbleHistory(viewModel: viewModel)
+    }
+    
+    func makeStatusMessage(_ scrobble: PlayedSong) -> String {
+        switch scrobble.status {
+        case .scrobbled: return "Scrobbled!"
+        case .failed:
+            return "Error"
+        case .notScrobbled:
+            if let reason = scrobble.reason {
+                return "Not Scrobbled: \(reason)"
+            } else {
+                return "Not Scrobbled."
+            }
+        case .ignored:
+            return "Ignored: "
+        }
     }
 }

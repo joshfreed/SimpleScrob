@@ -7,13 +7,12 @@
 //
 
 import Foundation
-import MediaPlayer
 
 struct PlayedSongId: Equatable {
-    let persistentId: MPMediaEntityPersistentID
+    let persistentId: MediaEntityPersistentId
     let date: Date
 
-    init(persistentId: MPMediaEntityPersistentID, date: Date) {
+    init(persistentId: MediaEntityPersistentId, date: Date) {
         self.persistentId = persistentId
         self.date = date
     }
@@ -25,30 +24,30 @@ struct PlayedSongId: Equatable {
 
 struct PlayedSong: Equatable {
     let id: PlayedSongId
-    let persistentId: MPMediaEntityPersistentID
+    let persistentId: MediaEntityPersistentId
     var status: ScrobbleStatus = .notScrobbled
     var reason: LastFM.ErrorType?
     var date: Date
     var artist: String?
     var album: String?
     var track: String?
-    var artwork: MPMediaItemArtwork?
+    var artwork: MediaItemArtwork?
     
-    init(persistentId: MPMediaEntityPersistentID, date: Date) {
+    init(persistentId: MediaEntityPersistentId, date: Date) {
         self.id = PlayedSongId(persistentId: persistentId, date: date)
         self.persistentId = persistentId
         self.date = date
         self.status = .notScrobbled
     }
     
-    init(persistentId: MPMediaEntityPersistentID, date: Date, status: ScrobbleStatus) {
+    init(persistentId: MediaEntityPersistentId, date: Date, status: ScrobbleStatus) {
         self.id = PlayedSongId(persistentId: persistentId, date: date)
         self.persistentId = persistentId
         self.date = date
         self.status = status
     }
     
-    init(persistentId: MPMediaEntityPersistentID, date: Date, artist: String, album: String, track: String) {
+    init(persistentId: MediaEntityPersistentId, date: Date, artist: String, album: String, track: String) {
         self.id = PlayedSongId(persistentId: persistentId, date: date)
         self.persistentId = persistentId
         self.date = date

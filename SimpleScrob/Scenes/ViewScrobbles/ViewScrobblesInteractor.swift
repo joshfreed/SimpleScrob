@@ -30,7 +30,7 @@ class ViewScrobblesInteractor: ViewScrobblesBusinessLogic, ViewScrobblesDataStor
         worker?.getScrobbleHistory { songs in            
             DispatchQueue.main.async {
                 let response = ViewScrobbles.GetScrobbleHistory.Response(scrobbles: songs)
-                self.presenter?.presentSomething(response: response)
+                self.presenter?.presentScrobbleHistory(response: response)
             }
         }
     }
