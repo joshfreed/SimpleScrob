@@ -13,11 +13,10 @@
 import UIKit
 
 protocol ScrobblePresentationLogic {
-    func presentAuthorized(response: Scrobble.Refresh.Response)
+    func presentFirstTimeView(response: Scrobble.Refresh.Response)
+    func presentReadyToScrobble(response: Scrobble.Refresh.Response)
     func presentAuthorizationPrimer()
     func presentAuthorizationDenied()
-    func presentScanningMusicLibrary()
-    func presentLibraryScanComplete(response: Scrobble.InitializeMusicLibrary.Response)
     func presentSearchingForNewScrobbles()
     func presentSongsToScrobble(response: Scrobble.SearchForNewScrobbles.Response)
     func presentSubmittingToLastFM()
@@ -30,11 +29,16 @@ class ScrobblePresenter: ScrobblePresentationLogic {
 
     // MARK: Refresh
 
-    func presentAuthorized(response: Scrobble.Refresh.Response) {
-        let viewModel = Scrobble.Refresh.ViewModel(firstTime: response.firstTime)
-        viewController?.displayAuthorized(viewModel: viewModel)
+    func presentFirstTimeView(response: Scrobble.Refresh.Response) {
+        let viewModel = Scrobble.Refresh.ViewModel()
+        viewController?.displayFirstTimeView(viewModel: viewModel)
     }
     
+    func presentReadyToScrobble(response: Scrobble.Refresh.Response) {
+        let viewModel = Scrobble.Refresh.ViewModel()
+        viewController?.displayReadyToScrobble(viewModel: viewModel)
+    }
+
     func presentAuthorizationPrimer() {
         viewController?.displayAuthorizationPrimer()
     }
@@ -42,18 +46,7 @@ class ScrobblePresenter: ScrobblePresentationLogic {
     func presentAuthorizationDenied() {
         viewController?.displayAuthorizationDenied()
     }
-    
-    // MARK: Initialize music library
-    
-    func presentScanningMusicLibrary() {
-        viewController?.displayScanningMusicLibrary()
-    }
-    
-    func presentLibraryScanComplete(response: Scrobble.InitializeMusicLibrary.Response) {
-        let viewModel = Scrobble.InitializeMusicLibrary.ViewModel()
-        viewController?.displayLibraryScanComplete(viewModel: viewModel)
-    }
-    
+
     // MARK: Search for new scrobbles
     
     func presentSearchingForNewScrobbles() {
@@ -80,11 +73,12 @@ class ScrobblePresenter: ScrobblePresentationLogic {
         var errorMsg: String?
         
         if let error = response.error {
-            switch error {
-            case LastFM.ErrorType.error(let code, let message): errorMsg = "Error \(code): \(message ?? "Unknown error")"
-            case LastFM.ErrorType.notSignedIn: errorMsg = "Not signed in to last.fm"
-            default: errorMsg = "\(error)"
-            }
+//            switch error {
+//            case LastFM.ErrorType.error(let code, let message): errorMsg = "Error \(code): \(message ?? "Unknown error")"
+//            case LastFM.ErrorType.notSignedIn: errorMsg = "Not signed in to last.fm"
+//            default: errorMsg = "\(error)"
+//            }
+            errorMsg = "\(error)"
         }
         
         let viewModel = Scrobble.SubmitScrobbles.ViewModel(error: errorMsg)
@@ -94,7 +88,7 @@ class ScrobblePresenter: ScrobblePresentationLogic {
     // MARK: Get current user
     
     func presentCurrentUser(response: Scrobble.GetCurrentUser.Response) {
-        let viewModel = Scrobble.GetCurrentUser.ViewModel(username: currentUserText(currentUserName: response.user?.username))
+        let viewModel = Scrobble.GetCurrentUser.ViewModel(username: currentUserText(currentUserName: response.username))
         viewController?.displayCurrentUser(viewModel: viewModel)
     }
 

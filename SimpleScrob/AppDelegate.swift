@@ -28,9 +28,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     var songScanner: SongScanner {
         get {
             if _songScanner == nil {
-                _songScanner = SongScanner(
+                _songScanner = SongScannerImpl(
                     mediaLibrary: MediaLibrary.shared,
-                    database: database,
                     dateGenerator: DateGenerator()
                 )
             }
@@ -54,23 +53,24 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         }
     }
     
-    private var _batchSongUpdater: BatchSongUpdater?
-    var batchSongUpdater: BatchSongUpdater {
-        if _batchSongUpdater == nil {
-            _batchSongUpdater = BatchSongUpdater(database: database)
+    private var _scrobbleService: ScrobbleService?
+    var scrobbleService: ScrobbleService {
+        if _scrobbleService == nil {
+            _scrobbleService = LastFmScrobbleService(api: lastFM)
         }
-        return _batchSongUpdater!
-    }
+        return _scrobbleService!
+    }    
     
     var mediaLibrary: MediaLibrary {
         return MediaLibrary.shared
     }
 
-    let session = Session()
-
+    var signInAuthentication: SignInAuthentication {
+        return scrobbleService
+    }
+    
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
-        session.resume()
-        _lastFM!.sessionKey = session.sessionKey
+        scrobbleService.resumeSession()        
         return true
     }
 

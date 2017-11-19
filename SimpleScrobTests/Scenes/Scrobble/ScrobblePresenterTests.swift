@@ -38,7 +38,11 @@ class ScrobblePresenterTests: XCTestCase {
     // MARK: Test doubles
 
     class ScrobbleDisplayLogicSpy: ScrobbleDisplayLogic {
-        func displayAuthorized(viewModel: Scrobble.Refresh.ViewModel) {
+        func displayFirstTimeView(viewModel: Scrobble.Refresh.ViewModel) {
+            
+        }
+        
+        func displayReadyToScrobble(viewModel: Scrobble.Refresh.ViewModel) {
             
         }
         
@@ -47,14 +51,6 @@ class ScrobblePresenterTests: XCTestCase {
         }
         
         func displayAuthorizationDenied() {
-            
-        }
-        
-        func displayScanningMusicLibrary() {
-            
-        }
-        
-        func displayLibraryScanComplete(viewModel: Scrobble.InitializeMusicLibrary.ViewModel) {
             
         }
         

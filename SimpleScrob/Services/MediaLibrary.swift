@@ -13,7 +13,7 @@ import JFLib
 typealias MediaEntityPersistentId = MPMediaEntityPersistentID
 typealias MediaItemArtwork = MPMediaItemArtwork
 
-class MediaLibrary: ViewScrobblesArtworkFetcher {
+class MediaLibrary: ScrobbleMediaLibrary, ViewScrobblesArtworkFetcher {
     static let shared = MediaLibrary()
     
     private var _items: [MPMediaItem] {
@@ -23,6 +23,7 @@ class MediaLibrary: ViewScrobblesArtworkFetcher {
     var items: [MediaItem] {
         #if DEBUG
             return [
+                MediaItem(persistentId: 1, lastPlayedDate: makeDate(string: "2017-11-19 18:18:58"), artist: "Beardfish", album: "Sleeping in Traffic: Part One", title: "Sunrise", artwork: nil),
                 MediaItem(persistentId: 8, lastPlayedDate: makeDate(string: "2017-10-16 14:18:00"), artist: "Beardfish", album: "Sleeping in Traffic: Part One", title: "Year of the Knife", artwork: nil),
                 MediaItem(persistentId: 7, lastPlayedDate: makeDate(string: "2017-10-11 10:15:00"), artist: "Coheed and Camria", album: "Good Apollo I'm Burning Star IV, Vol 1 - From Fear Through the Eyes of Madness", title: "The Willing Well I: Fuel for the Feeding End", artwork: nil),
                 MediaItem(persistentId: 6, lastPlayedDate: makeDate(string: "2017-10-11 10:10:00"), artist: "Coheed and Camria", album: "Good Apollo I'm Burning Star IV, Vol 1 - From Fear Through the Eyes of Madness", title: "Welcome Home", artwork: nil),

@@ -11,7 +11,7 @@ import XCTest
 import Nimble
 
 class SongScannerTests: XCTestCase {
-    var sut: SongScanner!
+    var sut: SongScannerImpl!
     let mediaLibrary = MockMediaLibrary()
     let database = MockDatabase()
     let dateGenerator = MockDateGenerator()
@@ -22,9 +22,8 @@ class SongScannerTests: XCTestCase {
 
         mediaLibrary._items = []
         
-        sut = SongScanner(
+        sut = SongScannerImpl(
             mediaLibrary: mediaLibrary,
-            database: database,
             dateGenerator: dateGenerator
         )
         sut.reset()

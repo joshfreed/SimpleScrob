@@ -13,17 +13,14 @@
 @testable import SimpleScrob
 import XCTest
 import Nimble
-import MediaPlayer
 
 class ScrobbleWorkerTests: XCTestCase {
     // MARK: Subject under test
 
     var sut: ScrobbleWorker!
-    let api = MockLastFMApi()
     let database = MockDatabase()
-    let session = MockSession()
     let songScanner = MockSongScanner()
-    let songUpdater = MockSongUpdater()
+    let scrobbleService = MockScrobbleService()
 
     // MARK: Test lifecycle
 
@@ -41,11 +38,9 @@ class ScrobbleWorkerTests: XCTestCase {
 
     func setupScrobbleWorker() {
         sut = ScrobbleWorker(
-            api: api,
             database: database,
-            session: session,
             songScanner: songScanner,
-            batchUpdater: songUpdater
+            scrobbleService: scrobbleService
         )
     }
 
@@ -53,145 +48,6 @@ class ScrobbleWorkerTests: XCTestCase {
 
     // MARK: Tests
 
-    func testSubmitLessThan50Songs() {
-        // Given
-        session.configureWithSession()
-        let songs = [
-            PlayedSong(persistentId: 1, date: Date(), artist: "Beardfish", album: "Sleeping in Traffic", track: "Sunrise"),
-            PlayedSong(persistentId: 2, date: Date(), artist: "Beardfish", album: "Sleeping in Traffic", track: "Afternoon Conversation")
-        ]
-        let response = LastFM.ScrobbleResponse(accepted: [], ignored: [])
-        api.scrobbleResults.append(.success(response))
-        var completionCalled = false
-        var completionError: Error?
-        let completionExpectation = expectation(description: "Submission completes")
-
-        // When
-        sut.submit(songs: songs) { error in
-            completionCalled = true
-            completionError = error
-            completionExpectation.fulfill()
-        }
-
-        // Then
-        wait(for: [completionExpectation], timeout: 3)
-        expect(self.api.scrobbleCallCount).to(equal(1))
-        expect(self.api.scrobbleSongs[0]).to(equal(songs))
-        expect(completionCalled).to(beTrue())
-        expect(completionError).to(beNil())
-        expect(self.songUpdater.markScrobbledCallCount).to(equal(1))
-        expect(self.songUpdater.markScrobbled_songs[0]).to(equal(songs))
-    }
-    
-    func testSubmitMoreThan50Songs() {
-        // Given
-        session.configureWithSession()
-        let batch1 = makeSongs(count: 50)
-        let batch2 = makeSongs(count: 50)
-        let batch3 = makeSongs(count: 26)
-        var allSongs: [PlayedSong] = []
-        allSongs.append(contentsOf: batch1)
-        allSongs.append(contentsOf: batch2)
-        allSongs.append(contentsOf: batch3)
-        api.scrobbleResults.append(.success(LastFM.ScrobbleResponse(accepted: [], ignored: [])))
-        api.scrobbleResults.append(.success(LastFM.ScrobbleResponse(accepted: [], ignored: [])))
-        api.scrobbleResults.append(.success(LastFM.ScrobbleResponse(accepted: [], ignored: [])))
-        var completionCalled = false
-        var completionError: Error?
-        let completionExpectation = expectation(description: "Submission completes")
-        
-        // When
-        sut.submit(songs: allSongs) { error in
-            completionCalled = true
-            completionError = error
-            completionExpectation.fulfill()
-        }
-        
-        // Then
-        wait(for: [completionExpectation], timeout: 3)
-        expect(self.api.scrobbleCallCount).to(equal(3))
-        expect(self.api.scrobbleSongs[0]).to(equal(batch1))
-        expect(self.api.scrobbleSongs[1]).to(equal(batch2))
-        expect(self.api.scrobbleSongs[2]).to(equal(batch3))
-        expect(completionCalled).to(beTrue())
-        expect(completionError).to(beNil())
-        expect(self.songUpdater.markScrobbledCallCount).to(equal(3))
-        expect(self.songUpdater.markScrobbled_songs[0]).to(equal(batch1))
-        expect(self.songUpdater.markScrobbled_songs[1]).to(equal(batch2))
-        expect(self.songUpdater.markScrobbled_songs[2]).to(equal(batch3))
-    }
-    
-    func testSubmitHadErrors() {
-        // Given
-        session.configureWithSession()
-        let batch1 = makeSongs(count: 50)
-        let batch2 = makeSongs(count: 50)
-        let batch3 = makeSongs(count: 26)
-        var allSongs: [PlayedSong] = []
-        allSongs.append(contentsOf: batch1)
-        allSongs.append(contentsOf: batch2)
-        allSongs.append(contentsOf: batch3)
-        api.scrobbleResults.append(.success(LastFM.ScrobbleResponse(accepted: [], ignored: [])))
-        api.scrobbleResults.append(.failure(.error(code: 11, message: "Whatever")))
-        api.scrobbleResults.append(.success(LastFM.ScrobbleResponse(accepted: [], ignored: [])))
-        var completionCalled = false
-        var completionError: Error?
-        let completionExpectation = expectation(description: "Submission completes")
-        
-        // When
-        sut.submit(songs: allSongs) { error in
-            completionCalled = true
-            completionError = error
-            completionExpectation.fulfill()
-        }
-        
-        // Then
-        wait(for: [completionExpectation], timeout: 3)
-        expect(completionCalled).to(beTrue())
-        expect(completionError).to(matchError(LastFM.ErrorType.error(code: 11, message: "Whatever")))
-        expect(self.api.scrobbleCallCount).to(equal(2))
-        expect(self.songUpdater.markScrobbledCallCount).to(equal(1))
-        expect(self.songUpdater.markScrobbled_songs[0]).to(equal(batch1))
-        expect(self.songUpdater.markFailedCallCount).to(equal(1))
-        expect(self.songUpdater.markFailed_songs[0]).to(equal(batch2))
-        expect(self.songUpdater.markFailed_errors[0]).to(matchError(LastFM.ErrorType.error(code: 11, message: "Whatever")))
-    }
-    
-    func test_submit_not_logged_in() {
-        // Given
-        session.configureWithNoSession()
-        let songs = makeSongs(count: 33)
-        var completionCalled = false
-        var completionError: Error?
-        let completionExpectation = expectation(description: "Submission completes")
-        
-        // When
-        sut.submit(songs: songs) { error in
-            completionCalled = true
-            completionError = error
-            completionExpectation.fulfill()
-        }
-        
-        // Then
-        wait(for: [completionExpectation], timeout: 3)
-        expect(completionCalled).to(beTrue())
-        expect(completionError).to(matchError(LastFM.ErrorType.notSignedIn))
-        expect(self.api.scrobbleCallCount).to(equal(0))
-        expect(self.songUpdater.markNotScrobbledCallCount).to(equal(1))
-        expect(self.songUpdater.markNotScrobbled_songs[0]).to(equal(songs))
-        expect(self.songUpdater.markNotScrobbled_errors[0]).to(matchError(LastFM.ErrorType.notSignedIn))
-    }
-    
     // MARK: Helper Funcs
-    
-    private var _songId: MPMediaEntityPersistentID = 1
-    func makeSongs(count: Int) -> [PlayedSong] {
-        var songs: [PlayedSong] = []
-        for _ in 0..<count {
-            let playedSong = PlayedSong(persistentId: _songId, date: Date(), artist: "Artist\(_songId)", album: "Album_\(_songId)", track: "Track\(_songId)")
-            songs.append(playedSong)
-            _songId += 1
-        }
-        return songs
-    }
+
 }

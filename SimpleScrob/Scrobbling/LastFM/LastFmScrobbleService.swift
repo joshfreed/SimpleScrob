@@ -1,0 +1,128 @@
+//
+//  LastFmScrobbleService.swift
+//  SimpleScrob
+//
+//  Created by Josh Freed on 10/25/17.
+//  Copyright © 2017 Josh Freed. All rights reserved.
+//
+
+import Foundation
+
+class LastFmScrobbleService: ScrobbleService {
+    var isLoggedIn: Bool {
+        return sessionKey != nil
+    }
+    var currentUserName: String?
+    private var sessionKey: String?
+    private(set) var api: LastFMAPI
+    
+    init(api: LastFMAPI) {
+        self.api = api
+    }
+    
+    func authenticate(username: String, password: String, completion: @escaping (_ success: Bool) -> ()) {
+        api.getMobileSession(username: username, password: password) { result in
+            switch result {
+            case .success(let session):
+                self.startSession(sessionKey: session.key, username: username)
+                completion(true)
+            case .failure:
+                completion(false)
+            }
+        }
+    }
+    
+    func startSession(sessionKey: String?, username: String) {
+        self.sessionKey = sessionKey
+        currentUserName = username
+        
+        UserDefaults.standard.set(self.sessionKey, forKey: "sessionKey")
+        UserDefaults.standard.set(username, forKey: "username")
+        
+        NotificationCenter.default.post(name: .signedIn, object: nil)
+    }
+    
+    func signOut() {
+        UserDefaults.standard.removeObject(forKey: "username")
+        UserDefaults.standard.removeObject(forKey: "sessionKey")
+    }
+    
+    func resumeSession() {
+        sessionKey = UserDefaults.standard.string(forKey: "sessionKey")
+        currentUserName = UserDefaults.standard.string(forKey: "username")
+        api.sessionKey = sessionKey
+    }
+    
+    func scrobble(songs: [PlayedSong], completion: @escaping ([PlayedSong], Error?) -> ()) {
+        guard isLoggedIn else {
+            return completion(
+                markNotScrobbled(songs: songs, with: .notSignedIn),
+                LastFM.ErrorType.notSignedIn
+            )
+        }
+        // todo : must be connected to the network
+        
+        submitBatch(start: 0, songs: songs, completion: completion, done: [])
+    }
+
+    func submitBatch(start: Int, songs: [PlayedSong], completion: @escaping ([PlayedSong], Error?) -> (), done: [PlayedSong]) {
+        guard songs.count > 0 else {
+            return completion(done, nil)
+        }
+        guard start < songs.count else {
+            return completion(done, nil)
+        }
+        
+        let end = min(start + 50, songs.count)
+        let batch = Array(songs[start..<end])
+        
+        guard batch.count > 0 else {
+            return completion(done, nil)
+        }
+        
+        api.scrobble(songs: batch) { result in
+            // Error codes 11, 16 mean we need to try again. Halt the batch submission and print a message "Temporarily unavailable, try again."
+            // Error code 9 means bad session, need to re-auth. Halt the batch and print ""
+            // All other error code mean the request was malformed in some way and should not be retried
+            // All of the above should halt the batch and inform the interactor to present an error.
+            // However, any songs that WERE scrobbled should be remembered - updated in the database; NOT scrobbled again
+            
+            switch result {
+            case .success(let response):
+                var _done = done
+                _done.append(contentsOf: self.markScrobbled(songs: batch))
+                self.submitBatch(start: end, songs: songs, completion: completion, done: _done)
+            case .failure(let error):
+                var _done = done
+                _done.append(contentsOf: self.markFailed(songs: batch, with: error))
+                _done.append(contentsOf: songs[end..<songs.count])
+                completion(_done, error)
+            }
+        }
+    }
+    
+    func markScrobbled(songs: [PlayedSong]) -> [PlayedSong] {
+        var _songs = songs
+        for i in 0..<_songs.count {
+            _songs[i].scrobbled()
+        }
+        return _songs
+    }
+    
+    func markFailed(songs: [PlayedSong], with error: LastFM.ErrorType) -> [PlayedSong] {
+        var _songs = songs
+        for i in 0..<_songs.count {
+            _songs[i].failedToScrobble(error: error)
+        }
+        return _songs
+    }
+    
+    func markNotScrobbled(songs: [PlayedSong], with error: LastFM.ErrorType) -> [PlayedSong] {
+        var _songs = songs
+        for i in 0..<_songs.count {
+            _songs[i].notScrobbled(reason: error)
+        }
+        return _songs
+    }
+}
+

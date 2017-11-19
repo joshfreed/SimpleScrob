@@ -53,8 +53,14 @@ class MockDatabase: Database {
 }
 
 class MockSongScanner: SongScanner {
-    init() {
-        super.init(mediaLibrary: MockMediaLibrary(), database: MockDatabase(), dateGenerator: MockDateGenerator())
+    var isInitialized: Bool = false
+    
+    func initializeSongDatabase() {
+        
+    }
+    
+    func searchForNewScrobbles() -> [PlayedSong] {
+        return []
     }
 }
 
@@ -87,20 +93,6 @@ class MockLastFMApi: LastFMAPI {
     }
 }
 
-class MockSession: Session {
-    override init() {
-        super.init()
-    }
-    
-    func configureWithSession() {
-        start(sessionKey: "123456", username: "flexxo")
-    }
-    
-    func configureWithNoSession() {
-        end()
-    }
-}
-
 class MockDateGenerator: DateGenerator {
     private var date = Date()
     
@@ -125,33 +117,19 @@ class MockDateGenerator: DateGenerator {
     }
 }
 
-class MockSongUpdater: BatchSongUpdater {
-    init() {
-        super.init(database: MockDatabase())
+class MockScrobbleService: ScrobbleService {
+    var isLoggedIn: Bool = false
+    var currentUserName: String? = nil
+    func authenticate(username: String, password: String, completion: @escaping (_ success: Bool) -> ()) {
+        
     }
-    
-    var markScrobbledCallCount = 0
-    var markScrobbled_songs: [[PlayedSong]] = []
-    override func markScrobbled(songs: [PlayedSong]) {
-        markScrobbled_songs.append(songs)
-        markScrobbledCallCount += 1
+    func signOut() {
+        
     }
-    
-    var markFailedCallCount = 0
-    var markFailed_songs: [[PlayedSong]] = []
-    var markFailed_errors: [LastFM.ErrorType] = []
-    override func markFailed(songs: [PlayedSong], with error: LastFM.ErrorType) {
-        markFailed_songs.append(songs)
-        markFailed_errors.append(error)
-        markFailedCallCount += 1
+    func resumeSession() {
+        
     }
-    
-    var markNotScrobbledCallCount = 0
-    var markNotScrobbled_songs: [[PlayedSong]] = []
-    var markNotScrobbled_errors: [LastFM.ErrorType] = []
-    override func markNotScrobbled(songs: [PlayedSong], with error: LastFM.ErrorType) {
-        markNotScrobbled_songs.append(songs)
-        markNotScrobbled_errors.append(error)
-        markNotScrobbledCallCount += 1
+    func scrobble(songs: [PlayedSong], completion: @escaping ([PlayedSong], Error?) -> ()) {
+        
     }
 }

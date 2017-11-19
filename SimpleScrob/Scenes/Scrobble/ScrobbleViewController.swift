@@ -13,11 +13,10 @@
 import UIKit
 
 protocol ScrobbleDisplayLogic: class {
-    func displayAuthorized(viewModel: Scrobble.Refresh.ViewModel)
+    func displayFirstTimeView(viewModel: Scrobble.Refresh.ViewModel)
+    func displayReadyToScrobble(viewModel: Scrobble.Refresh.ViewModel)
     func displayAuthorizationPrimer()
     func displayAuthorizationDenied()
-    func displayScanningMusicLibrary()
-    func displayLibraryScanComplete(viewModel: Scrobble.InitializeMusicLibrary.ViewModel)
     func displaySearchingForNewScrobbles()
     func displaySongsToScrobble(viewModel: Scrobble.SearchForNewScrobbles.ViewModel)
     func displayNoSongsToScrobble()
@@ -66,13 +65,10 @@ class ScrobbleViewController: UIViewController, ScrobbleDisplayLogic {
         let interactor = ScrobbleInteractor(
             mediaLibrary: appDelegate.mediaLibrary,
             worker: ScrobbleWorker(
-                api: appDelegate.lastFM,
                 database: appDelegate.database,
-                session: appDelegate.session,
                 songScanner: appDelegate.songScanner,
-                batchUpdater: appDelegate.batchSongUpdater
-            ),
-            songScanner: appDelegate.songScanner
+                scrobbleService: appDelegate.scrobbleService
+            )
         )
         let presenter = ScrobblePresenter()
         let router = ScrobbleRouter()
@@ -121,6 +117,9 @@ class ScrobbleViewController: UIViewController, ScrobbleDisplayLogic {
     
     @objc func userSignedIn() {
         interactor?.getCurrentUser()
+        
+        let request = Scrobble.SubmitScrobbles.Request()
+        interactor?.submitScrobbles(request: request)
     }
     
     @IBAction func unwindToScrobble(segue: UIStoryboardSegue) {
@@ -157,21 +156,26 @@ class ScrobbleViewController: UIViewController, ScrobbleDisplayLogic {
         retryButton.isHidden = true
     }
     
-    func displayAuthorized(viewModel: Scrobble.Refresh.ViewModel) {
+    func displayFirstTimeView(viewModel: Scrobble.Refresh.ViewModel) {
+        requestAuthorizationButton.isHidden = true
+        viewScrobblesButton.isHidden = false
+        viewScrobblesHitAreaButton.isHidden = false        
+        statusLabel.isHidden = false
+        statusLabel.text = "Songs you listen to will be scrobbled next time you open the app."
+        activityIndicator.stopAnimating()
+    }
+    
+    func displayReadyToScrobble(viewModel: Scrobble.Refresh.ViewModel) {
         requestAuthorizationButton.isHidden = true
         statusLabel.text = ""
         viewScrobblesButton.isHidden = false
         viewScrobblesHitAreaButton.isHidden = false
         
-        if viewModel.firstTime {
-            let request = Scrobble.InitializeMusicLibrary.Request()
-            interactor?.initializeMusicLibrary(request: request)
-        } else {
-            let request = Scrobble.SearchForNewScrobbles.Request()
-            interactor?.searchForNewScrobbles(request: request)
-        }
+        // Automatically submit new scrobbles
+        let request = Scrobble.SearchForNewScrobbles.Request()
+        interactor?.searchForNewScrobbles(request: request)
     }
-    
+
     func displayAuthorizationPrimer() {
         statusLabel.text = "SimpleScrob needs access to your music library to track the songs you play."
         statusLabel.isHidden = false
@@ -187,21 +191,7 @@ class ScrobbleViewController: UIViewController, ScrobbleDisplayLogic {
     @IBAction func tappedRequestAuthorization(_ sender: UIButton) {
         interactor?.requestMediaLibraryAuthorization()
     }
-    
-    // MARK: Initialize music library
-    
-    func displayScanningMusicLibrary() {
-        statusLabel.isHidden = false
-        statusLabel.text = "Scanning your music library..."
-        activityIndicator.startAnimating()
-    }
-    
-    func displayLibraryScanComplete(viewModel: Scrobble.InitializeMusicLibrary.ViewModel) {
-        statusLabel.isHidden = false
-        statusLabel.text = "Songs you listen to will be scrobbled next time you open the app."
-        activityIndicator.stopAnimating()
-    }
-    
+
     // MARK: Search for new scrobbles
     
     func displaySearchingForNewScrobbles() {
@@ -217,7 +207,8 @@ class ScrobbleViewController: UIViewController, ScrobbleDisplayLogic {
         
         let message = viewModel.numberOfSongs == 1 ? "Found 1 new scrobble." : "Found \(viewModel.numberOfSongs) new scrobbles."
         scrobbleCountLabel.text = message
-//
+
+        // Automatically submit new scrobbles
         let request = Scrobble.SubmitScrobbles.Request()
         interactor?.submitScrobbles(request: request)
     }

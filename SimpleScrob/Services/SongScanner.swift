@@ -9,9 +9,8 @@
 import Foundation
 import os.log
 
-class SongScanner {
-    let mediaLibrary: MediaLibrary
-    let database: Database
+class SongScannerImpl: SongScanner {
+    let mediaLibrary: ScrobbleMediaLibrary
     let dateGenerator: DateGenerator
     let logger = OSLog(subsystem: "com.joshfreed.SimpleScrob", category: "SongScanner")
     
@@ -32,9 +31,8 @@ class SongScanner {
         }
     }
     
-    init(mediaLibrary: MediaLibrary, database: Database, dateGenerator: DateGenerator) {
+    init(mediaLibrary: ScrobbleMediaLibrary, dateGenerator: DateGenerator) {
         self.mediaLibrary = mediaLibrary
-        self.database = database
         self.dateGenerator = dateGenerator
     }
     

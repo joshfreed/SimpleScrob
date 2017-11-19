@@ -111,20 +111,21 @@ class ScrobbleViewControllerTests: XCTestCase {
         // Given
         let spy = ScrobbleBusinessLogicSpy()
         sut.interactor = spy
-        let viewModel = Scrobble.Refresh.ViewModel(firstTime: true)
+        let viewModel = Scrobble.Refresh.ViewModel()
         loadView()
         sut.viewScrobblesButton.isHidden = true
         sut.viewScrobblesHitAreaButton.isHidden = true
         
         // When
-        sut.displayAuthorized(viewModel: viewModel)
+        sut.displayFirstTimeView(viewModel: viewModel)
         
         // Then
         expect(self.sut.requestAuthorizationButton.isHidden).to(beTrue())
-        expect(self.sut.statusLabel.text).to(equal(""))
+        expect(self.sut.statusLabel.isHidden).to(beFalse())
+        expect(self.sut.statusLabel.text).to(equal("Songs you listen to will be scrobbled next time you open the app."))
         expect(self.sut.viewScrobblesButton.isHidden).to(beFalse())
         expect(self.sut.viewScrobblesHitAreaButton.isHidden).to(beFalse())
-        expect(spy.initializeMusicLibraryCalled).to(beTrue())
+        expect(self.sut.activityIndicator.isAnimating).to(beFalse())
     }
     
     func testDisplayCurrentUser() {

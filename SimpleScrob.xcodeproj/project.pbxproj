@@ -13,9 +13,9 @@
 		5316A6511F82BFB5005193EB /* SongScanner.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5316A6501F82BFB5005193EB /* SongScanner.swift */; };
 		5316A6561F82CBD7005193EB /* SimpleScrob.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 5316A6541F82CBD6005193EB /* SimpleScrob.xcdatamodeld */; };
 		53221B3B1F8587D900FB1A0F /* LastFM_ApiTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53221B3A1F8587D900FB1A0F /* LastFM_ApiTests.swift */; };
-		53221B411F8698AE00FB1A0F /* Session.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53221B401F8698AE00FB1A0F /* Session.swift */; };
 		534759821F8E598D00B6DB6D /* ScrobbleView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 534759811F8E598D00B6DB6D /* ScrobbleView.xib */; };
 		5349CC6D1F882ADE0055176B /* PlayedSongTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5349CC6C1F882ADE0055176B /* PlayedSongTests.swift */; };
+		536814DF1FB78BDE00F5B233 /* CoreDataDatabase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 536814DE1FB78BDE00F5B233 /* CoreDataDatabase.swift */; };
 		53825B881F7E8CC600566F2C /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53825B871F7E8CC600566F2C /* AppDelegate.swift */; };
 		53825B8D1F7E8CC600566F2C /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 53825B8B1F7E8CC600566F2C /* Main.storyboard */; };
 		53825B8F1F7E8CC600566F2C /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 53825B8E1F7E8CC600566F2C /* Assets.xcassets */; };
@@ -32,6 +32,7 @@
 		53825BCA1F8032CF00566F2C /* ScrobbleModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53825BC41F8032CF00566F2C /* ScrobbleModels.swift */; };
 		53825BCB1F8032CF00566F2C /* ScrobbleViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53825BC51F8032CF00566F2C /* ScrobbleViewController.swift */; };
 		53825BCC1F8032CF00566F2C /* ScrobbleInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53825BC61F8032CF00566F2C /* ScrobbleInteractor.swift */; };
+		538ED2731FC23E4D00C2162B /* LastFmScrobbleService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 538ED2721FC23E4D00C2162B /* LastFmScrobbleService.swift */; };
 		53A0DE0D1F86A09000802FD6 /* ScrobbleViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53A0DE091F86A09000802FD6 /* ScrobbleViewControllerTests.swift */; };
 		53A0DE0E1F86A09000802FD6 /* ScrobbleInteractorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53A0DE0A1F86A09000802FD6 /* ScrobbleInteractorTests.swift */; };
 		53A0DE0F1F86A09000802FD6 /* ScrobbleWorkerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53A0DE0B1F86A09000802FD6 /* ScrobbleWorkerTests.swift */; };
@@ -43,6 +44,8 @@
 		53B06FEF1F83EE7200FC9AB9 /* SSTextField.xib in Resources */ = {isa = PBXBuildFile; fileRef = 535A949D1F83E81100375D4E /* SSTextField.xib */; };
 		53C5803E1F8A7945003AEEBB /* CoreDataDatabaseTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53C5803D1F8A7945003AEEBB /* CoreDataDatabaseTests.swift */; };
 		53C580401F8A7A32003AEEBB /* CoreDataHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53C5803F1F8A7A32003AEEBB /* CoreDataHelpers.swift */; };
+		53C75DC91FA0D1000056D1AB /* ScrobbleService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53C75DC81FA0D1000056D1AB /* ScrobbleService.swift */; };
+		53C75DCC1FA0D2550056D1AB /* LastFmScrobbleService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53C75DCB1FA0D2550056D1AB /* LastFmScrobbleService.swift */; };
 		53CE43B21F8A87040050A8C7 /* SongScannerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53CE43B11F8A87040050A8C7 /* SongScannerTests.swift */; };
 		53CE43B61F8A88000050A8C7 /* DateGenerator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53CE43B51F8A88000050A8C7 /* DateGenerator.swift */; };
 		53CE43BE1F8A90870050A8C7 /* ViewScrobblesPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53CE43B81F8A90870050A8C7 /* ViewScrobblesPresenter.swift */; };
@@ -53,7 +56,6 @@
 		53CE43C31F8A90870050A8C7 /* ViewScrobblesInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53CE43BD1F8A90870050A8C7 /* ViewScrobblesInteractor.swift */; };
 		53CE43C51F8AACEB0050A8C7 /* SongCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53CE43C41F8AACEB0050A8C7 /* SongCell.swift */; };
 		53D6AD0C1F826B5E005F6972 /* SignInPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53D6AD061F826B5E005F6972 /* SignInPresenter.swift */; };
-		53D6AD0D1F826B5E005F6972 /* SignInWorker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53D6AD071F826B5E005F6972 /* SignInWorker.swift */; };
 		53D6AD0E1F826B5E005F6972 /* SignInRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53D6AD081F826B5E005F6972 /* SignInRouter.swift */; };
 		53D6AD0F1F826B5E005F6972 /* SignInModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53D6AD091F826B5E005F6972 /* SignInModels.swift */; };
 		53D6AD101F826B5E005F6972 /* SignInViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53D6AD0A1F826B5E005F6972 /* SignInViewController.swift */; };
@@ -121,10 +123,10 @@
 		5316A6501F82BFB5005193EB /* SongScanner.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SongScanner.swift; sourceTree = "<group>"; };
 		5316A6551F82CBD6005193EB /* SimpleScrob.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = SimpleScrob.xcdatamodel; sourceTree = "<group>"; };
 		53221B3A1F8587D900FB1A0F /* LastFM_ApiTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LastFM_ApiTests.swift; sourceTree = "<group>"; };
-		53221B401F8698AE00FB1A0F /* Session.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Session.swift; sourceTree = "<group>"; };
 		534759811F8E598D00B6DB6D /* ScrobbleView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ScrobbleView.xib; sourceTree = "<group>"; };
 		5349CC6C1F882ADE0055176B /* PlayedSongTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayedSongTests.swift; sourceTree = "<group>"; };
 		535A949D1F83E81100375D4E /* SSTextField.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = SSTextField.xib; sourceTree = "<group>"; };
+		536814DE1FB78BDE00F5B233 /* CoreDataDatabase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataDatabase.swift; sourceTree = "<group>"; };
 		53825B841F7E8CC600566F2C /* SimpleScrob.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SimpleScrob.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		53825B871F7E8CC600566F2C /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		53825B8C1F7E8CC600566F2C /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
@@ -147,6 +149,7 @@
 		53825BC41F8032CF00566F2C /* ScrobbleModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = ScrobbleModels.swift; path = SimpleScrob/Scenes/Scrobble/ScrobbleModels.swift; sourceTree = SOURCE_ROOT; };
 		53825BC51F8032CF00566F2C /* ScrobbleViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = ScrobbleViewController.swift; path = SimpleScrob/Scenes/Scrobble/ScrobbleViewController.swift; sourceTree = SOURCE_ROOT; };
 		53825BC61F8032CF00566F2C /* ScrobbleInteractor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = ScrobbleInteractor.swift; path = SimpleScrob/Scenes/Scrobble/ScrobbleInteractor.swift; sourceTree = SOURCE_ROOT; };
+		538ED2721FC23E4D00C2162B /* LastFmScrobbleService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LastFmScrobbleService.swift; sourceTree = "<group>"; };
 		53A0DE091F86A09000802FD6 /* ScrobbleViewControllerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScrobbleViewControllerTests.swift; sourceTree = "<group>"; };
 		53A0DE0A1F86A09000802FD6 /* ScrobbleInteractorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScrobbleInteractorTests.swift; sourceTree = "<group>"; };
 		53A0DE0B1F86A09000802FD6 /* ScrobbleWorkerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScrobbleWorkerTests.swift; sourceTree = "<group>"; };
@@ -158,6 +161,8 @@
 		53B06FEB1F83E8B200FC9AB9 /* SSTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SSTextField.swift; sourceTree = "<group>"; };
 		53C5803D1F8A7945003AEEBB /* CoreDataDatabaseTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataDatabaseTests.swift; sourceTree = "<group>"; };
 		53C5803F1F8A7A32003AEEBB /* CoreDataHelpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataHelpers.swift; sourceTree = "<group>"; };
+		53C75DC81FA0D1000056D1AB /* ScrobbleService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScrobbleService.swift; sourceTree = "<group>"; };
+		53C75DCB1FA0D2550056D1AB /* LastFmScrobbleService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LastFmScrobbleService.swift; sourceTree = "<group>"; };
 		53CE43B11F8A87040050A8C7 /* SongScannerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SongScannerTests.swift; sourceTree = "<group>"; };
 		53CE43B51F8A88000050A8C7 /* DateGenerator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateGenerator.swift; sourceTree = "<group>"; };
 		53CE43B81F8A90870050A8C7 /* ViewScrobblesPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewScrobblesPresenter.swift; sourceTree = "<group>"; };
@@ -168,7 +173,6 @@
 		53CE43BD1F8A90870050A8C7 /* ViewScrobblesInteractor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewScrobblesInteractor.swift; sourceTree = "<group>"; };
 		53CE43C41F8AACEB0050A8C7 /* SongCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SongCell.swift; sourceTree = "<group>"; };
 		53D6AD061F826B5E005F6972 /* SignInPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInPresenter.swift; sourceTree = "<group>"; };
-		53D6AD071F826B5E005F6972 /* SignInWorker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInWorker.swift; sourceTree = "<group>"; };
 		53D6AD081F826B5E005F6972 /* SignInRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInRouter.swift; sourceTree = "<group>"; };
 		53D6AD091F826B5E005F6972 /* SignInModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInModels.swift; sourceTree = "<group>"; };
 		53D6AD0A1F826B5E005F6972 /* SignInViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInViewController.swift; sourceTree = "<group>"; };
@@ -253,6 +257,7 @@
 		535A949A1F83E74A00375D4E /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				53825BB71F7EE4FD00566F2C /* UIViewLoading.swift */,
 				535A949D1F83E81100375D4E /* SSTextField.xib */,
 				53B06FEB1F83E8B200FC9AB9 /* SSTextField.swift */,
 				53FA51041F83F77D00F816B9 /* FloatingLabelTextField.swift */,
@@ -289,10 +294,10 @@
 		53825B861F7E8CC600566F2C /* SimpleScrob */ = {
 			isa = PBXGroup;
 			children = (
+				53C75DC71FA0D0F00056D1AB /* Scrobbling */,
 				535A949A1F83E74A00375D4E /* Views */,
 				53825BCF1F803F2400566F2C /* Models */,
 				53825BCE1F80330E00566F2C /* Services */,
-				53825BCD1F80330400566F2C /* Utilities */,
 				53825BBF1F80325400566F2C /* Scenes */,
 				53825B871F7E8CC600566F2C /* AppDelegate.swift */,
 				5316A6541F82CBD6005193EB /* SimpleScrob.xcdatamodeld */,
@@ -308,6 +313,7 @@
 		53825B9B1F7E8CC700566F2C /* SimpleScrobTests */ = {
 			isa = PBXGroup;
 			children = (
+				538ED26E1FC23E2A00C2162B /* Scrobbling */,
 				53C5803A1F8A7938003AEEBB /* Services */,
 				5349CC691F882ACB0055176B /* Models */,
 				53221B441F869D1600FB1A0F /* Scenes */,
@@ -353,24 +359,16 @@
 			path = Scrobble;
 			sourceTree = "<group>";
 		};
-		53825BCD1F80330400566F2C /* Utilities */ = {
-			isa = PBXGroup;
-			children = (
-				53825BB71F7EE4FD00566F2C /* UIViewLoading.swift */,
-			);
-			path = Utilities;
-			sourceTree = "<group>";
-		};
 		53825BCE1F80330E00566F2C /* Services */ = {
 			isa = PBXGroup;
 			children = (
+				53D9B5751F8156F300C8581B /* Database.swift */,
 				53825BBB1F802A3100566F2C /* LastFM.swift */,
 				53825BBD1F802C7700566F2C /* MediaLibrary.swift */,
-				53D9B5751F8156F300C8581B /* Database.swift */,
 				5316A6501F82BFB5005193EB /* SongScanner.swift */,
-				53221B401F8698AE00FB1A0F /* Session.swift */,
 				53CE43B51F8A88000050A8C7 /* DateGenerator.swift */,
 				53EA38231F93E5CF00078D20 /* Connectivity.swift */,
+				536814DE1FB78BDE00F5B233 /* CoreDataDatabase.swift */,
 			);
 			path = Services;
 			sourceTree = "<group>";
@@ -383,6 +381,22 @@
 				53D8CA221F8C2D1E00207EC6 /* MediaItem.swift */,
 			);
 			path = Models;
+			sourceTree = "<group>";
+		};
+		538ED26E1FC23E2A00C2162B /* Scrobbling */ = {
+			isa = PBXGroup;
+			children = (
+				538ED2711FC23E2F00C2162B /* LastFM */,
+			);
+			path = Scrobbling;
+			sourceTree = "<group>";
+		};
+		538ED2711FC23E2F00C2162B /* LastFM */ = {
+			isa = PBXGroup;
+			children = (
+				538ED2721FC23E4D00C2162B /* LastFmScrobbleService.swift */,
+			);
+			path = LastFM;
 			sourceTree = "<group>";
 		};
 		53B06FE31F83E88300FC9AB9 /* Products */ = {
@@ -403,6 +417,23 @@
 			path = Services;
 			sourceTree = "<group>";
 		};
+		53C75DC71FA0D0F00056D1AB /* Scrobbling */ = {
+			isa = PBXGroup;
+			children = (
+				53C75DCA1FA0D16B0056D1AB /* LastFM */,
+				53C75DC81FA0D1000056D1AB /* ScrobbleService.swift */,
+			);
+			path = Scrobbling;
+			sourceTree = "<group>";
+		};
+		53C75DCA1FA0D16B0056D1AB /* LastFM */ = {
+			isa = PBXGroup;
+			children = (
+				53C75DCB1FA0D2550056D1AB /* LastFmScrobbleService.swift */,
+			);
+			path = LastFM;
+			sourceTree = "<group>";
+		};
 		53CE43B71F8A905C0050A8C7 /* ViewScrobbles */ = {
 			isa = PBXGroup;
 			children = (
@@ -421,7 +452,6 @@
 			isa = PBXGroup;
 			children = (
 				53D6AD061F826B5E005F6972 /* SignInPresenter.swift */,
-				53D6AD071F826B5E005F6972 /* SignInWorker.swift */,
 				53D6AD081F826B5E005F6972 /* SignInRouter.swift */,
 				53D6AD091F826B5E005F6972 /* SignInModels.swift */,
 				53D6AD0A1F826B5E005F6972 /* SignInViewController.swift */,
@@ -793,22 +823,23 @@
 				53CE43C51F8AACEB0050A8C7 /* SongCell.swift in Sources */,
 				53825BCB1F8032CF00566F2C /* ScrobbleViewController.swift in Sources */,
 				53825BCA1F8032CF00566F2C /* ScrobbleModels.swift in Sources */,
-				53221B411F8698AE00FB1A0F /* Session.swift in Sources */,
 				53D6AD101F826B5E005F6972 /* SignInViewController.swift in Sources */,
 				53CE43BE1F8A90870050A8C7 /* ViewScrobblesPresenter.swift in Sources */,
 				53825B881F7E8CC600566F2C /* AppDelegate.swift in Sources */,
 				53B06FEC1F83E8B200FC9AB9 /* SSTextField.swift in Sources */,
 				53ACED671F8160F6008BAB39 /* User.swift in Sources */,
 				53CE43C11F8A90870050A8C7 /* ViewScrobblesModels.swift in Sources */,
-				53D6AD0D1F826B5E005F6972 /* SignInWorker.swift in Sources */,
+				53C75DCC1FA0D2550056D1AB /* LastFmScrobbleService.swift in Sources */,
 				53825BC71F8032CF00566F2C /* ScrobblePresenter.swift in Sources */,
 				53825BC81F8032CF00566F2C /* ScrobbleWorker.swift in Sources */,
 				53CE43C31F8A90870050A8C7 /* ViewScrobblesInteractor.swift in Sources */,
 				53CE43B61F8A88000050A8C7 /* DateGenerator.swift in Sources */,
 				53825BB81F7EE4FD00566F2C /* UIViewLoading.swift in Sources */,
+				536814DF1FB78BDE00F5B233 /* CoreDataDatabase.swift in Sources */,
 				53825BBC1F802A3100566F2C /* LastFM.swift in Sources */,
 				53EA38241F93E5CF00078D20 /* Connectivity.swift in Sources */,
 				5316A6511F82BFB5005193EB /* SongScanner.swift in Sources */,
+				53C75DC91FA0D1000056D1AB /* ScrobbleService.swift in Sources */,
 				53825BCC1F8032CF00566F2C /* ScrobbleInteractor.swift in Sources */,
 				5316A6561F82CBD7005193EB /* SimpleScrob.xcdatamodeld in Sources */,
 				53D9B5761F8156F300C8581B /* Database.swift in Sources */,
@@ -829,6 +860,7 @@
 				5349CC6D1F882ADE0055176B /* PlayedSongTests.swift in Sources */,
 				53221B3B1F8587D900FB1A0F /* LastFM_ApiTests.swift in Sources */,
 				53A0DE141F86A11F00802FD6 /* Mocks.swift in Sources */,
+				538ED2731FC23E4D00C2162B /* LastFmScrobbleService.swift in Sources */,
 				53C580401F8A7A32003AEEBB /* CoreDataHelpers.swift in Sources */,
 				53A0DE0E1F86A09000802FD6 /* ScrobbleInteractorTests.swift in Sources */,
 				53A0DE0D1F86A09000802FD6 /* ScrobbleViewControllerTests.swift in Sources */,

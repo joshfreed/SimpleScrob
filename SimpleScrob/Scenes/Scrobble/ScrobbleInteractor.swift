@@ -12,12 +12,10 @@
 
 import UIKit
 import os.log
-import JFLib
 
 protocol ScrobbleBusinessLogic {
     func refresh(request: Scrobble.Refresh.Request)
     func requestMediaLibraryAuthorization()
-    func initializeMusicLibrary(request: Scrobble.InitializeMusicLibrary.Request)
     func searchForNewScrobbles(request: Scrobble.SearchForNewScrobbles.Request)
     func submitScrobbles(request: Scrobble.SubmitScrobbles.Request)
     func getCurrentUser()
@@ -28,30 +26,46 @@ protocol ScrobbleDataStore {
     
 }
 
+protocol ScrobbleMediaLibrary {
+    func isAuthorized() -> Bool
+    func authorizationDenied() -> Bool
+    func requestAuthorization(complete: @escaping () -> ())
+    func items(since date: Date?) -> [MediaItem]
+}
+
+protocol SongScanner {
+    var isInitialized: Bool { get }
+    func initializeSongDatabase()
+    func searchForNewScrobbles() -> [PlayedSong]
+}
+
 class ScrobbleInteractor: ScrobbleBusinessLogic, ScrobbleDataStore {
     var presenter: ScrobblePresentationLogic?
     let logger = OSLog(subsystem: "com.joshfreed.SimpleScrob", category: "ScrobbleInteractor")
-    let mediaLibrary: MediaLibrary
+    let mediaLibrary: ScrobbleMediaLibrary
     let worker: ScrobbleWorker
-    let songScanner: SongScanner
 
     var playedSongs: [PlayedSong] = []
     
     init(
-        mediaLibrary: MediaLibrary,
-        worker: ScrobbleWorker,
-        songScanner: SongScanner
+        mediaLibrary: ScrobbleMediaLibrary,
+        worker: ScrobbleWorker
     ) {
         self.mediaLibrary = mediaLibrary
         self.worker = worker
-        self.songScanner = songScanner
     }
     
     private func presentMainScreen() {
         if mediaLibrary.isAuthorized() {
             os_log("presentAuthorized", log: logger, type: .debug)
-            let response = Scrobble.Refresh.Response(firstTime: !songScanner.isInitialized)
-            presenter?.presentAuthorized(response: response)
+            if worker.isFirstTime {
+                os_log("Preparing for first time", log: logger, type: .debug)
+                worker.initializeMusicLibrary()
+                presenter?.presentFirstTimeView(response: Scrobble.Refresh.Response())
+            } else {
+                presenter?.presentReadyToScrobble(response: Scrobble.Refresh.Response())
+            }
+            presenter?.presentCurrentUser(response: Scrobble.GetCurrentUser.Response(username: worker.currentUserName))
         } else if mediaLibrary.authorizationDenied() {
             os_log("presentAuthorizationDenied", log: logger, type: .debug)
             presenter?.presentAuthorizationDenied()
@@ -60,12 +74,11 @@ class ScrobbleInteractor: ScrobbleBusinessLogic, ScrobbleDataStore {
             presenter?.presentAuthorizationPrimer()
         }
     }
-    
+
     // MARK: Refresh
 
     func refresh(request: Scrobble.Refresh.Request) {
         os_log("refresh", log: logger, type: .debug)
-        
         presentMainScreen()
     }
     
@@ -76,26 +89,10 @@ class ScrobbleInteractor: ScrobbleBusinessLogic, ScrobbleDataStore {
             self.presentMainScreen()
         }        
     }
-    
-    // MARK: Initialize music library
-    
-    func initializeMusicLibrary(request: Scrobble.InitializeMusicLibrary.Request) {
-        presenter?.presentScanningMusicLibrary()
-        
-        DispatchQueue.global(qos: .background).async {
-            self.songScanner.initializeSongDatabase()
-            
-            DispatchQueue.main.sync {
-                self.presenter?.presentCurrentUser(response: Scrobble.GetCurrentUser.Response(user: self.worker.currentUser))
-                self.presenter?.presentLibraryScanComplete(response: Scrobble.InitializeMusicLibrary.Response())
-            }
-        }
-    }
-    
+
     // MARK: Search for new scrobbles
     
     func searchForNewScrobbles(request: Scrobble.SearchForNewScrobbles.Request) {
-        presenter?.presentCurrentUser(response: Scrobble.GetCurrentUser.Response(user: self.worker.currentUser))
         presenter?.presentSearchingForNewScrobbles()
 
         worker.searchForNewSongsToScrobble() { playedSongs in
@@ -108,30 +105,23 @@ class ScrobbleInteractor: ScrobbleBusinessLogic, ScrobbleDataStore {
     // MARK: Submit scrobbles
     
     func submitScrobbles(request: Scrobble.SubmitScrobbles.Request) {
-        guard playedSongs.count > 0 else {
+        guard playedSongs.count > 0 && worker.isLoggedIn else {
             return
         }
         
         presenter?.presentSubmittingToLastFM()
 
-        delay(seconds: 0.5) {
-            self.worker.submit(songs: self.playedSongs) { error in
-                let response = Scrobble.SubmitScrobbles.Response(error: error)
-                self.presenter?.presentScrobblingComplete(response: response)
-            }
+        worker.submit(songs: self.playedSongs) { error in
+            let response = Scrobble.SubmitScrobbles.Response(error: error)
+            self.presenter?.presentScrobblingComplete(response: response)
         }
     }
     
     // MARK: Get current user
     
     func getCurrentUser() {
-        let response = Scrobble.GetCurrentUser.Response(user: worker.currentUser)
+        let response = Scrobble.GetCurrentUser.Response(username: worker.currentUserName)
         presenter?.presentCurrentUser(response: response)
-        
-        if worker.currentUser != nil && playedSongs.count > 0 {
-            let request = Scrobble.SubmitScrobbles.Request()
-            submitScrobbles(request: request)
-        }
     }
     
     // MARK: Sign Out
@@ -139,7 +129,7 @@ class ScrobbleInteractor: ScrobbleBusinessLogic, ScrobbleDataStore {
     func signOut(request: Scrobble.SignOut.Request) {
         worker.signOut()
         
-        let response = Scrobble.GetCurrentUser.Response(user: worker.currentUser)
+        let response = Scrobble.GetCurrentUser.Response(username: worker.currentUserName)
         presenter?.presentCurrentUser(response: response)
     }
 }

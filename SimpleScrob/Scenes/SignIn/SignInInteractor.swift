@@ -17,21 +17,25 @@ protocol SignInBusinessLogic {
 }
 
 protocol SignInDataStore {
-    //var name: String { get set }
+    
+}
+
+protocol SignInAuthentication {
+    func authenticate(username: String, password: String, completion: @escaping (_ success: Bool) -> ())
 }
 
 class SignInInteractor: SignInBusinessLogic, SignInDataStore {
     var presenter: SignInPresentationLogic?
-    let worker: SignInWorker
+    let auth: SignInAuthentication
     
-    init(worker: SignInWorker) {
-        self.worker = worker
+    init(auth: SignInAuthentication) {
+        self.auth = auth
     }
     
     // MARK: Sign In
 
     func signIn(request: SignIn.SignIn.Request) {
-        worker.signIn(username: request.username, password: request.password) { success in
+        auth.authenticate(username: request.username, password: request.password) { success in
             let response = SignIn.SignIn.Response(success: success)
             self.presenter?.presentSignIn(response: response)
         }

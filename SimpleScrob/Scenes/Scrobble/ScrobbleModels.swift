@@ -20,11 +20,9 @@ enum Scrobble {
         }
 
         struct Response {
-            var firstTime: Bool
         }
 
         struct ViewModel {
-            var firstTime: Bool
         }
     }
     
@@ -76,7 +74,7 @@ enum Scrobble {
         }
         
         struct Response {
-            let user: User?
+            let username: String?
         }
         
         struct ViewModel {

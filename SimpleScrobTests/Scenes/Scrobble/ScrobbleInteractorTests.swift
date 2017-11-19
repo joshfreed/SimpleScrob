@@ -20,7 +20,6 @@ class ScrobbleInteractorTests: XCTestCase {
     let mediaLibrary = MockMediaLibrary()
     let worker = MockScrobbleWorker()
     let database = MockDatabase()
-    let songScanner = MockSongScanner()
 
     // MARK: Test lifecycle
 
@@ -38,8 +37,7 @@ class ScrobbleInteractorTests: XCTestCase {
     func setupScrobbleInteractor() {
         sut = ScrobbleInteractor(
             mediaLibrary: mediaLibrary,
-            worker: worker,
-            songScanner: songScanner
+            worker: worker
         )
     }
 
@@ -47,7 +45,7 @@ class ScrobbleInteractorTests: XCTestCase {
 
     class MockScrobbleWorker: ScrobbleWorker {
         init() {
-            super.init(api: MockLastFMApi(), database: MockDatabase(), session: MockSession(), songScanner: MockSongScanner(), batchUpdater: MockSongUpdater())
+            super.init(database: MockDatabase(), songScanner: MockSongScanner(), scrobbleService: MockScrobbleService())
         }
         
         override func submit(songs: [PlayedSong], completion: @escaping (Error?) -> ()) {
@@ -56,45 +54,35 @@ class ScrobbleInteractorTests: XCTestCase {
     }
     
     class ScrobblePresentationLogicSpy: ScrobblePresentationLogic {
-        func presentAuthorized(response: Scrobble.Refresh.Response) {
+        func presentFirstTimeView(response: Scrobble.Refresh.Response) {
             
         }
-        
+        func presentReadyToScrobble(response: Scrobble.Refresh.Response) {
+            
+        }
         func presentAuthorizationPrimer() {
             
         }
-        
         func presentAuthorizationDenied() {
             
         }
-        
-        func presentScanningMusicLibrary() {
-            
-        }
-        
-        func presentLibraryScanComplete(response: Scrobble.InitializeMusicLibrary.Response) {
-            
-        }
-        
         func presentSearchingForNewScrobbles() {
             
         }
-        
         func presentSongsToScrobble(response: Scrobble.SearchForNewScrobbles.Response) {
             
         }
-        
         func presentSubmittingToLastFM() {
             
-        }
-        
-        func presentCurrentUser(response: Scrobble.GetCurrentUser.Response) {
-        
         }
         
         var presentScrobblingCompleteCalled = false
         func presentScrobblingComplete(response: Scrobble.SubmitScrobbles.Response) {
             presentScrobblingCompleteCalled = true
+        }
+        
+        func presentCurrentUser(response: Scrobble.GetCurrentUser.Response) {
+            
         }
     }
 
