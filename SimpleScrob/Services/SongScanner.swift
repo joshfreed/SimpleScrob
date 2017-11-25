@@ -7,12 +7,11 @@
 //
 
 import Foundation
-import os.log
+import CocoaLumberjack
 
 class SongScannerImpl: SongScanner {
     let mediaLibrary: ScrobbleMediaLibrary
     let dateGenerator: DateGenerator
-    let logger = OSLog(subsystem: "com.joshfreed.SimpleScrob", category: "SongScanner")
     
     var isInitialized: Bool {
         return UserDefaults.standard.bool(forKey: "musicLibraryIsInitialized")
@@ -48,27 +47,27 @@ class SongScannerImpl: SongScanner {
     }
     
     func searchForNewScrobbles() -> [PlayedSong] {
-        os_log("searchForNewScrobbles", log: logger, type: .debug)
+        DDLogDebug("searchForNewScrobbles")
         
         var songs: [PlayedSong] = []
         
         if let scrobbleSearchDate = scrobbleSearchDate {
             let df = DateFormatter()
             df.dateFormat = "yyyy-MM-dd HH:mm:ss"
-            os_log("Last scan date: %@", log: logger, type: .info, df.string(from: scrobbleSearchDate))
+            DDLogInfo("Current Date: \(Date()), Last scan date: \(scrobbleSearchDate)")
         }
         
         for item in mediaLibrary.items(since: scrobbleSearchDate) {
             if let playedSong = PlayedSong(from: item) {
-                os_log("Song %@ - %u - %@", log: logger, type: .debug, playedSong.track ?? "", playedSong.persistentId, playedSong.date as NSDate)
+                DDLogDebug("Song \(playedSong.track ?? "") - \(playedSong.persistentId) - playedSong.date")
                 songs.append(playedSong)
             } else {
-                os_log("Failed to create played song instance for %@ %@", log: logger, type: .error, item.title ?? "", item.artist ?? "")
+                DDLogError("Failed to create played song instance for \(item.title ?? "") \(item.artist ?? "")")
             }
         }
         
-        os_log("Found %i songs to scrobble", log: logger, type: .debug, songs.count)
-        
+        DDLogDebug("Found \(songs.count) songs to scrobble")
+
         UserDefaults.standard.set(dateGenerator.currentDate().timeIntervalSince1970, forKey: "lastScrobbleDate")
         
         return songs

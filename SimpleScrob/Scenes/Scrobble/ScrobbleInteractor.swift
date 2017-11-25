@@ -11,7 +11,7 @@
 //
 
 import UIKit
-import os.log
+import CocoaLumberjack
 
 protocol ScrobbleBusinessLogic {
     func refresh(request: Scrobble.Refresh.Request)
@@ -41,7 +41,6 @@ protocol SongScanner {
 
 class ScrobbleInteractor: ScrobbleBusinessLogic, ScrobbleDataStore {
     var presenter: ScrobblePresentationLogic?
-    let logger = OSLog(subsystem: "com.joshfreed.SimpleScrob", category: "ScrobbleInteractor")
     let mediaLibrary: ScrobbleMediaLibrary
     let worker: ScrobbleWorker
 
@@ -57,9 +56,9 @@ class ScrobbleInteractor: ScrobbleBusinessLogic, ScrobbleDataStore {
     
     private func presentMainScreen() {
         if mediaLibrary.isAuthorized() {
-            os_log("presentAuthorized", log: logger, type: .debug)
+            DDLogDebug("presentAuthorized")
             if worker.isFirstTime {
-                os_log("Preparing for first time", log: logger, type: .debug)
+                DDLogDebug("Preparing for first time")
                 worker.initializeMusicLibrary()
                 presenter?.presentFirstTimeView(response: Scrobble.Refresh.Response())
             } else {
@@ -67,10 +66,10 @@ class ScrobbleInteractor: ScrobbleBusinessLogic, ScrobbleDataStore {
             }
             presenter?.presentCurrentUser(response: Scrobble.GetCurrentUser.Response(username: worker.currentUserName))
         } else if mediaLibrary.authorizationDenied() {
-            os_log("presentAuthorizationDenied", log: logger, type: .debug)
+            DDLogDebug("presentAuthorizationDenied")
             presenter?.presentAuthorizationDenied()
         } else {
-            os_log("presentAuthorizationPrimer", log: logger, type: .debug)
+            DDLogDebug("presentAuthorizationPrimer")
             presenter?.presentAuthorizationPrimer()
         }
     }
@@ -78,7 +77,7 @@ class ScrobbleInteractor: ScrobbleBusinessLogic, ScrobbleDataStore {
     // MARK: Refresh
 
     func refresh(request: Scrobble.Refresh.Request) {
-        os_log("refresh", log: logger, type: .debug)
+        DDLogDebug("refresh")
         presentMainScreen()
     }
     

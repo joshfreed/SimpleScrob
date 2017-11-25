@@ -19,4 +19,5 @@ protocol ScrobbleService: SignInAuthentication {
 
 extension Notification.Name {
     static let signedIn = Notification.Name("signedIn")
+    static let signedOut = Notification.Name("signedOut")
 }

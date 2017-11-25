@@ -1,18 +1,37 @@
 PODS:
   - Alamofire (4.5.1)
+  - CocoaAsyncSocket (7.6.1)
+  - CocoaLumberjack (3.2.1):
+    - CocoaLumberjack/Default (= 3.2.1)
+    - CocoaLumberjack/Extensions (= 3.2.1)
+  - CocoaLumberjack/Default (3.2.1)
+  - CocoaLumberjack/Extensions (3.2.1):
+    - CocoaLumberjack/Default
+  - CocoaLumberjack/Swift (3.2.1):
+    - CocoaLumberjack/Default
   - DateToolsSwift (2.0.3)
   - Nimble (7.0.2)
+  - PaperTrailLumberjack/Core (0.1.8):
+    - CocoaAsyncSocket (~> 7.5)
+    - CocoaLumberjack (~> 3.0)
+  - PaperTrailLumberjack/Swift (0.1.8):
+    - CocoaLumberjack/Swift (~> 3.0)
+    - PaperTrailLumberjack/Core
 
 DEPENDENCIES:
   - Alamofire
   - DateToolsSwift
   - Nimble
+  - PaperTrailLumberjack/Swift
 
 SPEC CHECKSUMS:
   Alamofire: 2d95912bf4c34f164fdfc335872e8c312acaea4a
+  CocoaAsyncSocket: 7eadd3f59e1a6c84e2aefc93e9ff7b55156fe174
+  CocoaLumberjack: 2800c03334042fe80589423c8d80e582dcaec482
   DateToolsSwift: bf69bf9056d9e53c5c03f06e51f219b9b8b02f9e
   Nimble: bfe1f814edabba69ff145cb1283e04ed636a67f2
+  PaperTrailLumberjack: afd1a729641ebb2e10975db30a5f8ebc890cccd6
 
-PODFILE CHECKSUM: 3b321f185904645aa9a16ac59d19994136892944
+PODFILE CHECKSUM: b9e8dd295257f23eb1fb2d696f9ffb1bbf1c7faf
 
 COCOAPODS: 1.3.1

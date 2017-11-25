@@ -9,6 +9,7 @@
 import Foundation
 import JFLib
 import Alamofire
+import CocoaLumberjack
 
 protocol LastFMAPI {
     var sessionKey: String? { get set }
@@ -144,14 +145,14 @@ struct LastFM {
         func post(method: String, params: [String: String], completion: @escaping (LastFM.Result<[String: Any]>) -> ()) {
             let params = makeParams(method: method, params: params)
             
-            print(params)
+            DDLogVerbose(params.debugDescription)
             
             Alamofire.request("https://ws.audioscrobbler.com/2.0", method: .post, parameters: params)
                 .responseJSON { response in
-                    print(response.debugDescription)
+                    DDLogDebug(response.debugDescription)
                     
                     if let json = response.result.value as? [String: Any] {
-                        print("JSON: \(json)")
+                        DDLogDebug("JSON: \(json)")
                         
                         if let code = json["error"] as? Int {
                             let error = LastFM.ErrorType.error(code: code, message: json["message"] as? String)
@@ -182,7 +183,7 @@ struct LastFM {
                 signature += _params[key] ?? ""
             }
             signature += secret
-            print(signature)
+            DDLogDebug(signature)
             return MD5(string: signature)
         }
         
@@ -205,14 +206,14 @@ class FakeLastFM: LastFMAPI {
     var sessionKey: String?
     
     func getMobileSession(username: String, password: String, completion: @escaping (LastFM.Result<LastFM.GetMobileSessionResponse>) -> ()) {
-        print("getMobileSession. Username = '\(username)', Password = '\(password)'")
+        DDLogDebug("getMobileSession. Username = '\(username)', Password = '\(password)'")
         completion(.success(LastFM.GetMobileSessionResponse(name: username, key: "123456", subcriber: false)))
     }
     
     func scrobble(songs: [PlayedSong], completion: @escaping (LastFM.Result<LastFM.ScrobbleResponse>) -> ()) {
-        print("Scrobbling \(songs.count) songs")
+        DDLogDebug("Scrobbling \(songs.count) songs")
         for song in songs {
-            print("Scrobbling \(song.track ?? "") by \(song.artist ?? "")")
+            DDLogDebug("Scrobbling \(song.track ?? "") by \(song.artist ?? "")")
         }
 //        completion(.failure(.error(code: 77, message: "YOU SUCK")))
         delay(seconds: 1.2) {

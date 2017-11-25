@@ -8,12 +8,11 @@
 
 import Foundation
 import CoreData
-import os.log
+import CocoaLumberjack
 import MediaPlayer
 
 class CoreDataDatabase: Database {
     let container: NSPersistentContainer
-    let logger = OSLog(subsystem: "com.joshfreed.SimpleScrob", category: "CoreDataDatabase")
     
     init(container: NSPersistentContainer) {
         self.container = container
@@ -45,10 +44,11 @@ class CoreDataDatabase: Database {
             if managedSongs.count == 1 {
                 managedSong = managedSongs.first
             } else if managedSongs.count > 1 {
-                os_log("Found %i songs with the same id.", log: logger, type: .error, managedSongs.count)
+                DDLogError("Found \(managedSongs.count) songs with the same id")
             }
         } catch {
             let nserror = error as NSError
+            DDLogError("Unresolved error \(nserror), \(nserror.userInfo)")
             fatalError("Unresolved error \(nserror), \(nserror.userInfo)")
         }
         
@@ -124,7 +124,7 @@ class CoreDataDatabase: Database {
     }
     
     func save(playedSongs: [PlayedSong], completion: @escaping () -> ()) {
-        os_log("Saving %i songs", log: logger, type: .info, playedSongs.count)
+        DDLogDebug("Saving \(playedSongs.count) songs")
         
         container.performBackgroundTask { context in
             let managedSongs = self.fetchManagedPlayedSongs(for: playedSongs, in: context)
@@ -138,7 +138,7 @@ class CoreDataDatabase: Database {
                     //                    managedSong.track = song.track
                     //                    managedSong.datePlayed = song.date
                     managedSong.status = song.status.rawValue
-                    os_log("Updating song entity %@ %@ %@ %@", log: self.logger, type: .debug, managedSong.persistentId ?? "", managedSong.track ?? "", managedSong.status ?? "", (managedSong.datePlayed as? NSDate) ?? NSDate(timeIntervalSince1970: 0))
+                    DDLogDebug("Updating song entity \(managedSong.persistentId ?? ""), \(managedSong.track ?? ""), \(managedSong.status ?? ""), \(String(describing: managedSong.datePlayed))")
                 }
             }
             
@@ -148,7 +148,7 @@ class CoreDataDatabase: Database {
                 fatalError("Failure to save context: \(error)")
             }
             
-            os_log("Save complete", log: self.logger, type: .debug)
+            DDLogDebug("Save complete")
             
             completion()
         }

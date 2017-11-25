@@ -12,6 +12,7 @@
 
 import UIKit
 import JFLib
+import CocoaLumberjack
 
 class ScrobbleWorker {
     let database: Database
@@ -52,7 +53,7 @@ class ScrobbleWorker {
         DispatchQueue.global(qos: .background).async {
             let playedSongs: [PlayedSong] = self.songScanner.searchForNewScrobbles()
 
-            print("Found \(playedSongs.count) played songs")
+            DDLogDebug("Found \(playedSongs.count) played songs")
             
             self.database.insert(playedSongs: playedSongs) {
                 self.database.findUnscrobbledSongs { playedSongs in

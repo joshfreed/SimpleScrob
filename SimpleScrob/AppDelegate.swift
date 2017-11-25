@@ -8,6 +8,7 @@
 
 import UIKit
 import CoreData
+import PaperTrailLumberjack
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -44,8 +45,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                 #if DEBUG
                 _lastFM = FakeLastFM()
                 #else
-                let apiKey = ""
-                let secret = ""
+                let apiKey = "f27fb27503f9aa73c6f308fd9e3bc7f0"
+                let secret = "f0ec0f81ae932843046997ef89ce60cc"
                 _lastFM = LastFM.API(engine: LastFM.RestEngine(apiKey: apiKey, secret: secret))
                 #endif
             }
@@ -70,8 +71,35 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
     
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
-        scrobbleService.resumeSession()        
+        DDLog.add(DDOSLogger.sharedInstance) // TTY = Xcode console
+        
+        let paperTrailLogger = RMPaperTrailLogger.sharedInstance()
+        paperTrailLogger?.host = "logs6.papertrailapp.com"
+        paperTrailLogger?.port = 22232
+        paperTrailLogger?.machineName = "SimpleScrob"
+        paperTrailLogger?.programName = "no user"
+        DDLog.add(paperTrailLogger!)
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(userSignedIn), name: .signedIn, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(userSignedOut), name: .signedOut, object: nil)
+        
+        scrobbleService.resumeSession()
+        
+        if scrobbleService.isLoggedIn {
+            paperTrailLogger?.programName = scrobbleService.currentUserName
+        }
+        
+        DDLogVerbose("Hi papertrailapp.com")
+        
         return true
+    }
+    
+    @objc func userSignedIn() {
+        RMPaperTrailLogger.sharedInstance()?.programName = scrobbleService.currentUserName
+    }
+    
+    @objc func userSignedOut() {
+        RMPaperTrailLogger.sharedInstance()?.programName = "no user"
     }
 
     func applicationWillResignActive(_ application: UIApplication) {
