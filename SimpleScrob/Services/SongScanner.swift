@@ -66,7 +66,7 @@ class SongScannerImpl: SongScanner {
             }
         }
         
-        DDLogDebug("Found \(songs.count) songs to scrobble")
+        DDLogDebug("Found \(songs.count) recently played songs")
 
         UserDefaults.standard.set(dateGenerator.currentDate().timeIntervalSince1970, forKey: "lastScrobbleDate")
         

@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import CocoaLumberjack
 
 class LastFmScrobbleService: ScrobbleService {
     var isLoggedIn: Bool {
@@ -55,6 +56,8 @@ class LastFmScrobbleService: ScrobbleService {
     }
     
     func scrobble(songs: [PlayedSong], completion: @escaping ([PlayedSong], Error?) -> ()) {
+        DDLogDebug("Scrobbling \(songs.count) songs")
+        
         guard isLoggedIn else {
             return completion(
                 markNotScrobbled(songs: songs, with: .notSignedIn),
@@ -81,19 +84,26 @@ class LastFmScrobbleService: ScrobbleService {
             return completion(done, nil)
         }
         
+        DDLogDebug("Scrobbling batch with \(batch.count) songs")
+        for song in batch {
+            DDLogDebug("Scrobbling \(song.track ?? "") by \(song.artist ?? "") last played \(song.date)")
+        }
+        
         api.scrobble(songs: batch) { result in
             // Error codes 11, 16 mean we need to try again. Halt the batch submission and print a message "Temporarily unavailable, try again."
-            // Error code 9 means bad session, need to re-auth. Halt the batch and print ""
+            // Error code 9 means bad session, need to re-auth. Halt the batch and print "bad session" or maybe prompt to relogin?
             // All other error code mean the request was malformed in some way and should not be retried
             // All of the above should halt the batch and inform the interactor to present an error.
             // However, any songs that WERE scrobbled should be remembered - updated in the database; NOT scrobbled again
             
             switch result {
             case .success(let response):
+                DDLogDebug("Batch scrobbled successfully")
                 var _done = done
                 _done.append(contentsOf: self.markScrobbled(songs: batch))
                 self.submitBatch(start: end, songs: songs, completion: completion, done: _done)
             case .failure(let error):
+                DDLogDebug("Error scrobbling batch: \(error)")
                 var _done = done
                 _done.append(contentsOf: self.markFailed(songs: batch, with: error))
                 _done.append(contentsOf: songs[end..<songs.count])

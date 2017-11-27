@@ -145,7 +145,7 @@ struct LastFM {
         func post(method: String, params: [String: String], completion: @escaping (LastFM.Result<[String: Any]>) -> ()) {
             let params = makeParams(method: method, params: params)
             
-            DDLogVerbose(params.debugDescription)
+            DDLogVerbose("POST \(method) \(params.debugDescription)")
             
             Alamofire.request("https://ws.audioscrobbler.com/2.0", method: .post, parameters: params)
                 .responseJSON { response in
@@ -206,14 +206,14 @@ class FakeLastFM: LastFMAPI {
     var sessionKey: String?
     
     func getMobileSession(username: String, password: String, completion: @escaping (LastFM.Result<LastFM.GetMobileSessionResponse>) -> ()) {
-        DDLogDebug("getMobileSession. Username = '\(username)', Password = '\(password)'")
+        print("getMobileSession. Username = '\(username)', Password = '\(password)'")
         completion(.success(LastFM.GetMobileSessionResponse(name: username, key: "123456", subcriber: false)))
     }
     
     func scrobble(songs: [PlayedSong], completion: @escaping (LastFM.Result<LastFM.ScrobbleResponse>) -> ()) {
-        DDLogDebug("Scrobbling \(songs.count) songs")
+        print("Scrobbling \(songs.count) songs")
         for song in songs {
-            DDLogDebug("Scrobbling \(song.track ?? "") by \(song.artist ?? "")")
+            print("Scrobbling \(song.track ?? "") by \(song.artist ?? "")")
         }
 //        completion(.failure(.error(code: 77, message: "YOU SUCK")))
         delay(seconds: 1.2) {

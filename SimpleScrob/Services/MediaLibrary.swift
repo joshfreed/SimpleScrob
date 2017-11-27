@@ -23,6 +23,7 @@ class MediaLibrary: ScrobbleMediaLibrary, ViewScrobblesArtworkFetcher {
     var items: [MediaItem] {
         #if DEBUG
             return [
+                MediaItem(persistentId: 3, lastPlayedDate: makeDate(string: "2017-11-25 21:36:00"), artist: "Beardfish", album: "Sleeping in Traffic: Part One", title: "And Never Know", artwork: nil),
                 MediaItem(persistentId: 2, lastPlayedDate: makeDate(string: "2017-11-25 20:18:58"), artist: "Beardfish", album: "Sleeping in Traffic: Part One", title: "Afternoon Conversation", artwork: nil),
                 MediaItem(persistentId: 1, lastPlayedDate: makeDate(string: "2017-11-19 18:18:58"), artist: "Beardfish", album: "Sleeping in Traffic: Part One", title: "Sunrise", artwork: nil),
                 MediaItem(persistentId: 8, lastPlayedDate: makeDate(string: "2017-10-16 14:18:00"), artist: "Beardfish", album: "Sleeping in Traffic: Part One", title: "Year of the Knife", artwork: nil),
