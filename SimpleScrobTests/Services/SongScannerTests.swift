@@ -16,6 +16,7 @@ class SongScannerTests: XCTestCase {
     let database = MockDatabase()
     let dateGenerator = MockDateGenerator()
     let oneDay: TimeInterval = 3600 * 24
+    let twoDays: TimeInterval = 3600 * 24 * 2
     
     override func setUp() {
         super.setUp()
@@ -47,11 +48,11 @@ class SongScannerTests: XCTestCase {
     }
     
     func testScrobbleSearchDate_set_to_date_last_searched() {
-        dateGenerator.rewind(oneDay)
+        dateGenerator.rewind(twoDays)
         sut.initializeSongDatabase()
-        dateGenerator.advance(oneDay)
+        dateGenerator.advance(twoDays)
         let _ = sut.searchForNewScrobbles()
-        let expected = dateGenerator.currentDate().addingTimeInterval(-3600)
+        let expected = dateGenerator.currentDate().addingTimeInterval(-oneDay)
         
         expect(self.sut.scrobbleSearchDate).to(beCloseTo(expected))
     }

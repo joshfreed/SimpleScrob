@@ -12,6 +12,7 @@
 
 @testable import SimpleScrob
 import XCTest
+import Nimble
 
 class ScrobbleInteractorTests: XCTestCase {
     // MARK: Subject under test
@@ -20,11 +21,15 @@ class ScrobbleInteractorTests: XCTestCase {
     let mediaLibrary = MockMediaLibrary()
     let worker = MockScrobbleWorker()
     let database = MockDatabase()
+    let spy = ScrobblePresentationLogicSpy()
+    let df = DateFormatter()
 
     // MARK: Test lifecycle
 
     override func setUp() {
         super.setUp()
+        continueAfterFailure = false
+        df.dateFormat = "yyyy-MM-dd HH:mm:ss"
         setupScrobbleInteractor()
     }
 
@@ -39,6 +44,7 @@ class ScrobbleInteractorTests: XCTestCase {
             mediaLibrary: mediaLibrary,
             worker: worker
         )
+        sut.presenter = spy
     }
 
     // MARK: Test doubles
@@ -48,8 +54,51 @@ class ScrobbleInteractorTests: XCTestCase {
             super.init(database: MockDatabase(), songScanner: MockSongScanner(), scrobbleService: MockScrobbleService())
         }
         
+        private var _isFirstTime = false
+        override var isFirstTime: Bool {
+            return _isFirstTime
+        }
+        func setFirstTime() {
+            _isFirstTime = true
+        }
+        
+        private var _isLoggedIn = false
+        override var isLoggedIn: Bool {
+            return _isLoggedIn
+        }
+        func loggedIn(as username: String?) {
+            _isLoggedIn = true
+            _username = username
+        }
+        
+        private var _username: String?
+        override var currentUserName: String? {
+            return _username
+        }
+        
+        var submitWasCalled = false
+        var submit_songs: [PlayedSong] = []
+        var submit_error: Error?
         override func submit(songs: [PlayedSong], completion: @escaping (Error?) -> ()) {
-            completion(nil)
+            submitWasCalled = true
+            submit_songs = songs
+            completion(submit_error)
+        }
+        
+        var newSongsToScrobble: [PlayedSong] = []
+        private var searchForNewSongsToScrobbleWasCalled = false
+        override func searchForNewSongsToScrobble(completion: @escaping ([PlayedSong]) -> ()) {
+            searchForNewSongsToScrobbleWasCalled = true
+            completion(newSongsToScrobble)
+        }
+        
+        func verifySearchedForNewSongsToScrobble() {
+            expect(self.searchForNewSongsToScrobbleWasCalled).to(beTrue())
+        }
+        
+        func verifySubmitted(songs: [PlayedSong]) {
+            expect(self.submitWasCalled).to(beTrue())
+            expect(self.submit_songs).to(equal(songs))
         }
     }
     
@@ -57,47 +106,116 @@ class ScrobbleInteractorTests: XCTestCase {
         func presentFirstTimeView(response: Scrobble.Refresh.Response) {
             
         }
+        
+        private var presentReadyToScrobbleWasCalled = false
         func presentReadyToScrobble(response: Scrobble.Refresh.Response) {
-            
+            presentReadyToScrobbleWasCalled = true
         }
+        func verifyPresentReadyToScrobble() {
+            expect(self.presentReadyToScrobbleWasCalled).to(beTrue())
+        }
+        
         func presentAuthorizationPrimer() {
             
         }
         func presentAuthorizationDenied() {
             
         }
+        
+        private var presentSearchingForNewScrobblesWasCalled = false
         func presentSearchingForNewScrobbles() {
-            
+            presentSearchingForNewScrobblesWasCalled = true
         }
+        func verifyPresentSearchingForNewScrobbles() {
+            expect(self.presentSearchingForNewScrobblesWasCalled).to(beTrue())
+        }
+        
+        private var presentSongsToScrobbleResponse: Scrobble.SearchForNewScrobbles.Response?
         func presentSongsToScrobble(response: Scrobble.SearchForNewScrobbles.Response) {
-            
+            presentSongsToScrobbleResponse = response
         }
-        func presentSubmittingToLastFM() {
+        func verifyPresentedSongsToScrobble(songs: [PlayedSong]) {
+            guard let response = presentSongsToScrobbleResponse else {
+                fail("Did not call presentSongsToScrobble")
+                return
+            }
             
+            expect(response.songs).to(equal(songs))
+        }
+        
+        var presentSubmittingToLastFMWasCalled = false
+        func presentSubmittingToLastFM() {
+            presentSubmittingToLastFMWasCalled = true
+        }
+        func verifyPresentedSubmittingToLastFM() {
+            expect(self.presentSubmittingToLastFMWasCalled).to(beTrue())
         }
         
         var presentScrobblingCompleteCalled = false
+        var presentScrobblingCompleteResponse: Scrobble.SubmitScrobbles.Response?
         func presentScrobblingComplete(response: Scrobble.SubmitScrobbles.Response) {
             presentScrobblingCompleteCalled = true
+            presentScrobblingCompleteResponse = response
+        }
+        func verifyPresentedScrobblingComplete(error: Error?) {
+            expect(self.presentScrobblingCompleteCalled).to(beTrue())
+            expect(self.presentScrobblingCompleteResponse).toNot(beNil())
+            if let error = error {
+                
+            } else {
+                expect(self.presentScrobblingCompleteResponse?.error).to(beNil())
+            }
         }
         
+        var presentCurrentUserResponse: Scrobble.GetCurrentUser.Response?
         func presentCurrentUser(response: Scrobble.GetCurrentUser.Response) {
+            presentCurrentUserResponse = response
+        }
+        func verifyPresentedCurrentUser(username: String) {
+            guard let response = presentCurrentUserResponse else {
+                fail("presentedCurrentUser was not called")
+                return
+            }
             
+            expect(response.username).to(equal(username))
         }
     }
 
     // MARK: Tests
 
-//    func testSubmitScrobbles() {
-//        // Given
-//        let spy = ScrobblePresentationLogicSpy()
-//        sut.presenter = spy
-//        let request = Scrobble.SubmitScrobbles.Request()        
-//
-//        // When
-//        sut.submitScrobbles(request: request)
-//
-//        // Then
-//        XCTAssertTrue(spy.presentScrobblingCompleteCalled, "doSomething(request:) should ask the presenter to format the result")
-//    }
+    func testRefreshHappyPath() {
+        // Given
+        worker.loggedIn(as: "jfreed")
+        mediaLibrary.authorized()
+        worker.newSongsToScrobble = [
+            makePlayedSong(persistendId: 1, playedAt: "2017-12-01 14:00:00", artist: "The Dear Hunter", album: "Act II", track: "Red Hands"),
+            makePlayedSong(persistendId: 2, playedAt: "2017-12-01 14:00:00", artist: "Beardfish", album: "Sleeping in Traffic", track: "The Hunter")
+        ]
+
+        // When
+        sut.refresh(request: Scrobble.Refresh.Request())
+        
+        // Then
+        spy.verifyPresentedCurrentUser(username: "jfreed")
+        spy.verifyPresentReadyToScrobble()
+        spy.verifyPresentSearchingForNewScrobbles()
+        worker.verifySearchedForNewSongsToScrobble()
+        spy.verifyPresentedSongsToScrobble(songs: worker.newSongsToScrobble)
+        spy.verifyPresentedSubmittingToLastFM()
+        worker.verifySubmitted(songs: worker.newSongsToScrobble)
+        spy.verifyPresentedScrobblingComplete(error: nil)
+    }
+    
+    // Helper Funcs
+    
+    private func makePlayedSong(
+        persistendId: MediaEntityPersistentId,
+        playedAt: String,
+        artist: String,
+        album: String,
+        track: String
+    ) -> PlayedSong {
+        let date = df.date(from: playedAt)
+        return PlayedSong(persistentId: persistendId, date: date!, artist: artist, album: album, track: track)
+    }
 }

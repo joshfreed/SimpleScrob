@@ -1065,6 +1065,7 @@
 			baseConfigurationReference = 8AF97AADA51D9B4163C05B2E /* Pods-SimpleScrobTests.debug.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
+				CLANG_ENABLE_CODE_COVERAGE = YES;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = Q96RZM5NAK;
 				INFOPLIST_FILE = SimpleScrobTests/Info.plist;
@@ -1082,6 +1083,7 @@
 			baseConfigurationReference = 4834C745F470D255FABD22BB /* Pods-SimpleScrobTests.release.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
+				CLANG_ENABLE_CODE_COVERAGE = YES;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = Q96RZM5NAK;
 				INFOPLIST_FILE = SimpleScrobTests/Info.plist;
@@ -1099,6 +1101,7 @@
 			baseConfigurationReference = 7D35E46A2C0AB96A2F7067B1 /* Pods-SimpleScrobUITests.debug.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				CLANG_ENABLE_CODE_COVERAGE = YES;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = Q96RZM5NAK;
 				INFOPLIST_FILE = SimpleScrobUITests/Info.plist;
@@ -1116,6 +1119,7 @@
 			baseConfigurationReference = 8C9D817B21A4FCEEB779CFFE /* Pods-SimpleScrobUITests.release.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				CLANG_ENABLE_CODE_COVERAGE = YES;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = Q96RZM5NAK;
 				INFOPLIST_FILE = SimpleScrobUITests/Info.plist;

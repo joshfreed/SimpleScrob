@@ -152,8 +152,6 @@ struct LastFM {
                     DDLogDebug(response.debugDescription)
                     
                     if let json = response.result.value as? [String: Any] {
-                        DDLogDebug("JSON: \(json)")
-                        
                         if let code = json["error"] as? Int {
                             let error = LastFM.ErrorType.error(code: code, message: json["message"] as? String)
                             completion(.failure(error))

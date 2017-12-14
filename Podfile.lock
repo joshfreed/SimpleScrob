@@ -22,7 +22,16 @@ DEPENDENCIES:
   - Alamofire
   - DateToolsSwift
   - Nimble
-  - PaperTrailLumberjack/Swift
+  - PaperTrailLumberjack/Swift (from `https://github.com/joshfreed/papertraillumberjack`)
+
+EXTERNAL SOURCES:
+  PaperTrailLumberjack:
+    :git: https://github.com/joshfreed/papertraillumberjack
+
+CHECKOUT OPTIONS:
+  PaperTrailLumberjack:
+    :commit: f46e592f99b212c1388ae236ae354b5b097a042a
+    :git: https://github.com/joshfreed/papertraillumberjack
 
 SPEC CHECKSUMS:
   Alamofire: 2d95912bf4c34f164fdfc335872e8c312acaea4a
@@ -30,8 +39,8 @@ SPEC CHECKSUMS:
   CocoaLumberjack: 2800c03334042fe80589423c8d80e582dcaec482
   DateToolsSwift: bf69bf9056d9e53c5c03f06e51f219b9b8b02f9e
   Nimble: bfe1f814edabba69ff145cb1283e04ed636a67f2
-  PaperTrailLumberjack: afd1a729641ebb2e10975db30a5f8ebc890cccd6
+  PaperTrailLumberjack: fb0664959c23b17e9663ad01ebd242d34d2082fd
 
-PODFILE CHECKSUM: b9e8dd295257f23eb1fb2d696f9ffb1bbf1c7faf
+PODFILE CHECKSUM: 68b05a4fd5f638438409ad0f75db25d6f5a23fc8
 
 COCOAPODS: 1.3.1

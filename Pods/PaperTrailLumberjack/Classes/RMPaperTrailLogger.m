@@ -80,6 +80,17 @@
     }
 }
 
+-(void) disconnectAfterReadingAndWriting
+{
+    if (self.tcpSocket != nil) {
+        [self.tcpSocket disconnectAfterReadingAndWriting];
+        self.tcpSocket = nil;
+    } else if (self.udpSocket != nil) {
+        [self.udpSocket close];
+        self.udpSocket = nil;
+    }
+}
+
 -(void) logMessage:(DDLogMessage *)logMessage
 {
     if (self.host == nil || self.host.length == 0 || self.port == 0)

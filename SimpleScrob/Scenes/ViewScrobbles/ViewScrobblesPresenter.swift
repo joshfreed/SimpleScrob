@@ -11,6 +11,7 @@
 //
 
 import UIKit
+import CocoaLumberjack
 
 protocol ViewScrobblesPresentationLogic {
     func presentScrobbleHistory(response: ViewScrobbles.GetScrobbleHistory.Response)
@@ -22,6 +23,9 @@ class ViewScrobblesPresenter: ViewScrobblesPresentationLogic {
     // MARK: Get scrobble history
 
     func presentScrobbleHistory(response: ViewScrobbles.GetScrobbleHistory.Response) {
+        let df = DateFormatter()
+        df.dateFormat = "yyyy-MM-dd HH:mm:ss"
+        
         let scrobbles: [ViewScrobbles.DisplayedScrobble] = response.scrobbles.map {
             var imageName: String
             var statusColor: UIColor
@@ -39,6 +43,8 @@ class ViewScrobblesPresenter: ViewScrobblesPresentationLogic {
                 imageName = "not-scrobbled"
                 statusColor = .yellow
             }
+            
+//            DDLogVerbose("Date Played \(df.string(from: $0.date)), \($0.date.shortTimeAgoSinceNow)")
             
             return ViewScrobbles.DisplayedScrobble(
                 artist: $0.artist,

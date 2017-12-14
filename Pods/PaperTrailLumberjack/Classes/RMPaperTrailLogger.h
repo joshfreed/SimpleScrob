@@ -59,4 +59,15 @@
  */
 + (RMPaperTrailLogger* _Nullable)sharedInstance;
 
+/**
+ Immediately disconnects the socket
+ */
+-(void) disconnect;
+
+/**
+ Disconnects after finishing any pending reads or writes, if TCP. If UDP, disconnects immediately
+ */
+-(void) disconnectAfterReadingAndWriting;
+
+
 @end

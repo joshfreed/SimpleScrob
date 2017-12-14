@@ -44,8 +44,13 @@ class LastFmScrobbleService: ScrobbleService {
     }
     
     func signOut() {
+        sessionKey = nil
+        currentUserName = nil
+        api.sessionKey = nil
+        
         UserDefaults.standard.removeObject(forKey: "username")
         UserDefaults.standard.removeObject(forKey: "sessionKey")
+        
         NotificationCenter.default.post(name: .signedOut, object: nil)
     }
     

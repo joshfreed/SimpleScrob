@@ -9,6 +9,9 @@
 import Foundation
 import CocoaLumberjack
 
+let ONE_HOUR: Double = 3600
+let ONE_DAY: Double = ONE_HOUR * 24
+
 class SongScannerImpl: SongScanner {
     let mediaLibrary: ScrobbleMediaLibrary
     let dateGenerator: DateGenerator
@@ -22,7 +25,7 @@ class SongScannerImpl: SongScanner {
         let initializedAt = UserDefaults.standard.double(forKey: "initlizationDate")
         if lastSearchedAt > 0 {
             let date = Date(timeIntervalSince1970: lastSearchedAt)
-            return date.addingTimeInterval(-3600)
+            return date.addingTimeInterval(-ONE_DAY)
         } else if initializedAt > 0 {
             return Date(timeIntervalSince1970: initializedAt)
         } else {
@@ -48,18 +51,18 @@ class SongScannerImpl: SongScanner {
     
     func searchForNewScrobbles() -> [PlayedSong] {
         DDLogDebug("searchForNewScrobbles")
+        let df = DateFormatter()
+        df.dateFormat = "yyyy-MM-dd HH:mm:ss"
         
         var songs: [PlayedSong] = []
         
         if let scrobbleSearchDate = scrobbleSearchDate {
-            let df = DateFormatter()
-            df.dateFormat = "yyyy-MM-dd HH:mm:ss"
-            DDLogInfo("Current Date: \(Date()), Last scan date: \(scrobbleSearchDate)")
+            DDLogInfo("Current Date: \(df.string(from: Date())), Last scan date: \(df.string(from: scrobbleSearchDate))")
         }
         
         for item in mediaLibrary.items(since: scrobbleSearchDate) {
             if let playedSong = PlayedSong(from: item) {
-                DDLogDebug("Song \(playedSong.track ?? "") - \(playedSong.persistentId) - playedSong.date")
+                DDLogDebug("Song \(playedSong.track ?? "") - \(playedSong.persistentId) - \(df.string(from: playedSong.date))")
                 songs.append(playedSong)
             } else {
                 DDLogError("Failed to create played song instance for \(item.title ?? "") \(item.artist ?? "")")

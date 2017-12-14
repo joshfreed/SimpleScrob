@@ -11,6 +11,7 @@
 //
 
 import UIKit
+import CocoaLumberjack
 
 protocol ScrobbleDisplayLogic: class {
     func displayFirstTimeView(viewModel: Scrobble.Refresh.ViewModel)
@@ -96,8 +97,10 @@ class ScrobbleViewController: UIViewController, ScrobbleDisplayLogic {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        NotificationCenter.default.addObserver(self, selector: #selector(refresh), name: .UIApplicationWillEnterForeground, object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(userSignedIn), name: .signedIn, object: nil)
+        if !UserDefaults.standard.bool(forKey: "isTest") {
+            NotificationCenter.default.addObserver(self, selector: #selector(refresh), name: .UIApplicationDidBecomeActive, object: nil)
+            NotificationCenter.default.addObserver(self, selector: #selector(userSignedIn), name: .signedIn, object: nil)
+        }
         
         mediaAuthPrimerView = MediaAuthPrimerView.loadFromNib()
         mediaAuthPrimerView!.delegate = self
@@ -107,14 +110,10 @@ class ScrobbleViewController: UIViewController, ScrobbleDisplayLogic {
         
         activityIndicator.startAnimating()
         
-        refresh()
+        currentUserButton.isHidden = true
+        resetUI()
     }
-    
-    @objc func applicationDidBecomeActive() {
-        
-        refresh()
-    }
-    
+
     @objc func userSignedIn() {
         interactor?.getCurrentUser()
         
@@ -137,8 +136,6 @@ class ScrobbleViewController: UIViewController, ScrobbleDisplayLogic {
     // MARK: Refresh
 
     @objc func refresh() {
-        resetUI()
-        
         let request = Scrobble.Refresh.Request()
         interactor?.refresh(request: request)
     }
@@ -147,7 +144,6 @@ class ScrobbleViewController: UIViewController, ScrobbleDisplayLogic {
         statusLabel.isHidden = true
         activityIndicator.stopAnimating()
         signInButton.isHidden = true
-        currentUserButton.isHidden = true
         mediaAuthPrimerView?.isHidden = true
         doneLabel.isHidden = true
         scrobbleCountLabel.isHidden = true
@@ -166,14 +162,16 @@ class ScrobbleViewController: UIViewController, ScrobbleDisplayLogic {
     }
     
     func displayReadyToScrobble(viewModel: Scrobble.Refresh.ViewModel) {
+        DDLogVerbose("ScrobbleViewController::displayReadyToScrobble")
+        
         requestAuthorizationButton.isHidden = true
         statusLabel.text = ""
         viewScrobblesButton.isHidden = false
         viewScrobblesHitAreaButton.isHidden = false
         
-        // Automatically submit new scrobbles
-        let request = Scrobble.SearchForNewScrobbles.Request()
-        interactor?.searchForNewScrobbles(request: request)
+        // Automatically search for new scrobbles
+//        let request = Scrobble.SearchForNewScrobbles.Request()
+//        interactor?.searchForNewScrobbles(request: request)
     }
 
     func displayAuthorizationPrimer() {
@@ -195,6 +193,7 @@ class ScrobbleViewController: UIViewController, ScrobbleDisplayLogic {
     // MARK: Search for new scrobbles
     
     func displaySearchingForNewScrobbles() {
+        resetUI()
         statusLabel.isHidden = false
         statusLabel.text = "Searching for new scrobbles..."
         activityIndicator.startAnimating()
@@ -209,11 +208,14 @@ class ScrobbleViewController: UIViewController, ScrobbleDisplayLogic {
         scrobbleCountLabel.text = message
 
         // Automatically submit new scrobbles
-        let request = Scrobble.SubmitScrobbles.Request()
-        interactor?.submitScrobbles(request: request)
+//        let request = Scrobble.SubmitScrobbles.Request()
+//        interactor?.submitScrobbles(request: request)
     }
     
     func displayNoSongsToScrobble() {
+        DDLogVerbose("ScrobbleViewController::displayNoSongsToScrobble")
+        resetUI()
+        statusLabel.isHidden = false
         statusLabel.text = "No songs to scrobble."
         activityIndicator.stopAnimating()
     }
@@ -234,6 +236,8 @@ class ScrobbleViewController: UIViewController, ScrobbleDisplayLogic {
     }
     
     func displayScrobblingComplete(viewModel: Scrobble.SubmitScrobbles.ViewModel) {
+        statusLabel.isHidden = false
+        
         if let error = viewModel.error {
             activityIndicator.stopAnimating()
             errorLabel.text = error

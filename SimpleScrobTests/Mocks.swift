@@ -10,19 +10,38 @@ import Foundation
 @testable import SimpleScrob
 import MediaPlayer
 
-class MockMediaLibrary: MediaLibrary {
-    override init() {
-        super.init()
-    }
+class MockMediaLibrary: ScrobbleMediaLibrary {
+    private var _isAuthorized = false
+    private var _isAuthorizationDenied = false
     
     var _items: [MediaItem] = []
     
-    override var items: [MediaItem] {
+    var items: [MediaItem] {
         return _items
     }
     
-    override func items(since date: Date?) -> [MediaItem] {
+    func items(since date: Date?) -> [MediaItem] {
         return _items
+    }
+    
+    func authorized() {
+        _isAuthorized = true
+    }
+    
+    func isAuthorized() -> Bool {
+        return _isAuthorized
+    }
+    
+    func setAuthorizationDenied() {
+        _isAuthorizationDenied = true
+    }
+    
+    func authorizationDenied() -> Bool {
+        return _isAuthorizationDenied
+    }
+    
+    func requestAuthorization(complete: @escaping () -> ()) {
+        
     }
 }
 

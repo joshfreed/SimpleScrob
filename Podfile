@@ -8,7 +8,7 @@ target 'SimpleScrob' do
   # Pods for SimpleScrob
   pod 'Alamofire'
   pod 'DateToolsSwift'
-  pod 'PaperTrailLumberjack/Swift'
+  pod 'PaperTrailLumberjack/Swift', :git => 'https://github.com/joshfreed/papertraillumberjack'
 
   target 'SimpleScrobTests' do
     inherit! :search_paths
