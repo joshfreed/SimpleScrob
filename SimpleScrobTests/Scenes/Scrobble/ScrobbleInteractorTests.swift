@@ -51,7 +51,12 @@ class ScrobbleInteractorTests: XCTestCase {
 
     class MockScrobbleWorker: ScrobbleWorker {
         init() {
-            super.init(database: MockDatabase(), songScanner: MockSongScanner(), scrobbleService: MockScrobbleService())
+            super.init(
+                database: MockDatabase(),
+                songScanner: MockSongScanner(),
+                scrobbleService: MockScrobbleService(),
+                connectivity: MockConnectivity()
+            )
         }
         
         private var _isFirstTime = false

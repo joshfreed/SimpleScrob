@@ -69,7 +69,6 @@ class LastFmScrobbleService: ScrobbleService {
                 LastFM.ErrorType.notSignedIn
             )
         }
-        // todo : must be connected to the network
         
         submitBatch(start: 0, songs: songs, completion: completion, done: [])
     }

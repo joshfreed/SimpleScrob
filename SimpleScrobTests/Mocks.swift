@@ -148,7 +148,26 @@ class MockScrobbleService: ScrobbleService {
     func resumeSession() {
         
     }
+    
+    var scrobble_songs: [PlayedSong] = []
+    var scrobble_updatedSongs: [PlayedSong] = []
+    var scrobble_error: Error?
+    var scrobbleCallCount = 0
     func scrobble(songs: [PlayedSong], completion: @escaping ([PlayedSong], Error?) -> ()) {
-        
+        scrobbleCallCount += 1
+        scrobble_songs = songs
+        completion(scrobble_updatedSongs, scrobble_error)
+    }
+}
+
+class MockConnectivity: Connectivity {
+    var isConnectedToInternet: Bool = true
+    
+    func setConnected() {
+        isConnectedToInternet = true
+    }
+    
+    func setNotConnected() {
+        isConnectedToInternet = false
     }
 }

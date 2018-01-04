@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		18C6D8AE86E6F68E803FFABA /* Pods_SimpleScrobUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 05BB0A066C070FA24C96CF74 /* Pods_SimpleScrobUITests.framework */; };
 		50A7359987A4C112D17A5535 /* Pods_SimpleScrobTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FA95CEA86793508E6B319928 /* Pods_SimpleScrobTests.framework */; };
+		53074DAA1FFEECB900D76AC7 /* PlayedSongBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53074DA91FFEECB900D76AC7 /* PlayedSongBuilder.swift */; };
 		53075DEC1F85425800A19189 /* Podfile in Resources */ = {isa = PBXBuildFile; fileRef = 53075DE91F85425800A19189 /* Podfile */; };
 		5316A6511F82BFB5005193EB /* SongScanner.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5316A6501F82BFB5005193EB /* SongScanner.swift */; };
 		5316A6561F82CBD7005193EB /* SimpleScrob.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 5316A6541F82CBD6005193EB /* SimpleScrob.xcdatamodeld */; };
@@ -118,6 +119,7 @@
 		05BB0A066C070FA24C96CF74 /* Pods_SimpleScrobUITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_SimpleScrobUITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		3E5D420393C7E496D31A4C73 /* Pods-SimpleScrob.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SimpleScrob.release.xcconfig"; path = "Pods/Target Support Files/Pods-SimpleScrob/Pods-SimpleScrob.release.xcconfig"; sourceTree = "<group>"; };
 		4834C745F470D255FABD22BB /* Pods-SimpleScrobTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SimpleScrobTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-SimpleScrobTests/Pods-SimpleScrobTests.release.xcconfig"; sourceTree = "<group>"; };
+		53074DA91FFEECB900D76AC7 /* PlayedSongBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayedSongBuilder.swift; sourceTree = "<group>"; };
 		53075DE91F85425800A19189 /* Podfile */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Podfile; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
 		53075DED1F85498300A19189 /* SimpleScrob-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "SimpleScrob-Bridging-Header.h"; sourceTree = "<group>"; };
 		5316A6501F82BFB5005193EB /* SongScanner.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SongScanner.swift; sourceTree = "<group>"; };
@@ -321,6 +323,7 @@
 				53A0DE131F86A11F00802FD6 /* Mocks.swift */,
 				53825B9E1F7E8CC700566F2C /* Info.plist */,
 				53C5803F1F8A7A32003AEEBB /* CoreDataHelpers.swift */,
+				53074DA91FFEECB900D76AC7 /* PlayedSongBuilder.swift */,
 			);
 			path = SimpleScrobTests;
 			sourceTree = "<group>";
@@ -866,6 +869,7 @@
 				5349CC6D1F882ADE0055176B /* PlayedSongTests.swift in Sources */,
 				53221B3B1F8587D900FB1A0F /* LastFM_ApiTests.swift in Sources */,
 				53A0DE141F86A11F00802FD6 /* Mocks.swift in Sources */,
+				53074DAA1FFEECB900D76AC7 /* PlayedSongBuilder.swift in Sources */,
 				538ED2731FC23E4D00C2162B /* LastFmScrobbleService.swift in Sources */,
 				53C580401F8A7A32003AEEBB /* CoreDataHelpers.swift in Sources */,
 				53A0DE0E1F86A09000802FD6 /* ScrobbleInteractorTests.swift in Sources */,

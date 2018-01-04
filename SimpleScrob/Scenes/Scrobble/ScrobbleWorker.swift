@@ -18,6 +18,7 @@ class ScrobbleWorker {
     let database: Database
     let songScanner: SongScanner    
     let scrobbleService: ScrobbleService
+    let connectivity: Connectivity
     
     var currentUserName: String? {
         return scrobbleService.currentUserName
@@ -34,11 +35,13 @@ class ScrobbleWorker {
     init(
         database: Database,
         songScanner: SongScanner,        
-        scrobbleService: ScrobbleService
+        scrobbleService: ScrobbleService,
+        connectivity: Connectivity
     ) {
         self.database = database
         self.songScanner = songScanner        
         self.scrobbleService = scrobbleService
+        self.connectivity = connectivity
     }
 
     func signOut() {
@@ -66,10 +69,35 @@ class ScrobbleWorker {
 
     func submit(songs: [PlayedSong], completion: @escaping (Error?) -> ()) {
         delay(seconds: 0.5) {
+            guard self.connectivity.isConnectedToInternet else {
+                let updatedSongs = self.markNotScrobbled(songs: songs, with: ScrobbleError.notConnected.description)
+                self.database.save(playedSongs: updatedSongs, completion: {})
+                completion(ScrobbleError.notConnected)
+                return
+            }
+            
             self.scrobbleService.scrobble(songs: songs) { updatedSongs, error in
                 self.database.save(playedSongs: updatedSongs, completion: {})
                 completion(error)
             }
+        }
+    }
+    
+    func markNotScrobbled(songs: [PlayedSong], with reason: String) -> [PlayedSong] {
+        var _songs = songs
+        for i in 0..<_songs.count {
+            _songs[i].notScrobbled(reason: reason)
+        }
+        return _songs
+    }
+}
+
+enum ScrobbleError: Error, CustomStringConvertible {
+    case notConnected
+    
+    var description: String {
+        switch self {
+        case .notConnected: return "Not connected to the Internet"
         }
     }
 }
