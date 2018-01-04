@@ -20,17 +20,33 @@ class SongScannerImpl: SongScanner {
         return UserDefaults.standard.bool(forKey: "musicLibraryIsInitialized")
     }
 
+    /**
+        Returns the date and time from which to look for songs that have been played.
+     
+        I have it returning 24 hours before the date and time you last scrobbled songs. I do this because
+        there are times where songs played on another device and synced with iCloud Music Library don't
+        sync immediately. 24 hours seems to catch all the plays.
+    */
     var scrobbleSearchDate: Date? {
         let lastSearchedAt = UserDefaults.standard.double(forKey: "lastScrobbleDate")
-        let initializedAt = UserDefaults.standard.double(forKey: "initlizationDate")
-        if lastSearchedAt > 0 {
-            let date = Date(timeIntervalSince1970: lastSearchedAt)
-            return date.addingTimeInterval(-ONE_DAY)
-        } else if initializedAt > 0 {
-            return Date(timeIntervalSince1970: initializedAt)
-        } else {
+        
+        guard lastSearchedAt > 0 else {
             return nil
         }
+        
+        let date = Date(timeIntervalSince1970: lastSearchedAt)
+        let minSearchDate = date.addingTimeInterval(-ONE_DAY)
+        
+        if minSearchDate.isEarlier(than: initializationDate) {
+            return initializationDate
+        } else {
+            return minSearchDate
+        }
+    }
+    
+    var initializationDate: Date {
+        let initializedAt = UserDefaults.standard.double(forKey: "initlizationDate")
+        return Date(timeIntervalSince1970: initializedAt)
     }
     
     init(mediaLibrary: ScrobbleMediaLibrary, dateGenerator: DateGenerator) {
@@ -47,6 +63,7 @@ class SongScannerImpl: SongScanner {
     func initializeSongDatabase() {
         UserDefaults.standard.set(true, forKey: "musicLibraryIsInitialized")
         UserDefaults.standard.set(dateGenerator.currentDate().timeIntervalSince1970, forKey: "initlizationDate")
+        UserDefaults.standard.set(dateGenerator.currentDate().timeIntervalSince1970, forKey: "lastScrobbleDate")
     }
     
     func searchForNewScrobbles() -> [PlayedSong] {

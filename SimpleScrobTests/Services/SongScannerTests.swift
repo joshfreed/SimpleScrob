@@ -15,6 +15,7 @@ class SongScannerTests: XCTestCase {
     let mediaLibrary = MockMediaLibrary()
     let database = MockDatabase()
     let dateGenerator = MockDateGenerator()
+    let oneHour: TimeInterval = 3600
     let oneDay: TimeInterval = 3600 * 24
     let twoDays: TimeInterval = 3600 * 24 * 2
     
@@ -53,6 +54,17 @@ class SongScannerTests: XCTestCase {
         dateGenerator.advance(twoDays)
         let _ = sut.searchForNewScrobbles()
         let expected = dateGenerator.currentDate().addingTimeInterval(-oneDay)
+        
+        expect(self.sut.scrobbleSearchDate).to(beCloseTo(expected))
+    }
+    
+    func testScrobbleSearchDate_never_goes_earlier_than_the_first_initialization_date() {
+        dateGenerator.rewind(oneHour)
+        let expected = dateGenerator.currentDate()
+        sut.initializeSongDatabase()
+        dateGenerator.advance(oneHour)
+        
+        let _ = sut.searchForNewScrobbles()
         
         expect(self.sut.scrobbleSearchDate).to(beCloseTo(expected))
     }
