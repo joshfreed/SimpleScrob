@@ -54,7 +54,8 @@ class ViewScrobblesPresenter: ViewScrobblesPresentationLogic {
                 datePlayed: $0.date.shortTimeAgoSinceNow,
                 statusMessage: makeStatusMessage($0),
                 statusImageName: imageName,
-                statusColor: statusColor
+                statusColor: statusColor,
+                fullDate: df.string(from: $0.date)
             )
         }
         let viewModel = ViewScrobbles.GetScrobbleHistory.ViewModel(scrobbles: scrobbles)

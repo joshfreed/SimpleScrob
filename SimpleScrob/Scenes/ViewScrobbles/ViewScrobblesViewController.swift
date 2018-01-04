@@ -127,5 +127,8 @@ class ViewScrobblesViewController: UITableViewController, ViewScrobblesDisplayLo
     func displayScrobbleHistory(viewModel: ViewScrobbles.GetScrobbleHistory.ViewModel) {
         scrobbles = viewModel.scrobbles
         tableView.reloadData()
+        tableView.setNeedsLayout()
+        tableView.layoutIfNeeded()
+        tableView.reloadData()
     }
 }

@@ -22,6 +22,7 @@ enum ViewScrobbles {
         let statusMessage: String
         let statusImageName: String
         let statusColor: UIColor
+        let fullDate: String
     }
     
     // MARK: Use cases

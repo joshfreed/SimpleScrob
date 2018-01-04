@@ -18,6 +18,7 @@ class SongCell: UITableViewCell {
     @IBOutlet weak var statusLabel: UILabel!
     @IBOutlet weak var detailsView: UIView!
     @IBOutlet var detailsHeightConstraint: NSLayoutConstraint!
+    @IBOutlet weak var fullDateLabel: UILabel!
     
     var expanded = false
     
@@ -45,6 +46,7 @@ class SongCell: UITableViewCell {
         statusLabel.text = scrobble.statusMessage
         statusLabel.textColor = scrobble.statusColor
         statusImageView.image = UIImage(named: scrobble.statusImageName)
+        fullDateLabel.text = scrobble.fullDate
     }
     
     func expand() {
