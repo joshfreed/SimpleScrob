@@ -65,8 +65,7 @@ class ViewScrobblesPresenter: ViewScrobblesPresentationLogic {
     func makeStatusMessage(_ scrobble: PlayedSong) -> String {
         switch scrobble.status {
         case .scrobbled: return "Scrobbled!"
-        case .failed:
-            return "Error"
+        case .failed: return scrobble.reason ?? "Error"
         case .notScrobbled:
             if let reason = scrobble.reason {
                 return "Not Scrobbled: \(reason)"

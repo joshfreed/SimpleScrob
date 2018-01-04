@@ -22,10 +22,18 @@ protocol LastFMAPIEngine {
 }
 
 struct LastFM {
-    enum ErrorType: Error {
+    enum ErrorType: Error, CustomStringConvertible {
         case error(code: Int, message: String?)
         case badResponse
         case notSignedIn
+        
+        var description: String {
+            switch self {
+            case .error(let code, let message): return "Error \(code): \(message ?? "")"
+            case .badResponse: return "There was an unexpected response from Last.FM"
+            case .notSignedIn: return "Not signed in to Last.FM"
+            }
+        }
     }
 
     enum Result<T> {
@@ -213,8 +221,8 @@ class FakeLastFM: LastFMAPI {
         for song in songs {
             print("Scrobbling \(song.track ?? "") by \(song.artist ?? "")")
         }
-//        completion(.failure(.error(code: 77, message: "YOU SUCK")))
         delay(seconds: 1.2) {
+//            completion(.failure(.error(code: 77, message: "YOU SUCK")))
             completion(.success(LastFM.ScrobbleResponse(accepted: [], ignored: [])))
         }
     }

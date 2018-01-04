@@ -43,4 +43,17 @@ class PlayedSongTests: XCTestCase {
         
         expect(id1).toNot(equal(id2))
     }
+    
+    func testScrobbled_sets_status_property() {
+        var sut = PlayedSong(persistentId: 1, date: Date(), status: .notScrobbled)
+        sut.scrobbled()
+        expect(sut.status).to(equal(ScrobbleStatus.scrobbled))
+    }
+    
+    func testScrobbled_clears_the_reason_property() {
+        var sut = PlayedSong(persistentId: 1, date: Date(), status: .notScrobbled)
+        sut.reason = "Some reason"
+        sut.scrobbled()
+        expect(sut.reason).to(beNil())
+    }
 }

@@ -363,7 +363,6 @@
 			isa = PBXGroup;
 			children = (
 				53D9B5751F8156F300C8581B /* Database.swift */,
-				53825BBB1F802A3100566F2C /* LastFM.swift */,
 				53825BBD1F802C7700566F2C /* MediaLibrary.swift */,
 				5316A6501F82BFB5005193EB /* SongScanner.swift */,
 				53CE43B51F8A88000050A8C7 /* DateGenerator.swift */,
@@ -429,6 +428,7 @@
 		53C75DCA1FA0D16B0056D1AB /* LastFM */ = {
 			isa = PBXGroup;
 			children = (
+				53825BBB1F802A3100566F2C /* LastFM.swift */,
 				53C75DCB1FA0D2550056D1AB /* LastFmScrobbleService.swift */,
 			);
 			path = LastFM;

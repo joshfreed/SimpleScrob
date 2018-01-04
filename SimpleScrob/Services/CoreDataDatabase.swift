@@ -91,6 +91,7 @@ class CoreDataDatabase: Database {
         playedSong.artist = entity.artist
         playedSong.album = entity.album
         playedSong.track = entity.track
+        playedSong.reason = entity.reason
         return playedSong
     }
     
@@ -102,6 +103,7 @@ class CoreDataDatabase: Database {
         entity.track = playedSong.track
         entity.datePlayed = playedSong.date
         entity.status = playedSong.status.rawValue
+        entity.reason = playedSong.reason
         return entity
     }
     
@@ -133,11 +135,8 @@ class CoreDataDatabase: Database {
                 if let managedSong = managedSongs.first(where: {
                     $0.persistentId == String(song.persistentId) && $0.datePlayed == song.date
                 }) {
-                    //                    managedSong.artist = song.artist
-                    //                    managedSong.album = song.album
-                    //                    managedSong.track = song.track
-                    //                    managedSong.datePlayed = song.date
                     managedSong.status = song.status.rawValue
+                    managedSong.reason = song.reason
                     DDLogDebug("Updating song entity \(managedSong.persistentId ?? ""), \(managedSong.track ?? ""), \(managedSong.status ?? ""), \(String(describing: managedSong.datePlayed))")
                 }
             }

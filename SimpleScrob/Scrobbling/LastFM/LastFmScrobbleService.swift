@@ -128,7 +128,7 @@ class LastFmScrobbleService: ScrobbleService {
     func markFailed(songs: [PlayedSong], with error: LastFM.ErrorType) -> [PlayedSong] {
         var _songs = songs
         for i in 0..<_songs.count {
-            _songs[i].failedToScrobble(error: error)
+            _songs[i].failedToScrobble(error: error.description)
         }
         return _songs
     }
@@ -136,7 +136,7 @@ class LastFmScrobbleService: ScrobbleService {
     func markNotScrobbled(songs: [PlayedSong], with error: LastFM.ErrorType) -> [PlayedSong] {
         var _songs = songs
         for i in 0..<_songs.count {
-            _songs[i].notScrobbled(reason: error)
+            _songs[i].notScrobbled(reason: error.description)
         }
         return _songs
     }

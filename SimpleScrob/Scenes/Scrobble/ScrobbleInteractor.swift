@@ -159,7 +159,7 @@ class ScrobbleInteractor: ScrobbleBusinessLogic, ScrobbleDataStore {
             didEndRefreshing()
             return
         }
-        guard playedSongs.count > 0 && worker.isLoggedIn else {
+        guard playedSongs.count > 0 else {
             didEndRefreshing()
             return
         }
