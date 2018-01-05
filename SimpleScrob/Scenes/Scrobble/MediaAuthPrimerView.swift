@@ -10,27 +10,34 @@ import UIKit
 import MediaPlayer
 
 protocol MediaAuthPrimerViewDelegate: class {
-    func authorizationWasGranted()
-    func authorizationWasDenied()
+    func requestAuthorization()
 }
 
 class MediaAuthPrimerView: UIView {
+    @IBOutlet var contentView: UIView!
     @IBOutlet weak var okayButton: UIButton!
     
     weak var delegate: MediaAuthPrimerViewDelegate?
     
-    override func awakeFromNib() {
-        okayButton.layer.cornerRadius = 5
+    override init(frame: CGRect) {
+        super.init(frame: frame)
+        commonInit()
     }
     
+    required init?(coder aDecoder: NSCoder) {
+        super.init(coder: aDecoder)
+        commonInit()
+    }
+    
+    private func commonInit() {
+        Bundle.main.loadNibNamed("MediaAuthPrimerView", owner: self, options: nil)
+        addSubview(contentView)
+        contentView.jpfPinToSuperview()
+        
+        okayButton.layer.cornerRadius = 5
+    }
+
     @IBAction func tappedOkay(_ sender: UIButton) {
-        MPMediaLibrary.requestAuthorization { status in
-            switch status {
-            case .notDetermined: break
-            case .denied: self.delegate?.authorizationWasDenied()
-            case .restricted: break
-            case .authorized: self.delegate?.authorizationWasGranted()
-            }
-        }
+        delegate?.requestAuthorization()
     }
 }
