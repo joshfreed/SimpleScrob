@@ -131,6 +131,7 @@
                     <connections>
                         <outlet property="contentContainer" destination="V1W-2i-ao9" id="5bH-e6-AId"/>
                         <outlet property="currentUserButton" destination="HL8-ya-aWG" id="KVY-mD-x8F"/>
+                        <outlet property="mediaAuthDeniedView" destination="AuU-W7-HSD" id="3MP-sH-can"/>
                         <outlet property="mediaAuthPrimerView" destination="OcO-AQ-UAQ" id="iBj-OI-FgQ"/>
                         <outlet property="scrobbleView" destination="dnw-b9-lXd" id="03X-sD-xpC"/>
                         <outlet property="viewScrobblesButton" destination="XzT-Jq-BWL" id="awC-yT-D6z"/>
@@ -150,6 +151,12 @@
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     <viewLayoutGuide key="safeArea" id="lNs-JR-39D"/>
+                </view>
+                <view contentMode="scaleToFill" id="AuU-W7-HSD" customClass="MediaAuthDeniedView" customModule="SimpleScrob" customModuleProvider="target">
+                    <rect key="frame" x="0.0" y="0.0" width="240" height="128"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                    <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    <viewLayoutGuide key="safeArea" id="aCg-vJ-Ivt"/>
                 </view>
             </objects>
             <point key="canvasLocation" x="136.80000000000001" y="132.68365817091455"/>

@@ -37,6 +37,7 @@ class ScrobbleViewController: UIViewController, ScrobbleDisplayLogic {
     
     @IBOutlet var scrobbleView: ScrobbleView!
     @IBOutlet var mediaAuthPrimerView: MediaAuthPrimerView!
+    @IBOutlet var mediaAuthDeniedView: MediaAuthDeniedView!    
     
     // MARK: Object lifecycle
 
@@ -99,6 +100,7 @@ class ScrobbleViewController: UIViewController, ScrobbleDisplayLogic {
 
         mediaAuthPrimerView.delegate = self
         scrobbleView.delegate = self
+        mediaAuthDeniedView.delegate = self
     }
 
     private func showContent(view: UIView) {
@@ -151,7 +153,7 @@ class ScrobbleViewController: UIViewController, ScrobbleDisplayLogic {
     }
     
     func displayAuthorizationDenied() {
-        
+        showContent(view: mediaAuthDeniedView)
     }
     
     // MARK: Search for new scrobbles
@@ -239,5 +241,16 @@ extension ScrobbleViewController: ScrobbleViewDelegate {
 
     func signIn() {
         performSegue(withIdentifier: "SignIn", sender: nil)
+    }
+}
+
+extension ScrobbleViewController: MediaAuthDeniedViewProtocol {
+    func openSettings() {
+        let settingUrl = URL(string: UIApplicationOpenSettingsURLString)!        
+        UIApplication.shared.open(settingUrl) { isOpen in
+            if !isOpen {
+                debugPrint("Error opening:\(settingUrl.absoluteString)")
+            }
+        }
     }
 }
