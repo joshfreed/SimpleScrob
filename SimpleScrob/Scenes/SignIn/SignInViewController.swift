@@ -20,8 +20,8 @@ class SignInViewController: UIViewController, SignInDisplayLogic {
     var interactor: SignInBusinessLogic?
     var router: (NSObjectProtocol & SignInRoutingLogic & SignInDataPassing)?
 
-    @IBOutlet weak var usernameTextField: UITextField!
-    @IBOutlet weak var passwordTextField: UITextField!
+    @IBOutlet weak var usernameTextField: FloatingLabelTextField!
+    @IBOutlet weak var passwordTextField: FloatingLabelTextField!
     @IBOutlet weak var signInButton: UIButton!
     @IBOutlet weak var bottomConstraint: NSLayoutConstraint!
     @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
@@ -119,11 +119,18 @@ class SignInViewController: UIViewController, SignInDisplayLogic {
         usernameTextField.resignFirstResponder()
         passwordTextField.resignFirstResponder()
         
-        guard let username = usernameTextField.text, !username.isEmpty else {
-            return
+        if usernameTextField.text == nil || usernameTextField.text!.isEmpty {
+            usernameTextField.displayInvalid()
         }
         
-        guard let password = passwordTextField.text, !password.isEmpty else {
+        if passwordTextField.text == nil || passwordTextField.text!.isEmpty {
+            passwordTextField.displayInvalid()
+        }
+        
+        guard
+            let username = usernameTextField.text, !username.isEmpty,
+            let password = passwordTextField.text, !password.isEmpty
+        else {
             return
         }
         

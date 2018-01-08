@@ -24,6 +24,7 @@ class FloatingLabelTextField: UITextField {
     private var labelHiddenConstraint: NSLayoutConstraint?
     private var inactiveBorder: UIView?
     private var activeBorder: UIView?
+    private var errorBorder: UIView?
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -44,8 +45,9 @@ class FloatingLabelTextField: UITextField {
         
         inactiveBorder = addBorder(edges: .bottom, color: placeholderColor, thickness: 1).first
         activeBorder = addBorder(edges: .bottom, color: .black, thickness: 1).first
+        errorBorder = addBorder(edges: .bottom, color: .red, thickness: 1).first
         
-        activeBorder?.isHidden = true
+        showInactiveBorder()
         
         label.translatesAutoresizingMaskIntoConstraints = false
         label.font = UIFont.systemFont(ofSize: 12)
@@ -67,13 +69,11 @@ class FloatingLabelTextField: UITextField {
     }
     
     @objc func textFieldDidBeginEditing() {
-        activeBorder?.isHidden = false
-        inactiveBorder?.isHidden = true
+        showActiveBorder()
     }
     
     @objc func textFieldDidEndEditing() {
-        activeBorder?.isHidden = true
-        inactiveBorder?.isHidden = false
+        showInactiveBorder()
     }
     
     func updateFloatingLabel() {
@@ -96,5 +96,31 @@ class FloatingLabelTextField: UITextField {
         }
     }
     
+    func displayInvalid() {
+        showErrorBorder()
+    }
     
+    func displayValid() {
+        showInactiveBorder()
+    }
+    
+    // Border Helpers
+    
+    private func showErrorBorder() {
+        errorBorder?.isHidden = false
+        activeBorder?.isHidden = true
+        inactiveBorder?.isHidden = true
+    }
+    
+    private func showActiveBorder() {
+        activeBorder?.isHidden = false
+        inactiveBorder?.isHidden = true
+        errorBorder?.isHidden = true
+    }
+    
+    private func showInactiveBorder() {
+        errorBorder?.isHidden = true
+        activeBorder?.isHidden = true
+        inactiveBorder?.isHidden = false
+    }
 }
