@@ -12,6 +12,5 @@ protocol Database: GetRecentScrobbles {
     func findById(_ id: PlayedSongId) -> PlayedSong?
     func findUnscrobbledSongs(completion: @escaping ([PlayedSong]) -> ())
     func insert(playedSongs: [PlayedSong], completion: @escaping () -> ())
-    func save(playedSongs: [PlayedSong], completion: @escaping () -> ())
-    func getRecentScrobbles(completion: @escaping ([PlayedSong]) -> ())
+    func save(playedSongs: [PlayedSong], completion: @escaping () -> ())    
 }

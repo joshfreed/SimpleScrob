@@ -17,12 +17,13 @@ protocol ViewScrobblesArtworkFetcher {
 }
 
 protocol GetRecentScrobbles {
-    func getRecentScrobbles(completion: @escaping ([PlayedSong]) -> ())
+    func getRecentScrobbles(skip: Int, limit: Int, completion: @escaping ([PlayedSong]) -> ())
 }
 
 class ViewScrobblesWorker {
     let database: GetRecentScrobbles
     let artworkService: ViewScrobblesArtworkFetcher
+    let limit = 15
     
     init(database: GetRecentScrobbles, artworkService: ViewScrobblesArtworkFetcher) {
         self.database = database
@@ -30,12 +31,25 @@ class ViewScrobblesWorker {
     }
     
     func getScrobbleHistory(completion: @escaping ([PlayedSong]) -> ()) {
-        database.getRecentScrobbles { scrobbles in
-            var scrobblesWithArtwork = scrobbles
-            for i in 0..<scrobblesWithArtwork.count {
-                scrobblesWithArtwork[i].artwork = self.artworkService.artwork(for: scrobblesWithArtwork[i].persistentId)
-            }
+        database.getRecentScrobbles(skip: 0, limit: limit) { scrobbles in
+            let scrobblesWithArtwork = self.populateArtwork(scrobbles: scrobbles)
             completion(scrobblesWithArtwork)
         }
+    }
+    
+    func loadMoreScrobbles(skip: Int, completion: @escaping ([PlayedSong], Bool) -> ()) {
+        database.getRecentScrobbles(skip: skip, limit: limit) { scrobbles in
+            let scrobblesWithArtwork = self.populateArtwork(scrobbles: scrobbles)
+            let reachedEndOfItems = scrobbles.count < self.limit
+            completion(scrobblesWithArtwork, reachedEndOfItems)
+        }
+    }
+    
+    private func populateArtwork(scrobbles: [PlayedSong]) -> [PlayedSong] {
+        var scrobblesWithArtwork = scrobbles
+        for i in 0..<scrobblesWithArtwork.count {
+            scrobblesWithArtwork[i].artwork = self.artworkService.artwork(for: scrobblesWithArtwork[i].persistentId)
+        }
+        return scrobblesWithArtwork
     }
 }

@@ -66,7 +66,7 @@ class MockDatabase: Database {
         completion()
     }
 
-    func getRecentScrobbles(completion: @escaping ([PlayedSong]) -> ()) {
+    func getRecentScrobbles(skip: Int, limit: Int, completion: @escaping ([PlayedSong]) -> ()) {
         
     }
 }

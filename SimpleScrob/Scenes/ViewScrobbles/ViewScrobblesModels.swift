@@ -33,8 +33,24 @@ enum ViewScrobbles {
 
         struct Response {
             let scrobbles: [PlayedSong]
+            let reachedEndOfItems: Bool
         }
 
+        struct ViewModel {
+            let scrobbles: [DisplayedScrobble]
+            let reachedEndOfItems: Bool
+        }
+    }
+    
+    enum LoadMore {
+        struct Request {
+            
+        }
+        
+        struct Response {
+            let scrobbles: [PlayedSong]
+        }
+        
         struct ViewModel {
             let scrobbles: [DisplayedScrobble]
         }

@@ -58,7 +58,7 @@ class ViewScrobblesPresenter: ViewScrobblesPresentationLogic {
                 fullDate: df.string(from: $0.date)
             )
         }
-        let viewModel = ViewScrobbles.GetScrobbleHistory.ViewModel(scrobbles: scrobbles)
+        let viewModel = ViewScrobbles.GetScrobbleHistory.ViewModel(scrobbles: scrobbles, reachedEndOfItems: response.reachedEndOfItems)
         viewController?.displayScrobbleHistory(viewModel: viewModel)
     }
     

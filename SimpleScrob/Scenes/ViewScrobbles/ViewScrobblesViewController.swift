@@ -84,7 +84,13 @@ class ViewScrobblesViewController: UITableViewController, ViewScrobblesDisplayLo
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "SongCell", for: indexPath) as! SongCell
         let scrobble = scrobbles[indexPath.row]
-        cell.configure(scrobble: scrobble)        
+        cell.configure(scrobble: scrobble)
+        
+        if indexPath.row == scrobbles.count - 1 && !reachedEndOfItems {
+            let request = ViewScrobbles.LoadMore.Request()
+            interactor?.loadMore(request: request)
+        }
+        
         return cell
     }
     
@@ -118,6 +124,7 @@ class ViewScrobblesViewController: UITableViewController, ViewScrobblesDisplayLo
     // MARK: Get scrobble history
 
     var scrobbles: [ViewScrobbles.DisplayedScrobble] = []
+    var reachedEndOfItems = false
 
     func getScrobbleHistory() {
         let request = ViewScrobbles.GetScrobbleHistory.Request()
@@ -126,6 +133,7 @@ class ViewScrobblesViewController: UITableViewController, ViewScrobblesDisplayLo
 
     func displayScrobbleHistory(viewModel: ViewScrobbles.GetScrobbleHistory.ViewModel) {
         scrobbles = viewModel.scrobbles
+        reachedEndOfItems = viewModel.reachedEndOfItems
         tableView.reloadData()
         tableView.setNeedsLayout()
         tableView.layoutIfNeeded()

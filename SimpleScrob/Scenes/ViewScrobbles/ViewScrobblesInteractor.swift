@@ -14,6 +14,7 @@ import UIKit
 
 protocol ViewScrobblesBusinessLogic {
     func getScrobbleHistory(request: ViewScrobbles.GetScrobbleHistory.Request)
+    func loadMore(request: ViewScrobbles.LoadMore.Request)
 }
 
 protocol ViewScrobblesDataStore {
@@ -24,12 +25,27 @@ class ViewScrobblesInteractor: ViewScrobblesBusinessLogic, ViewScrobblesDataStor
     var presenter: ViewScrobblesPresentationLogic?
     var worker: ViewScrobblesWorker?
 
+    private var songs: [PlayedSong] = []
+    
     // MARK: Get scrobble history
 
     func getScrobbleHistory(request: ViewScrobbles.GetScrobbleHistory.Request) {
-        worker?.getScrobbleHistory { songs in            
+        worker?.getScrobbleHistory { songs in
+            self.songs = songs
+            
             DispatchQueue.main.async {
-                let response = ViewScrobbles.GetScrobbleHistory.Response(scrobbles: songs)
+                let response = ViewScrobbles.GetScrobbleHistory.Response(scrobbles: songs, reachedEndOfItems: false)
+                self.presenter?.presentScrobbleHistory(response: response)
+            }
+        }
+    }
+    
+    func loadMore(request: ViewScrobbles.LoadMore.Request) {
+        worker?.loadMoreScrobbles(skip: songs.count) { (songs, reachedEndOfItems) in
+            self.songs.append(contentsOf: songs)
+            
+            DispatchQueue.main.async {
+                let response = ViewScrobbles.GetScrobbleHistory.Response(scrobbles: self.songs, reachedEndOfItems: reachedEndOfItems)
                 self.presenter?.presentScrobbleHistory(response: response)
             }
         }
