@@ -43,6 +43,7 @@ class ScrobbleView: UIView {
         activityIndicator.startAnimating()
         
         resetUI()
+        signInButton.isHidden = true
     }
     
     // User actions
@@ -60,7 +61,6 @@ class ScrobbleView: UIView {
     private func resetUI() {
         statusLabel.isHidden = true
         activityIndicator.stopAnimating()
-        signInButton.isHidden = true
         doneLabel.isHidden = true
         scrobbleCountLabel.isHidden = true
         errorLabel.isHidden = true
