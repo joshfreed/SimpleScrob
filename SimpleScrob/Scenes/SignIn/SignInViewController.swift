@@ -147,11 +147,11 @@ class SignInViewController: UIViewController, SignInDisplayLogic {
         signInButton.setTitle("Sign In", for: .normal)
         signInButton.isEnabled = true
         
-        if viewModel.success {
-            router?.routeToScrobble()
-        } else {
+        if let errorMsg = viewModel.error {
+            errorLabel.text = errorMsg
             errorLabel.isHidden = false
-            // todo display login failed message
+        } else {
+            router?.routeToScrobble()
         }        
     }
 }

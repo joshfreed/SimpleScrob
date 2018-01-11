@@ -22,23 +22,25 @@ protocol LastFMAPIEngine {
 }
 
 struct LastFM {
-    enum ErrorType: Error, CustomStringConvertible {
+    enum ErrorType: Error, LocalizedError {
         case error(code: Int, message: String?)
         case badResponse
         case notSignedIn
+        case unknown
         
-        var description: String {
+        var errorDescription: String? {
             switch self {
             case .error(let code, let message): return "Error \(code): \(message ?? "")"
             case .badResponse: return "There was an unexpected response from Last.FM"
             case .notSignedIn: return "Not signed in to Last.FM"
+            case .unknown: return "An unknown error has occurred"
             }
         }
     }
-
+    
     enum Result<T> {
         case success(T)
-        case failure(LastFM.ErrorType)
+        case failure(Error)
     }
     
     struct GetMobileSessionResponse {
@@ -88,7 +90,7 @@ struct LastFM {
                         )
                         completion(.success(response))
                     } else {
-                        completion(.failure(.badResponse))
+                        completion(.failure(LastFM.ErrorType.badResponse))
                     }
                 case .failure(let error): completion(.failure(error))
                 }
@@ -155,7 +157,8 @@ struct LastFM {
             
             DDLogVerbose("POST \(method) \(params.debugDescription)")
             
-            Alamofire.request("https://ws.audioscrobbler.com/2.0", method: .post, parameters: params)
+            Alamofire
+                .request("https://ws.audioscrobbler.com/2.0", method: .post, parameters: params)
                 .responseJSON { response in
                     DDLogDebug(response.debugDescription)
                     
@@ -167,7 +170,7 @@ struct LastFM {
                             completion(.success(json))
                         }
                     } else {
-                        completion(.failure(LastFM.ErrorType.badResponse))
+                        completion(.failure(response.error ?? LastFM.ErrorType.unknown))
                     }
             }
         }
@@ -213,7 +216,8 @@ class FakeLastFM: LastFMAPI {
     
     func getMobileSession(username: String, password: String, completion: @escaping (LastFM.Result<LastFM.GetMobileSessionResponse>) -> ()) {
         print("getMobileSession. Username = '\(username)', Password = '\(password)'")
-        completion(.success(LastFM.GetMobileSessionResponse(name: username, key: "123456", subcriber: false)))
+//        completion(.success(LastFM.GetMobileSessionResponse(name: username, key: "123456", subcriber: false)))
+        completion(.failure(LastFM.ErrorType.error(code: 11, message: "Things and stuff")))
     }
     
     func scrobble(songs: [PlayedSong], completion: @escaping (LastFM.Result<LastFM.ScrobbleResponse>) -> ()) {

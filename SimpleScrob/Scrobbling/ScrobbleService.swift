@@ -10,8 +10,7 @@ import Foundation
 
 protocol ScrobbleService: SignInAuthentication {
     var isLoggedIn: Bool { get }
-    var currentUserName: String? { get }
-    func authenticate(username: String, password: String, completion: @escaping (_ success: Bool) -> ())
+    var currentUserName: String? { get }    
     func signOut()
     func resumeSession()
     func scrobble(songs: [PlayedSong], completion: @escaping ([PlayedSong], Error?) -> ())

@@ -21,14 +21,18 @@ class LastFmScrobbleService: ScrobbleService {
         self.api = api
     }
     
-    func authenticate(username: String, password: String, completion: @escaping (_ success: Bool) -> ()) {
+    func authenticate(username: String, password: String, completion: @escaping (SignInError?) -> ()) {
         api.getMobileSession(username: username, password: password) { result in
             switch result {
             case .success(let session):
                 self.startSession(sessionKey: session.key, username: username)
-                completion(true)
-            case .failure:
-                completion(false)
+                completion(nil)
+            case .failure(let error):
+                if case let LastFM.ErrorType.error(code, _) = error, code == 4 {
+                    completion(.authenticationFailed)
+                } else {
+                    completion(.other(message: error.localizedDescription))
+                }                
             }
         }
     }
@@ -124,10 +128,10 @@ class LastFmScrobbleService: ScrobbleService {
         return _songs
     }
     
-    func markFailed(songs: [PlayedSong], with error: LastFM.ErrorType) -> [PlayedSong] {
+    func markFailed(songs: [PlayedSong], with error: Error) -> [PlayedSong] {
         var _songs = songs
         for i in 0..<_songs.count {
-            _songs[i].failedToScrobble(error: error.description)
+            _songs[i].failedToScrobble(error: "\(error)")
         }
         return _songs
     }
@@ -135,7 +139,7 @@ class LastFmScrobbleService: ScrobbleService {
     func markNotScrobbled(songs: [PlayedSong], with error: LastFM.ErrorType) -> [PlayedSong] {
         var _songs = songs
         for i in 0..<_songs.count {
-            _songs[i].notScrobbled(reason: error.description)
+            _songs[i].notScrobbled(reason: "\(error)")
         }
         return _songs
     }

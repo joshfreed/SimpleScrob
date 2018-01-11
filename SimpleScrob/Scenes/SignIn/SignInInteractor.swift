@@ -21,7 +21,12 @@ protocol SignInDataStore {
 }
 
 protocol SignInAuthentication {
-    func authenticate(username: String, password: String, completion: @escaping (_ success: Bool) -> ())
+    func authenticate(username: String, password: String, completion: @escaping (SignInError?) -> ())
+}
+
+enum SignInError: Error, LocalizedError {
+    case authenticationFailed
+    case other(message: String)
 }
 
 class SignInInteractor: SignInBusinessLogic, SignInDataStore {
@@ -35,8 +40,8 @@ class SignInInteractor: SignInBusinessLogic, SignInDataStore {
     // MARK: Sign In
 
     func signIn(request: SignIn.SignIn.Request) {
-        auth.authenticate(username: request.username, password: request.password) { success in
-            let response = SignIn.SignIn.Response(success: success)
+        auth.authenticate(username: request.username, password: request.password) { error in
+            let response = SignIn.SignIn.Response(error: error)
             self.presenter?.presentSignIn(response: response)
         }
     }

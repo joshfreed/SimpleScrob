@@ -23,11 +23,11 @@ enum SignIn {
         }
 
         struct Response {
-            let success: Bool
+            let error: SignInError?
         }
 
         struct ViewModel {
-            let success: Bool
+            let error: String?
         }
 
     }

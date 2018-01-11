@@ -22,7 +22,18 @@ class SignInPresenter: SignInPresentationLogic {
     // MARK: Sign in
 
     func presentSignIn(response: SignIn.SignIn.Response) {
-        let viewModel = SignIn.SignIn.ViewModel(success: response.success)
+        let viewModel = SignIn.SignIn.ViewModel(error: makeSignInErrorMessage(from: response.error))
         viewController?.displaySignIn(viewModel: viewModel)
+    }
+    
+    private func makeSignInErrorMessage(from error: SignInError?) -> String? {
+        guard let error = error else {
+            return nil
+        }
+        
+        switch error {
+        case .authenticationFailed: return "Login Failed. Please check your username and password and try again."
+        case .other(let message): return message
+        }
     }
 }
