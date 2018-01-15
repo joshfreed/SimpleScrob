@@ -14,6 +14,7 @@ import UIKit
 
 @objc protocol SignInRoutingLogic {
     func routeToScrobble()
+    func routeDismiss()
 }
 
 protocol SignInDataPassing {
@@ -27,8 +28,14 @@ class SignInRouter: NSObject, SignInRoutingLogic, SignInDataPassing {
     // MARK: Routing
 
     func routeToScrobble() {
-         viewController?.dismiss(animated: true, completion: nil)
-    }    
+        viewController?.dismiss(animated: true) { [weak self] in
+            self?.viewController?.delegate?.loginSuccess()
+        }
+    }
+    
+    func routeDismiss() {
+        viewController?.dismiss(animated: true, completion: nil)
+    }
 
     // MARK: Navigation
 

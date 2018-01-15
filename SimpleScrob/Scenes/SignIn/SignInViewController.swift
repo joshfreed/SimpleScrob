@@ -16,6 +16,10 @@ protocol SignInDisplayLogic: class {
     func displaySignIn(viewModel: SignIn.SignIn.ViewModel)
 }
 
+protocol SignInViewControllerDelegate: class {
+    func loginSuccess()
+}
+
 class SignInViewController: UIViewController, SignInDisplayLogic {
     var interactor: SignInBusinessLogic?
     var router: (NSObjectProtocol & SignInRoutingLogic & SignInDataPassing)?
@@ -26,6 +30,8 @@ class SignInViewController: UIViewController, SignInDisplayLogic {
     @IBOutlet weak var bottomConstraint: NSLayoutConstraint!
     @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
     @IBOutlet weak var errorLabel: UILabel!
+    
+    weak var delegate: SignInViewControllerDelegate?
     
     // MARK: Object lifecycle
 
@@ -70,6 +76,10 @@ class SignInViewController: UIViewController, SignInDisplayLogic {
             }
         }
     }
+    
+    @IBAction func tappedCloseModal(_ sender: UIButton) {
+        router?.routeDismiss()
+    }    
 
     // MARK: View lifecycle
 

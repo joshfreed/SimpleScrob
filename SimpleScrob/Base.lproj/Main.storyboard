@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="13771" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="BYZ-38-t0r">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="13771" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="bpE-bZ-nTA">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
@@ -20,38 +20,11 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Logo" translatesAutoresizingMaskIntoConstraints="NO" id="Vgj-iz-7GN">
-                                <rect key="frame" x="80" y="84" width="215" height="128"/>
-                                <constraints>
-                                    <constraint firstAttribute="width" secondItem="Vgj-iz-7GN" secondAttribute="height" multiplier="220:131" id="7Hs-B1-D82"/>
-                                    <constraint firstAttribute="height" constant="128" id="Wp3-Ng-PLA"/>
-                                </constraints>
-                            </imageView>
-                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="B1k-t4-Za8" userLabel="Title View">
-                                <rect key="frame" x="42.5" y="220" width="290.5" height="60"/>
-                                <subviews>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Scrob" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="1cG-Bf-DWI">
-                                        <rect key="frame" x="171.5" y="0.0" width="119" height="60"/>
-                                        <fontDescription key="fontDescription" type="system" weight="thin" pointSize="50"/>
-                                        <nil key="textColor"/>
-                                        <nil key="highlightedColor"/>
-                                    </label>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Simple" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hfc-M6-8pG">
-                                        <rect key="frame" x="0.0" y="0.0" width="171.5" height="60"/>
-                                        <fontDescription key="fontDescription" type="system" weight="black" pointSize="50"/>
-                                        <nil key="textColor"/>
-                                        <nil key="highlightedColor"/>
-                                    </label>
-                                </subviews>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Ehz-gb-mcj" customClass="LogoView" customModule="SimpleScrob" customModuleProvider="target">
+                                <rect key="frame" x="0.0" y="84" width="375" height="196"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <constraints>
-                                    <constraint firstAttribute="bottom" secondItem="1cG-Bf-DWI" secondAttribute="bottom" id="6oU-ST-2Nv"/>
-                                    <constraint firstItem="hfc-M6-8pG" firstAttribute="leading" secondItem="B1k-t4-Za8" secondAttribute="leading" id="BMp-7n-3rA"/>
-                                    <constraint firstAttribute="trailing" secondItem="1cG-Bf-DWI" secondAttribute="trailing" id="DKc-3L-eCX"/>
-                                    <constraint firstItem="1cG-Bf-DWI" firstAttribute="top" secondItem="B1k-t4-Za8" secondAttribute="top" id="GiM-lx-3Ms"/>
-                                    <constraint firstAttribute="bottom" secondItem="hfc-M6-8pG" secondAttribute="bottom" id="QLL-29-NGC"/>
-                                    <constraint firstItem="1cG-Bf-DWI" firstAttribute="leading" secondItem="hfc-M6-8pG" secondAttribute="trailing" id="iWH-ii-ZKk"/>
-                                    <constraint firstItem="hfc-M6-8pG" firstAttribute="top" secondItem="B1k-t4-Za8" secondAttribute="top" id="try-V7-sOW"/>
+                                    <constraint firstAttribute="height" constant="196" placeholder="YES" id="JUo-xR-KXA"/>
                                 </constraints>
                             </view>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="JNc-Bb-70J" userLabel="View Scroles Hit Area">
@@ -103,28 +76,23 @@
                         </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
-                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="B1k-t4-Za8" secondAttribute="trailing" id="10V-d9-ZLP"/>
-                            <constraint firstItem="Vgj-iz-7GN" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" constant="64" id="12L-2E-yXD"/>
                             <constraint firstItem="gNy-Ug-EPA" firstAttribute="centerY" secondItem="HL8-ya-aWG" secondAttribute="centerY" id="1Qb-7q-tl5"/>
-                            <constraint firstItem="Vgj-iz-7GN" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="16" id="1kx-hO-Ouu"/>
                             <constraint firstItem="JNc-Bb-70J" firstAttribute="centerX" secondItem="XzT-Jq-BWL" secondAttribute="centerX" id="2ZT-NO-sOq"/>
-                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="Vgj-iz-7GN" secondAttribute="trailing" constant="16" id="7ak-07-zBO"/>
                             <constraint firstItem="XzT-Jq-BWL" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="16" id="AK4-Kf-AEg"/>
-                            <constraint firstItem="B1k-t4-Za8" firstAttribute="top" secondItem="Vgj-iz-7GN" secondAttribute="bottom" constant="8" id="Dpc-Wb-hDH"/>
-                            <constraint firstItem="V1W-2i-ao9" firstAttribute="top" secondItem="B1k-t4-Za8" secondAttribute="bottom" id="DzM-yv-OmZ"/>
-                            <constraint firstItem="B1k-t4-Za8" firstAttribute="centerX" secondItem="6Tk-OE-BBY" secondAttribute="centerX" id="Gai-UC-O2k"/>
                             <constraint firstItem="V1W-2i-ao9" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="Hkf-Z7-SlC"/>
                             <constraint firstItem="JNc-Bb-70J" firstAttribute="centerY" secondItem="XzT-Jq-BWL" secondAttribute="centerY" id="IDp-sL-6oN"/>
+                            <constraint firstItem="V1W-2i-ao9" firstAttribute="top" secondItem="Ehz-gb-mcj" secondAttribute="bottom" id="L8Q-2m-BK4"/>
+                            <constraint firstItem="Ehz-gb-mcj" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" constant="64" id="Qrd-6D-o56"/>
                             <constraint firstItem="gNy-Ug-EPA" firstAttribute="width" secondItem="HL8-ya-aWG" secondAttribute="width" multiplier="2" id="R5f-gW-Uh5"/>
+                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="Ehz-gb-mcj" secondAttribute="trailing" id="RV9-2I-0D8"/>
                             <constraint firstItem="HL8-ya-aWG" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" constant="16" id="SZ2-Mw-1lB"/>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="HL8-ya-aWG" secondAttribute="trailing" constant="16" id="Wkt-Gk-15U"/>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="bottom" secondItem="V1W-2i-ao9" secondAttribute="bottom" id="bX5-j7-RGC"/>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="V1W-2i-ao9" secondAttribute="trailing" id="dWV-qQ-GGl"/>
                             <constraint firstItem="XzT-Jq-BWL" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" constant="16" id="eym-nz-Wc5"/>
-                            <constraint firstItem="B1k-t4-Za8" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="kuO-mN-iJe"/>
                             <constraint firstItem="JNc-Bb-70J" firstAttribute="width" secondItem="XzT-Jq-BWL" secondAttribute="width" multiplier="2" id="lel-Ur-W0r"/>
-                            <constraint firstItem="Vgj-iz-7GN" firstAttribute="centerX" secondItem="6Tk-OE-BBY" secondAttribute="centerX" id="oKv-mb-X71"/>
                             <constraint firstItem="gNy-Ug-EPA" firstAttribute="centerX" secondItem="HL8-ya-aWG" secondAttribute="centerX" id="sc4-jh-1OC"/>
+                            <constraint firstItem="Ehz-gb-mcj" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="xt9-lg-n0Y"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                     </view>
@@ -177,7 +145,7 @@
                                 </constraints>
                                 <state key="normal" image="Close Button"/>
                                 <connections>
-                                    <segue destination="MKA-CZ-4vn" kind="unwind" identifier="exit" unwindAction="unwindToScrobbleWithSegue:" id="VOY-b9-ekK"/>
+                                    <action selector="tappedCloseModal:" destination="2YW-do-2qM" eventType="touchUpInside" id="mBg-cA-3ku"/>
                                 </connections>
                             </button>
                             <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Password" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="sUy-iF-6FB" customClass="FloatingLabelTextField" customModule="SimpleScrob" customModuleProvider="target">
@@ -215,7 +183,7 @@
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="kD6-cc-e2s">
                                 <rect key="frame" x="295" y="20" width="72" height="72"/>
                                 <connections>
-                                    <segue destination="MKA-CZ-4vn" kind="unwind" identifier="exit" unwindAction="unwindToScrobbleWithSegue:" id="OSa-JF-ODW"/>
+                                    <action selector="tappedCloseModal:" destination="2YW-do-2qM" eventType="touchUpInside" id="03v-sB-YJs"/>
                                 </connections>
                             </button>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Last.fm" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="D3a-Bf-7BD">
@@ -298,9 +266,8 @@
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="42W-tr-1Hz" userLabel="First Responder" sceneMemberID="firstResponder"/>
-                <exit id="MKA-CZ-4vn" userLabel="Exit" sceneMemberID="exit"/>
             </objects>
-            <point key="canvasLocation" x="1148" y="132.68365817091455"/>
+            <point key="canvasLocation" x="1292" y="133"/>
         </scene>
         <!--Scrobbles-->
         <scene sceneID="rcd-5Z-Uiv">
@@ -446,7 +413,236 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="cfV-BP-SL5" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <exit id="Yhz-zP-dOi" userLabel="Exit" sceneMemberID="exit"/>
             </objects>
-            <point key="canvasLocation" x="2077.5999999999999" y="921.58920539730138"/>
+            <point key="canvasLocation" x="1062" y="976"/>
+        </scene>
+        <!--Media Auth Denied View Controller-->
+        <scene sceneID="3p1-Gt-Mlj">
+            <objects>
+                <viewController id="uWL-L9-cc6" customClass="MediaAuthDeniedViewController" customModule="SimpleScrob" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="0GH-Bv-u9F">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="XIt-qz-Xyn" customClass="LogoView" customModule="SimpleScrob" customModuleProvider="target">
+                                <rect key="frame" x="0.0" y="84" width="375" height="196"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            </view>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="OyI-79-V4g">
+                                <rect key="frame" x="32" y="597" width="311" height="38"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="21"/>
+                                <state key="normal" title="Open Settings"/>
+                                <connections>
+                                    <action selector="openSettings:" destination="uWL-L9-cc6" eventType="touchUpInside" id="2Rj-DT-mSz"/>
+                                </connections>
+                            </button>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="249" text="SimpleScrob needs access to your Media Library.  Grant access in Settings by checking the Media &amp; Apple Music permission." textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="GTw-Ys-JFl">
+                                <rect key="frame" x="32" y="312" width="311" height="253"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="21"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstItem="MgS-yK-Gqf" firstAttribute="trailing" secondItem="GTw-Ys-JFl" secondAttribute="trailing" constant="32" id="0hT-IC-JfX"/>
+                            <constraint firstItem="MgS-yK-Gqf" firstAttribute="trailing" secondItem="OyI-79-V4g" secondAttribute="trailing" constant="32" id="6Kf-3B-6S9"/>
+                            <constraint firstItem="GTw-Ys-JFl" firstAttribute="top" secondItem="XIt-qz-Xyn" secondAttribute="bottom" constant="32" id="FZ4-Wo-dL8"/>
+                            <constraint firstItem="OyI-79-V4g" firstAttribute="leading" secondItem="MgS-yK-Gqf" secondAttribute="leading" constant="32" id="PcR-QH-RhR"/>
+                            <constraint firstAttribute="bottom" secondItem="OyI-79-V4g" secondAttribute="bottom" constant="32" id="Q2f-ML-VxE"/>
+                            <constraint firstItem="XIt-qz-Xyn" firstAttribute="leading" secondItem="MgS-yK-Gqf" secondAttribute="leading" id="Yz3-yE-gHM"/>
+                            <constraint firstItem="GTw-Ys-JFl" firstAttribute="leading" secondItem="MgS-yK-Gqf" secondAttribute="leading" constant="32" id="ewd-uX-udp"/>
+                            <constraint firstItem="XIt-qz-Xyn" firstAttribute="trailing" secondItem="MgS-yK-Gqf" secondAttribute="trailing" id="gcg-mg-ekc"/>
+                            <constraint firstItem="OyI-79-V4g" firstAttribute="top" secondItem="GTw-Ys-JFl" secondAttribute="bottom" constant="32" id="kaA-70-D5z"/>
+                            <constraint firstItem="XIt-qz-Xyn" firstAttribute="top" secondItem="MgS-yK-Gqf" secondAttribute="top" constant="64" id="tiL-BA-QUc"/>
+                        </constraints>
+                        <viewLayoutGuide key="safeArea" id="MgS-yK-Gqf"/>
+                    </view>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="F5M-ck-h0c" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="2026" y="-1498"/>
+        </scene>
+        <!--Grant Access View Controller-->
+        <scene sceneID="xg3-4A-wu6">
+            <objects>
+                <viewController storyboardIdentifier="GrantAccessViewController" id="pw2-E5-bLE" customClass="GrantAccessViewController" customModule="SimpleScrob" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="bLq-Jk-dTU">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="mYJ-Ce-F3K" customClass="LogoView" customModule="SimpleScrob" customModuleProvider="target">
+                                <rect key="frame" x="0.0" y="84" width="375" height="196"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            </view>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="EpA-h9-9oi" customClass="PrimaryButton" customModule="SimpleScrob" customModuleProvider="target">
+                                <rect key="frame" x="32" y="579" width="311" height="56"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="56" id="mYU-qx-ozA"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="system" pointSize="15"/>
+                                <state key="normal" title="Grant Access"/>
+                                <connections>
+                                    <action selector="tappedGrantAccess:" destination="pw2-E5-bLE" eventType="touchUpInside" id="nSq-7g-htT"/>
+                                </connections>
+                            </button>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="249" text="SimpleScrob needs access to your media library to track the songs you play." textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="bWh-nR-Lij">
+                                <rect key="frame" x="32" y="312" width="311" height="235"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="21"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstItem="eOr-4m-K31" firstAttribute="bottom" secondItem="EpA-h9-9oi" secondAttribute="bottom" constant="32" id="Ag0-ch-cGV"/>
+                            <constraint firstItem="EpA-h9-9oi" firstAttribute="top" secondItem="bWh-nR-Lij" secondAttribute="bottom" constant="32" id="Bq8-fl-TDK"/>
+                            <constraint firstItem="EpA-h9-9oi" firstAttribute="leading" secondItem="eOr-4m-K31" secondAttribute="leading" constant="32" id="OYy-ed-7Sm"/>
+                            <constraint firstItem="eOr-4m-K31" firstAttribute="trailing" secondItem="EpA-h9-9oi" secondAttribute="trailing" constant="32" id="OZm-VC-87K"/>
+                            <constraint firstItem="bWh-nR-Lij" firstAttribute="leading" secondItem="eOr-4m-K31" secondAttribute="leading" constant="32" id="U3d-5g-ife"/>
+                            <constraint firstItem="bWh-nR-Lij" firstAttribute="top" secondItem="mYJ-Ce-F3K" secondAttribute="bottom" constant="32" id="aVy-XD-6Kz"/>
+                            <constraint firstItem="mYJ-Ce-F3K" firstAttribute="top" secondItem="eOr-4m-K31" secondAttribute="top" constant="64" id="fYp-2P-w2p"/>
+                            <constraint firstItem="mYJ-Ce-F3K" firstAttribute="leading" secondItem="eOr-4m-K31" secondAttribute="leading" id="h1X-Z9-Yd6"/>
+                            <constraint firstItem="eOr-4m-K31" firstAttribute="trailing" secondItem="mYJ-Ce-F3K" secondAttribute="trailing" id="kpo-a7-NNr"/>
+                            <constraint firstItem="eOr-4m-K31" firstAttribute="trailing" secondItem="bWh-nR-Lij" secondAttribute="trailing" constant="32" id="lNk-Tr-WUS"/>
+                        </constraints>
+                        <viewLayoutGuide key="safeArea" id="eOr-4m-K31"/>
+                    </view>
+                    <connections>
+                        <segue destination="kyR-5l-OWl" kind="show" identifier="AccountPrimer" id="msY-BO-3CN"/>
+                        <segue destination="uWL-L9-cc6" kind="show" identifier="AuthorizationDenied" id="roR-Ng-QAS"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="PHv-f8-NwP" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="906" y="-1685"/>
+        </scene>
+        <!--Lfm Account View Controller-->
+        <scene sceneID="tQL-cO-KQv">
+            <objects>
+                <viewController id="kyR-5l-OWl" customClass="LfmAccountViewController" customModule="SimpleScrob" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="j2v-4w-l4Y">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="geL-7K-qOs" customClass="LogoView" customModule="SimpleScrob" customModuleProvider="target">
+                                <rect key="frame" x="0.0" y="84" width="375" height="196"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            </view>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="249" text="SimpleScrob submits the songs you play to Last.FM. An account with Last.FM is required." textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="XHU-CD-dpv">
+                                <rect key="frame" x="32" y="312" width="311" height="181"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="21"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="nfM-HY-ILE" customClass="PrimaryButton" customModule="SimpleScrob" customModuleProvider="target">
+                                <rect key="frame" x="32" y="525" width="311" height="56"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="56" id="yP7-MF-fKh"/>
+                                </constraints>
+                                <state key="normal" title="Sign In"/>
+                                <connections>
+                                    <segue destination="2YW-do-2qM" kind="presentation" identifier="SignIn" id="7No-wh-53f"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Vw2-Vf-JkN">
+                                <rect key="frame" x="128.5" y="597" width="117" height="38"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="21"/>
+                                <state key="normal" title="Join Last.FM"/>
+                                <connections>
+                                    <action selector="tappedCreateAccount:" destination="kyR-5l-OWl" eventType="touchUpInside" id="Wi7-g1-ayn"/>
+                                </connections>
+                            </button>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstItem="nfM-HY-ILE" firstAttribute="top" secondItem="XHU-CD-dpv" secondAttribute="bottom" constant="32" id="DxH-Rr-kar"/>
+                            <constraint firstItem="nfM-HY-ILE" firstAttribute="leading" secondItem="BJW-Be-77g" secondAttribute="leading" constant="32" id="OSP-hw-arW"/>
+                            <constraint firstItem="Vw2-Vf-JkN" firstAttribute="centerX" secondItem="BJW-Be-77g" secondAttribute="centerX" id="Rcf-ba-7bX"/>
+                            <constraint firstItem="BJW-Be-77g" firstAttribute="trailing" secondItem="XHU-CD-dpv" secondAttribute="trailing" constant="32" id="YAv-Ee-PCc"/>
+                            <constraint firstItem="XHU-CD-dpv" firstAttribute="leading" secondItem="BJW-Be-77g" secondAttribute="leading" constant="32" id="hDW-0l-gxf"/>
+                            <constraint firstItem="Vw2-Vf-JkN" firstAttribute="top" secondItem="nfM-HY-ILE" secondAttribute="bottom" constant="16" id="hrw-eZ-Tul"/>
+                            <constraint firstItem="XHU-CD-dpv" firstAttribute="top" secondItem="geL-7K-qOs" secondAttribute="bottom" constant="32" id="ljg-eh-fLv"/>
+                            <constraint firstItem="BJW-Be-77g" firstAttribute="trailing" secondItem="nfM-HY-ILE" secondAttribute="trailing" constant="32" id="mVJ-KQ-v68"/>
+                            <constraint firstItem="BJW-Be-77g" firstAttribute="trailing" secondItem="geL-7K-qOs" secondAttribute="trailing" id="tY1-qb-47U"/>
+                            <constraint firstItem="geL-7K-qOs" firstAttribute="leading" secondItem="BJW-Be-77g" secondAttribute="leading" id="uHH-Ko-aml"/>
+                            <constraint firstItem="geL-7K-qOs" firstAttribute="top" secondItem="BJW-Be-77g" secondAttribute="top" constant="64" id="uM2-4r-tFI"/>
+                            <constraint firstItem="BJW-Be-77g" firstAttribute="bottom" secondItem="Vw2-Vf-JkN" secondAttribute="bottom" constant="32" id="zFc-T4-hsH"/>
+                        </constraints>
+                        <viewLayoutGuide key="safeArea" id="BJW-Be-77g"/>
+                    </view>
+                    <connections>
+                        <segue destination="JEI-B2-Dbe" kind="show" identifier="ReadyToScrobble" id="JIW-Ex-x3d"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="nPz-T4-q5D" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1551" y="-740"/>
+        </scene>
+        <!--Ready To Scrobble View Controller-->
+        <scene sceneID="Nau-e3-Or1">
+            <objects>
+                <viewController id="JEI-B2-Dbe" customClass="ReadyToScrobbleViewController" customModule="SimpleScrob" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="2U9-7N-hWh">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="6iC-kQ-XCC" customClass="LogoView" customModule="SimpleScrob" customModuleProvider="target">
+                                <rect key="frame" x="0.0" y="84" width="375" height="196"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="196" placeholder="YES" id="3XT-n5-rau"/>
+                                </constraints>
+                            </view>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Ready to Scrobble!  The next time you open SimpleScrob any songs you've listened to will be automatically scrobbled." textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Lel-Jo-482">
+                                <rect key="frame" x="32" y="372.5" width="311" height="150.5"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="21"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Press the home button to exit" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Tfo-Vz-e5j">
+                                <rect key="frame" x="82.5" y="615.5" width="210.5" height="19.5"/>
+                                <fontDescription key="fontDescription" type="system" weight="light" pointSize="16"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="asJ-xP-lDD">
+                                <rect key="frame" x="177" y="280" width="20" height="92.5"/>
+                                <color key="backgroundColor" red="0.2666666667" green="0.85882352939999995" blue="0.36862745099999999" alpha="1" colorSpace="calibratedRGB"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="20" id="gQP-Yd-d3a"/>
+                                </constraints>
+                            </view>
+                            <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="wBN-X8-M0S">
+                                <rect key="frame" x="177" y="523" width="20" height="92.5"/>
+                                <color key="backgroundColor" red="0.2666666667" green="0.85882352939999995" blue="0.36862745099999999" alpha="1" colorSpace="calibratedRGB"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="20" id="dCz-Py-EHe"/>
+                                </constraints>
+                            </view>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstItem="wBN-X8-M0S" firstAttribute="top" secondItem="Lel-Jo-482" secondAttribute="bottom" id="3Pm-V1-Q4Y"/>
+                            <constraint firstItem="SA7-ui-HdP" firstAttribute="trailing" secondItem="6iC-kQ-XCC" secondAttribute="trailing" id="4BA-GD-eqx"/>
+                            <constraint firstItem="asJ-xP-lDD" firstAttribute="top" secondItem="6iC-kQ-XCC" secondAttribute="bottom" id="8Gg-lg-duv"/>
+                            <constraint firstItem="Lel-Jo-482" firstAttribute="top" secondItem="asJ-xP-lDD" secondAttribute="bottom" id="C3m-K2-Vqf"/>
+                            <constraint firstItem="SA7-ui-HdP" firstAttribute="trailing" secondItem="Lel-Jo-482" secondAttribute="trailing" constant="32" id="FMf-Rf-gNR"/>
+                            <constraint firstItem="Tfo-Vz-e5j" firstAttribute="centerX" secondItem="SA7-ui-HdP" secondAttribute="centerX" id="NQd-DI-AMu"/>
+                            <constraint firstItem="6iC-kQ-XCC" firstAttribute="leading" secondItem="SA7-ui-HdP" secondAttribute="leading" id="bMy-uf-tfo"/>
+                            <constraint firstItem="SA7-ui-HdP" firstAttribute="bottom" secondItem="Tfo-Vz-e5j" secondAttribute="bottom" constant="32" id="cQw-0o-Qcl"/>
+                            <constraint firstItem="asJ-xP-lDD" firstAttribute="centerX" secondItem="SA7-ui-HdP" secondAttribute="centerX" id="e37-6e-oqB"/>
+                            <constraint firstItem="Tfo-Vz-e5j" firstAttribute="top" secondItem="wBN-X8-M0S" secondAttribute="bottom" id="eFG-uh-Ogu"/>
+                            <constraint firstItem="Lel-Jo-482" firstAttribute="leading" secondItem="SA7-ui-HdP" secondAttribute="leading" constant="32" id="fyI-a4-6u8"/>
+                            <constraint firstItem="6iC-kQ-XCC" firstAttribute="top" secondItem="SA7-ui-HdP" secondAttribute="top" constant="64" id="n5Y-2o-IiW"/>
+                            <constraint firstItem="wBN-X8-M0S" firstAttribute="centerX" secondItem="SA7-ui-HdP" secondAttribute="centerX" id="pHc-Xt-GoE"/>
+                            <constraint firstItem="wBN-X8-M0S" firstAttribute="height" secondItem="asJ-xP-lDD" secondAttribute="height" id="s9v-ah-vZz"/>
+                        </constraints>
+                        <viewLayoutGuide key="safeArea" id="SA7-ui-HdP"/>
+                    </view>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="zA6-qC-fqp" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="2503" y="-740"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="Efk-FX-eHt">
@@ -464,17 +660,74 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="qqk-zA-z0X" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1153.5999999999999" y="922.03898050974522"/>
+            <point key="canvasLocation" x="137" y="976"/>
+        </scene>
+        <!--Get Started View Controller-->
+        <scene sceneID="Krx-LU-sGv">
+            <objects>
+                <viewController storyboardIdentifier="GetStartedViewController" id="bpE-bZ-nTA" customClass="GetStartedViewController" customModule="SimpleScrob" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="QF7-VP-nk3">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="upl-04-SH0" customClass="LogoView" customModule="SimpleScrob" customModuleProvider="target">
+                                <rect key="frame" x="0.0" y="84" width="375" height="196"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            </view>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Gwv-vX-YoL" customClass="PrimaryButton" customModule="SimpleScrob" customModuleProvider="target">
+                                <rect key="frame" x="32" y="579" width="311" height="56"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="56" id="0x6-eX-jmJ"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="system" pointSize="15"/>
+                                <state key="normal" title="Get Started"/>
+                                <connections>
+                                    <action selector="getStarted:" destination="bpE-bZ-nTA" eventType="touchUpInside" id="dfT-YS-xbq"/>
+                                </connections>
+                            </button>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="249" text="The simplest way to scrobble your songs to Last.FM!" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Zxk-4F-PWY">
+                                <rect key="frame" x="32" y="312" width="311" height="235"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="21"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstItem="Gwv-vX-YoL" firstAttribute="top" secondItem="Zxk-4F-PWY" secondAttribute="bottom" constant="32" id="10k-YQ-TJV"/>
+                            <constraint firstItem="Gwv-vX-YoL" firstAttribute="leading" secondItem="twp-wN-nhM" secondAttribute="leading" constant="32" id="DcA-zQ-yEX"/>
+                            <constraint firstItem="upl-04-SH0" firstAttribute="leading" secondItem="twp-wN-nhM" secondAttribute="leading" id="Dhy-vU-LeK"/>
+                            <constraint firstItem="Zxk-4F-PWY" firstAttribute="leading" secondItem="twp-wN-nhM" secondAttribute="leading" constant="32" id="RNB-ml-uuq"/>
+                            <constraint firstItem="Zxk-4F-PWY" firstAttribute="top" secondItem="upl-04-SH0" secondAttribute="bottom" constant="32" id="c3S-PH-Gus"/>
+                            <constraint firstItem="upl-04-SH0" firstAttribute="top" secondItem="twp-wN-nhM" secondAttribute="top" constant="64" id="hdn-t1-zqa"/>
+                            <constraint firstItem="twp-wN-nhM" firstAttribute="bottom" secondItem="Gwv-vX-YoL" secondAttribute="bottom" constant="32" id="jLR-3s-vZY"/>
+                            <constraint firstItem="twp-wN-nhM" firstAttribute="trailing" secondItem="Zxk-4F-PWY" secondAttribute="trailing" constant="32" id="kFh-3m-wBu"/>
+                            <constraint firstItem="twp-wN-nhM" firstAttribute="trailing" secondItem="Gwv-vX-YoL" secondAttribute="trailing" constant="32" id="ozo-v5-JBk"/>
+                            <constraint firstItem="twp-wN-nhM" firstAttribute="trailing" secondItem="upl-04-SH0" secondAttribute="trailing" id="sPa-iA-50j"/>
+                        </constraints>
+                        <viewLayoutGuide key="safeArea" id="twp-wN-nhM"/>
+                    </view>
+                    <connections>
+                        <segue destination="uWL-L9-cc6" kind="show" identifier="MediaAuthDenied" id="d3j-Hr-Bes"/>
+                        <segue destination="pw2-E5-bLE" kind="show" identifier="RequestMediaAccess" id="ccX-68-fQZ"/>
+                        <segue destination="kyR-5l-OWl" kind="show" identifier="SignIn" id="KDE-5s-jkx"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="fBK-Zh-aST" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="52" y="-833"/>
         </scene>
     </scenes>
     <resources>
         <image name="Close Button" width="98" height="98"/>
-        <image name="Logo" width="880" height="524"/>
         <image name="Scrobble History" width="124" height="124"/>
         <image name="not-scrobbled" width="128" height="128"/>
         <image name="user-with-headphones" width="200" height="200"/>
     </resources>
     <inferredMetricsTieBreakers>
         <segue reference="Wmd-dA-zsF"/>
+        <segue reference="KDE-5s-jkx"/>
+        <segue reference="d3j-Hr-Bes"/>
+        <segue reference="7No-wh-53f"/>
     </inferredMetricsTieBreakers>
 </document>

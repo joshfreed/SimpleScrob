@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="13196" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" launchScreen="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="01J-lp-oVM">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="13771" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" launchScreen="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="01J-lp-oVM">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13173"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13772"/>
         <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -52,41 +52,26 @@
                                     <constraint firstAttribute="trailing" secondItem="hju-6q-HpN" secondAttribute="trailing" id="ZW8-3c-bU8"/>
                                 </constraints>
                             </view>
-                            <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Une-YW-ase">
-                                <rect key="frame" x="163" y="467.5" width="50" height="167.5"/>
-                                <color key="backgroundColor" red="0.1764705882" green="0.92156862750000001" blue="0.21176470589999999" alpha="1" colorSpace="calibratedRGB"/>
-                                <constraints>
-                                    <constraint firstAttribute="width" constant="50" id="yJs-Gw-rVi"/>
-                                </constraints>
-                            </view>
-                            <activityIndicatorView hidden="YES" opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="kvw-ci-pIy">
-                                <rect key="frame" x="178" y="447.5" width="20" height="20"/>
-                            </activityIndicatorView>
-                            <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="TDf-Du-pzD">
-                                <rect key="frame" x="162" y="280" width="50" height="167.5"/>
-                                <color key="backgroundColor" red="0.1764705882" green="0.92156862750000001" blue="0.21176470589999999" alpha="1" colorSpace="calibratedRGB"/>
-                                <constraints>
-                                    <constraint firstAttribute="width" constant="50" id="bF2-CA-vVK"/>
-                                </constraints>
-                            </view>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="249" text="The simplest way to scrobble your songs to Last.FM!" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="3Qa-aW-T4Q">
+                                <rect key="frame" x="32" y="312" width="311" height="235"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="21"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                         </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
-                            <constraint firstItem="Une-YW-ase" firstAttribute="top" secondItem="kvw-ci-pIy" secondAttribute="bottom" id="81r-ao-yTv"/>
+                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="bottom" secondItem="3Qa-aW-T4Q" secondAttribute="bottom" constant="120" id="0r9-gr-C54"/>
                             <constraint firstItem="eUZ-pb-yef" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" constant="64" id="EUf-Ii-uV4"/>
-                            <constraint firstItem="Une-YW-ase" firstAttribute="height" secondItem="TDf-Du-pzD" secondAttribute="height" id="INb-xn-ue6"/>
+                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="3Qa-aW-T4Q" secondAttribute="trailing" constant="32" id="IZT-zB-3XK"/>
                             <constraint firstItem="Zde-oM-mNQ" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="8" id="N6R-Sp-lOq"/>
-                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="bottom" secondItem="Une-YW-ase" secondAttribute="bottom" constant="32" id="Sif-tj-rU2"/>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="Zde-oM-mNQ" secondAttribute="trailing" constant="8" id="UL8-Sg-btU"/>
                             <constraint firstItem="eUZ-pb-yef" firstAttribute="width" secondItem="eUZ-pb-yef" secondAttribute="height" multiplier="220:131" id="VEu-RD-UcI"/>
+                            <constraint firstItem="3Qa-aW-T4Q" firstAttribute="top" secondItem="Zde-oM-mNQ" secondAttribute="bottom" constant="32" id="XX4-dx-4hG"/>
                             <constraint firstItem="Zde-oM-mNQ" firstAttribute="centerX" secondItem="6Tk-OE-BBY" secondAttribute="centerX" id="Yiy-pM-xOR"/>
-                            <constraint firstItem="Une-YW-ase" firstAttribute="centerX" secondItem="6Tk-OE-BBY" secondAttribute="centerX" id="Ylh-AD-Wu9"/>
                             <constraint firstItem="eUZ-pb-yef" firstAttribute="centerX" secondItem="6Tk-OE-BBY" secondAttribute="centerX" id="dwB-9f-ThY"/>
-                            <constraint firstItem="TDf-Du-pzD" firstAttribute="centerX" secondItem="6Tk-OE-BBY" secondAttribute="centerX" id="eO8-kt-L5s"/>
-                            <constraint firstItem="TDf-Du-pzD" firstAttribute="top" secondItem="Zde-oM-mNQ" secondAttribute="bottom" id="mAd-BY-U2p"/>
+                            <constraint firstItem="3Qa-aW-T4Q" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="32" id="fqT-7D-OpY"/>
                             <constraint firstItem="Zde-oM-mNQ" firstAttribute="top" secondItem="eUZ-pb-yef" secondAttribute="bottom" constant="8" id="pJ9-UX-wME"/>
-                            <constraint firstItem="kvw-ci-pIy" firstAttribute="top" secondItem="TDf-Du-pzD" secondAttribute="bottom" id="vCA-5b-GzT"/>
-                            <constraint firstItem="kvw-ci-pIy" firstAttribute="centerX" secondItem="6Tk-OE-BBY" secondAttribute="centerX" id="zN5-9b-X5k"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                     </view>

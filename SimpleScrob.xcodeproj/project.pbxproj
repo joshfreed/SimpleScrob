@@ -18,7 +18,9 @@
 		5356DF342000422600BF6C2C /* ViewExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5356DF332000422600BF6C2C /* ViewExtensions.swift */; };
 		5356DF3620030EFD00BF6C2C /* MediaAuthDeniedView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5356DF3520030EFD00BF6C2C /* MediaAuthDeniedView.swift */; };
 		5356DF3820030F0700BF6C2C /* MediaAuthDeniedView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 5356DF3720030F0700BF6C2C /* MediaAuthDeniedView.xib */; };
+		5357764C200953A10059E768 /* ReadyToScrobbleViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5357764B200953A10059E768 /* ReadyToScrobbleViewController.swift */; };
 		536814DF1FB78BDE00F5B233 /* CoreDataDatabase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 536814DE1FB78BDE00F5B233 /* CoreDataDatabase.swift */; };
+		536F7BE32008129B00F3EA0C /* NibDesignable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 536F7BE22008129B00F3EA0C /* NibDesignable.swift */; };
 		5377817E20000E2A000A0312 /* ScrobbleView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 5377817D20000E2A000A0312 /* ScrobbleView.xib */; };
 		53825B881F7E8CC600566F2C /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53825B871F7E8CC600566F2C /* AppDelegate.swift */; };
 		53825B8D1F7E8CC600566F2C /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 53825B8B1F7E8CC600566F2C /* Main.storyboard */; };
@@ -49,8 +51,11 @@
 		53B06FEF1F83EE7200FC9AB9 /* SSTextField.xib in Resources */ = {isa = PBXBuildFile; fileRef = 535A949D1F83E81100375D4E /* SSTextField.xib */; };
 		53B7DA922008078600C60283 /* RestEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53B7DA912008078600C60283 /* RestEngine.swift */; };
 		53B7DA96200807BD00C60283 /* API.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53B7DA95200807BD00C60283 /* API.swift */; };
+		53B7DA9820080BEA00C60283 /* LogoView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 53B7DA9720080BEA00C60283 /* LogoView.xib */; };
+		53B7DA9A20080C3100C60283 /* LogoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53B7DA9920080C3100C60283 /* LogoView.swift */; };
 		53C5803E1F8A7945003AEEBB /* CoreDataDatabaseTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53C5803D1F8A7945003AEEBB /* CoreDataDatabaseTests.swift */; };
 		53C580401F8A7A32003AEEBB /* CoreDataHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53C5803F1F8A7A32003AEEBB /* CoreDataHelpers.swift */; };
+		53C6CEA120096DDE0047DDCD /* MediaAuthDeniedViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53C6CEA020096DDE0047DDCD /* MediaAuthDeniedViewController.swift */; };
 		53C75DC91FA0D1000056D1AB /* ScrobbleService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53C75DC81FA0D1000056D1AB /* ScrobbleService.swift */; };
 		53C75DCC1FA0D2550056D1AB /* LastFmScrobbleService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53C75DCB1FA0D2550056D1AB /* LastFmScrobbleService.swift */; };
 		53CE43B21F8A87040050A8C7 /* SongScannerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53CE43B11F8A87040050A8C7 /* SongScannerTests.swift */; };
@@ -71,6 +76,10 @@
 		53D6AD1C1F82AD81005F6972 /* JFLib.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 53D6AD1A1F82AD81005F6972 /* JFLib.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		53D8CA231F8C2D1E00207EC6 /* MediaItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53D8CA221F8C2D1E00207EC6 /* MediaItem.swift */; };
 		53D9B5761F8156F300C8581B /* Database.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53D9B5751F8156F300C8581B /* Database.swift */; };
+		53DB433B2009111B003793E8 /* GetStartedViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53DB433A2009111B003793E8 /* GetStartedViewController.swift */; };
+		53DB433D20091188003793E8 /* PrimaryButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53DB433C20091188003793E8 /* PrimaryButton.swift */; };
+		53DB4342200914E6003793E8 /* GrantAccessViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53DB4341200914E6003793E8 /* GrantAccessViewController.swift */; };
+		53DB434420091A4E003793E8 /* LfmAccountViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53DB434320091A4E003793E8 /* LfmAccountViewController.swift */; };
 		53EA38241F93E5CF00078D20 /* Connectivity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53EA38231F93E5CF00078D20 /* Connectivity.swift */; };
 		53FA51051F83F77D00F816B9 /* FloatingLabelTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53FA51041F83F77D00F816B9 /* FloatingLabelTextField.swift */; };
 		FB72D7E700FB5B3BD29D5C22 /* Pods_SimpleScrob.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B994350F573FE6631D75B10A /* Pods_SimpleScrob.framework */; };
@@ -135,8 +144,10 @@
 		5356DF332000422600BF6C2C /* ViewExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewExtensions.swift; sourceTree = "<group>"; };
 		5356DF3520030EFD00BF6C2C /* MediaAuthDeniedView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MediaAuthDeniedView.swift; sourceTree = "<group>"; };
 		5356DF3720030F0700BF6C2C /* MediaAuthDeniedView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = MediaAuthDeniedView.xib; sourceTree = "<group>"; };
+		5357764B200953A10059E768 /* ReadyToScrobbleViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReadyToScrobbleViewController.swift; sourceTree = "<group>"; };
 		535A949D1F83E81100375D4E /* SSTextField.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = SSTextField.xib; sourceTree = "<group>"; };
 		536814DE1FB78BDE00F5B233 /* CoreDataDatabase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataDatabase.swift; sourceTree = "<group>"; };
+		536F7BE22008129B00F3EA0C /* NibDesignable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NibDesignable.swift; sourceTree = "<group>"; };
 		5377817D20000E2A000A0312 /* ScrobbleView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ScrobbleView.xib; sourceTree = "<group>"; };
 		53825B841F7E8CC600566F2C /* SimpleScrob.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SimpleScrob.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		53825B871F7E8CC600566F2C /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -173,8 +184,11 @@
 		53B06FEB1F83E8B200FC9AB9 /* SSTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SSTextField.swift; sourceTree = "<group>"; };
 		53B7DA912008078600C60283 /* RestEngine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RestEngine.swift; sourceTree = "<group>"; };
 		53B7DA95200807BD00C60283 /* API.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = API.swift; sourceTree = "<group>"; };
+		53B7DA9720080BEA00C60283 /* LogoView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = LogoView.xib; sourceTree = "<group>"; };
+		53B7DA9920080C3100C60283 /* LogoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogoView.swift; sourceTree = "<group>"; };
 		53C5803D1F8A7945003AEEBB /* CoreDataDatabaseTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataDatabaseTests.swift; sourceTree = "<group>"; };
 		53C5803F1F8A7A32003AEEBB /* CoreDataHelpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataHelpers.swift; sourceTree = "<group>"; };
+		53C6CEA020096DDE0047DDCD /* MediaAuthDeniedViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MediaAuthDeniedViewController.swift; sourceTree = "<group>"; };
 		53C75DC81FA0D1000056D1AB /* ScrobbleService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScrobbleService.swift; sourceTree = "<group>"; };
 		53C75DCB1FA0D2550056D1AB /* LastFmScrobbleService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LastFmScrobbleService.swift; sourceTree = "<group>"; };
 		53CE43B11F8A87040050A8C7 /* SongScannerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SongScannerTests.swift; sourceTree = "<group>"; };
@@ -194,6 +208,10 @@
 		53D6AD1A1F82AD81005F6972 /* JFLib.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = JFLib.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		53D8CA221F8C2D1E00207EC6 /* MediaItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MediaItem.swift; sourceTree = "<group>"; };
 		53D9B5751F8156F300C8581B /* Database.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Database.swift; sourceTree = "<group>"; };
+		53DB433A2009111B003793E8 /* GetStartedViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetStartedViewController.swift; sourceTree = "<group>"; };
+		53DB433C20091188003793E8 /* PrimaryButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrimaryButton.swift; sourceTree = "<group>"; };
+		53DB4341200914E6003793E8 /* GrantAccessViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GrantAccessViewController.swift; sourceTree = "<group>"; };
+		53DB434320091A4E003793E8 /* LfmAccountViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LfmAccountViewController.swift; sourceTree = "<group>"; };
 		53EA38231F93E5CF00078D20 /* Connectivity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Connectivity.swift; sourceTree = "<group>"; };
 		53FA51041F83F77D00F816B9 /* FloatingLabelTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FloatingLabelTextField.swift; sourceTree = "<group>"; };
 		6D10BF47460D0F29D65529E7 /* Pods-SimpleScrob.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SimpleScrob.debug.xcconfig"; path = "Pods/Target Support Files/Pods-SimpleScrob/Pods-SimpleScrob.debug.xcconfig"; sourceTree = "<group>"; };
@@ -276,6 +294,10 @@
 				53B06FEB1F83E8B200FC9AB9 /* SSTextField.swift */,
 				53FA51041F83F77D00F816B9 /* FloatingLabelTextField.swift */,
 				5356DF332000422600BF6C2C /* ViewExtensions.swift */,
+				53B7DA9720080BEA00C60283 /* LogoView.xib */,
+				53B7DA9920080C3100C60283 /* LogoView.swift */,
+				536F7BE22008129B00F3EA0C /* NibDesignable.swift */,
+				53DB433C20091188003793E8 /* PrimaryButton.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -352,6 +374,7 @@
 		53825BBF1F80325400566F2C /* Scenes */ = {
 			isa = PBXGroup;
 			children = (
+				53DB433320090F61003793E8 /* Onboarding */,
 				53D6AD051F826B49005F6972 /* SignIn */,
 				53825BC01F80325C00566F2C /* Scrobble */,
 				53CE43B71F8A905C0050A8C7 /* ViewScrobbles */,
@@ -479,6 +502,18 @@
 				53D6AD0B1F826B5E005F6972 /* SignInInteractor.swift */,
 			);
 			path = SignIn;
+			sourceTree = "<group>";
+		};
+		53DB433320090F61003793E8 /* Onboarding */ = {
+			isa = PBXGroup;
+			children = (
+				53DB433A2009111B003793E8 /* GetStartedViewController.swift */,
+				53DB4341200914E6003793E8 /* GrantAccessViewController.swift */,
+				53DB434320091A4E003793E8 /* LfmAccountViewController.swift */,
+				5357764B200953A10059E768 /* ReadyToScrobbleViewController.swift */,
+				53C6CEA020096DDE0047DDCD /* MediaAuthDeniedViewController.swift */,
+			);
+			path = Onboarding;
 			sourceTree = "<group>";
 		};
 		728B77057A57B72B501EECBB /* Pods */ = {
@@ -647,6 +682,7 @@
 			files = (
 				5377817E20000E2A000A0312 /* ScrobbleView.xib in Resources */,
 				53075DEC1F85425800A19189 /* Podfile in Resources */,
+				53B7DA9820080BEA00C60283 /* LogoView.xib in Resources */,
 				53825BB61F7EE22100566F2C /* MediaAuthPrimerView.xib in Resources */,
 				53825B921F7E8CC600566F2C /* LaunchScreen.storyboard in Resources */,
 				53B06FEF1F83EE7200FC9AB9 /* SSTextField.xib in Resources */,
@@ -849,13 +885,17 @@
 				53825BBA1F7EE53E00566F2C /* MediaAuthPrimerView.swift in Sources */,
 				53D6AD111F826B5E005F6972 /* SignInInteractor.swift in Sources */,
 				53825BBE1F802C7700566F2C /* MediaLibrary.swift in Sources */,
+				53DB433B2009111B003793E8 /* GetStartedViewController.swift in Sources */,
 				53CE43C51F8AACEB0050A8C7 /* SongCell.swift in Sources */,
 				5356DF3620030EFD00BF6C2C /* MediaAuthDeniedView.swift in Sources */,
 				53825BCB1F8032CF00566F2C /* ScrobbleViewController.swift in Sources */,
 				53825BCA1F8032CF00566F2C /* ScrobbleModels.swift in Sources */,
+				5357764C200953A10059E768 /* ReadyToScrobbleViewController.swift in Sources */,
 				53D6AD101F826B5E005F6972 /* SignInViewController.swift in Sources */,
 				53CE43BE1F8A90870050A8C7 /* ViewScrobblesPresenter.swift in Sources */,
+				536F7BE32008129B00F3EA0C /* NibDesignable.swift in Sources */,
 				53825B881F7E8CC600566F2C /* AppDelegate.swift in Sources */,
+				53DB434420091A4E003793E8 /* LfmAccountViewController.swift in Sources */,
 				53B06FEC1F83E8B200FC9AB9 /* SSTextField.swift in Sources */,
 				53ACED671F8160F6008BAB39 /* User.swift in Sources */,
 				53CE43C11F8A90870050A8C7 /* ViewScrobblesModels.swift in Sources */,
@@ -863,6 +903,8 @@
 				53B7DA96200807BD00C60283 /* API.swift in Sources */,
 				53825BC71F8032CF00566F2C /* ScrobblePresenter.swift in Sources */,
 				53825BC81F8032CF00566F2C /* ScrobbleWorker.swift in Sources */,
+				53DB433D20091188003793E8 /* PrimaryButton.swift in Sources */,
+				53B7DA9A20080C3100C60283 /* LogoView.swift in Sources */,
 				53CE43C31F8A90870050A8C7 /* ViewScrobblesInteractor.swift in Sources */,
 				53CE43B61F8A88000050A8C7 /* DateGenerator.swift in Sources */,
 				53825BB81F7EE4FD00566F2C /* UIViewLoading.swift in Sources */,
@@ -871,7 +913,9 @@
 				53EA38241F93E5CF00078D20 /* Connectivity.swift in Sources */,
 				5316A6511F82BFB5005193EB /* SongScanner.swift in Sources */,
 				5356DF342000422600BF6C2C /* ViewExtensions.swift in Sources */,
+				53C6CEA120096DDE0047DDCD /* MediaAuthDeniedViewController.swift in Sources */,
 				53C75DC91FA0D1000056D1AB /* ScrobbleService.swift in Sources */,
+				53DB4342200914E6003793E8 /* GrantAccessViewController.swift in Sources */,
 				53825BCC1F8032CF00566F2C /* ScrobbleInteractor.swift in Sources */,
 				5316A6561F82CBD7005193EB /* SimpleScrob.xcdatamodeld in Sources */,
 				53D9B5761F8156F300C8581B /* Database.swift in Sources */,

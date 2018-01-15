@@ -93,6 +93,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         DDLogVerbose("Hi papertrailapp.com")
         
+        let storyboard = UIStoryboard(name: "Main", bundle: Bundle.main)
+        if songScanner.isInitialized {
+            window?.rootViewController = storyboard.instantiateViewController(withIdentifier: "ScrobbleViewController")
+        } else {
+            window?.rootViewController = storyboard.instantiateViewController(withIdentifier: "GetStartedViewController")
+        }
+        
         return true
     }
     
