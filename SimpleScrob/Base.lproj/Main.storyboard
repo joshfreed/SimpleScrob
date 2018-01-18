@@ -508,8 +508,8 @@
                         <viewLayoutGuide key="safeArea" id="eOr-4m-K31"/>
                     </view>
                     <connections>
-                        <segue destination="kyR-5l-OWl" kind="show" identifier="AccountPrimer" id="msY-BO-3CN"/>
-                        <segue destination="uWL-L9-cc6" kind="show" identifier="AuthorizationDenied" id="roR-Ng-QAS"/>
+                        <segue destination="kyR-5l-OWl" kind="custom" identifier="AccountPrimer" customClass="FadeInSegue" customModule="SimpleScrob" customModuleProvider="target" id="msY-BO-3CN"/>
+                        <segue destination="uWL-L9-cc6" kind="custom" identifier="AuthorizationDenied" customClass="FadeInSegue" customModule="SimpleScrob" customModuleProvider="target" id="roR-Ng-QAS"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="PHv-f8-NwP" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -571,7 +571,7 @@
                         <viewLayoutGuide key="safeArea" id="BJW-Be-77g"/>
                     </view>
                     <connections>
-                        <segue destination="JEI-B2-Dbe" kind="show" identifier="ReadyToScrobble" id="JIW-Ex-x3d"/>
+                        <segue destination="JEI-B2-Dbe" kind="custom" identifier="ReadyToScrobble" customClass="FadeInSegue" customModule="SimpleScrob" customModuleProvider="target" id="JIW-Ex-x3d"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="nPz-T4-q5D" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -708,9 +708,9 @@
                         <viewLayoutGuide key="safeArea" id="twp-wN-nhM"/>
                     </view>
                     <connections>
-                        <segue destination="uWL-L9-cc6" kind="show" identifier="MediaAuthDenied" id="d3j-Hr-Bes"/>
-                        <segue destination="pw2-E5-bLE" kind="show" identifier="RequestMediaAccess" id="ccX-68-fQZ"/>
-                        <segue destination="kyR-5l-OWl" kind="show" identifier="SignIn" id="KDE-5s-jkx"/>
+                        <segue destination="uWL-L9-cc6" kind="custom" identifier="MediaAuthDenied" customClass="FadeInSegue" customModule="SimpleScrob" customModuleProvider="target" id="d3j-Hr-Bes"/>
+                        <segue destination="pw2-E5-bLE" kind="custom" identifier="RequestMediaAccess" customClass="FadeInSegue" customModule="SimpleScrob" customModuleProvider="target" id="ccX-68-fQZ"/>
+                        <segue destination="kyR-5l-OWl" kind="custom" identifier="SignIn" customClass="FadeInSegue" customModule="SimpleScrob" customModuleProvider="target" id="KDE-5s-jkx"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="fBK-Zh-aST" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -726,7 +726,7 @@
     </resources>
     <inferredMetricsTieBreakers>
         <segue reference="Wmd-dA-zsF"/>
-        <segue reference="KDE-5s-jkx"/>
+        <segue reference="msY-BO-3CN"/>
         <segue reference="d3j-Hr-Bes"/>
         <segue reference="7No-wh-53f"/>
     </inferredMetricsTieBreakers>

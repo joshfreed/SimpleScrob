@@ -56,6 +56,7 @@
 		53C5803E1F8A7945003AEEBB /* CoreDataDatabaseTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53C5803D1F8A7945003AEEBB /* CoreDataDatabaseTests.swift */; };
 		53C580401F8A7A32003AEEBB /* CoreDataHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53C5803F1F8A7A32003AEEBB /* CoreDataHelpers.swift */; };
 		53C6CEA120096DDE0047DDCD /* MediaAuthDeniedViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53C6CEA020096DDE0047DDCD /* MediaAuthDeniedViewController.swift */; };
+		53C6CEA52011056D0047DDCD /* FadeInSegue.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53C6CEA42011056D0047DDCD /* FadeInSegue.swift */; };
 		53C75DC91FA0D1000056D1AB /* ScrobbleService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53C75DC81FA0D1000056D1AB /* ScrobbleService.swift */; };
 		53C75DCC1FA0D2550056D1AB /* LastFmScrobbleService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53C75DCB1FA0D2550056D1AB /* LastFmScrobbleService.swift */; };
 		53CE43B21F8A87040050A8C7 /* SongScannerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53CE43B11F8A87040050A8C7 /* SongScannerTests.swift */; };
@@ -189,6 +190,7 @@
 		53C5803D1F8A7945003AEEBB /* CoreDataDatabaseTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataDatabaseTests.swift; sourceTree = "<group>"; };
 		53C5803F1F8A7A32003AEEBB /* CoreDataHelpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataHelpers.swift; sourceTree = "<group>"; };
 		53C6CEA020096DDE0047DDCD /* MediaAuthDeniedViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MediaAuthDeniedViewController.swift; sourceTree = "<group>"; };
+		53C6CEA42011056D0047DDCD /* FadeInSegue.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FadeInSegue.swift; sourceTree = "<group>"; };
 		53C75DC81FA0D1000056D1AB /* ScrobbleService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScrobbleService.swift; sourceTree = "<group>"; };
 		53C75DCB1FA0D2550056D1AB /* LastFmScrobbleService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LastFmScrobbleService.swift; sourceTree = "<group>"; };
 		53CE43B11F8A87040050A8C7 /* SongScannerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SongScannerTests.swift; sourceTree = "<group>"; };
@@ -298,6 +300,7 @@
 				53B7DA9920080C3100C60283 /* LogoView.swift */,
 				536F7BE22008129B00F3EA0C /* NibDesignable.swift */,
 				53DB433C20091188003793E8 /* PrimaryButton.swift */,
+				53C6CEA42011056D0047DDCD /* FadeInSegue.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -922,6 +925,7 @@
 				53825BC91F8032CF00566F2C /* ScrobbleRouter.swift in Sources */,
 				53CE43BF1F8A90870050A8C7 /* ViewScrobblesWorker.swift in Sources */,
 				53CE43C21F8A90870050A8C7 /* ViewScrobblesViewController.swift in Sources */,
+				53C6CEA52011056D0047DDCD /* FadeInSegue.swift in Sources */,
 				53B7DA922008078600C60283 /* RestEngine.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
