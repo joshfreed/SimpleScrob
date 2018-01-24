@@ -13,10 +13,7 @@
 import UIKit
 
 protocol ScrobblePresentationLogic {
-    func presentFirstTimeView(response: Scrobble.Refresh.Response)
     func presentReadyToScrobble(response: Scrobble.Refresh.Response)
-    func presentAuthorizationPrimer()
-    func presentAuthorizationDenied()
     func presentSearchingForNewScrobbles()
     func presentSongsToScrobble(response: Scrobble.SearchForNewScrobbles.Response)
     func presentSubmittingToLastFM()
@@ -29,24 +26,11 @@ class ScrobblePresenter: ScrobblePresentationLogic {
 
     // MARK: Refresh
 
-    func presentFirstTimeView(response: Scrobble.Refresh.Response) {
-        let viewModel = Scrobble.Refresh.ViewModel()
-        viewController?.displayFirstTimeView(viewModel: viewModel)
-    }
-    
     func presentReadyToScrobble(response: Scrobble.Refresh.Response) {
         let viewModel = Scrobble.Refresh.ViewModel()
         viewController?.displayReadyToScrobble(viewModel: viewModel)
     }
-
-    func presentAuthorizationPrimer() {
-        viewController?.displayAuthorizationPrimer()
-    }
     
-    func presentAuthorizationDenied() {
-        viewController?.displayAuthorizationDenied()
-    }
-
     // MARK: Search for new scrobbles
     
     func presentSearchingForNewScrobbles() {

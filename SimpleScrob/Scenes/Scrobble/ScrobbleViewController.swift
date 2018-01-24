@@ -14,10 +14,7 @@ import UIKit
 import CocoaLumberjack
 
 protocol ScrobbleDisplayLogic: class {
-    func displayFirstTimeView(viewModel: Scrobble.Refresh.ViewModel)
     func displayReadyToScrobble(viewModel: Scrobble.Refresh.ViewModel)
-    func displayAuthorizationPrimer()
-    func displayAuthorizationDenied()
     func displaySearchingForNewScrobbles()
     func displaySongsToScrobble(viewModel: Scrobble.SearchForNewScrobbles.ViewModel)
     func displayNoSongsToScrobble()
@@ -30,14 +27,17 @@ class ScrobbleViewController: UIViewController, ScrobbleDisplayLogic {
     var interactor: ScrobbleBusinessLogic?
     var router: (NSObjectProtocol & ScrobbleRoutingLogic & ScrobbleDataPassing)?
     
-    @IBOutlet weak var contentContainer: UIView!
     @IBOutlet weak var currentUserButton: UIButton!
     @IBOutlet weak var viewScrobblesButton: UIButton!
     @IBOutlet weak var viewScrobblesHitAreaButton: UIButton!
     
-    @IBOutlet var scrobbleView: ScrobbleView!
-    @IBOutlet var mediaAuthPrimerView: MediaAuthPrimerView!
-    @IBOutlet var mediaAuthDeniedView: MediaAuthDeniedView!    
+    @IBOutlet weak var scrobbleCountLabel: UILabel!
+    @IBOutlet weak var statusLabel: UILabel!
+    @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
+    @IBOutlet weak var signInButton: UIButton!    
+    @IBOutlet weak var doneLabel: UILabel!
+    @IBOutlet weak var errorLabel: UILabel!
+    @IBOutlet weak var retryButton: UIButton!
     
     // MARK: Object lifecycle
 
@@ -56,15 +56,13 @@ class ScrobbleViewController: UIViewController, ScrobbleDisplayLogic {
     private func setup() {
         let appDelegate = UIApplication.shared.delegate as! AppDelegate
         let viewController = self
-        let interactor = ScrobbleInteractor(
-            mediaLibrary: appDelegate.mediaLibrary,
-            worker: ScrobbleWorker(
-                database: appDelegate.database,
-                songScanner: appDelegate.songScanner,
-                scrobbleService: appDelegate.scrobbleService,
-                connectivity: AlamofireConnectivity()
-            )
+        let worker = ScrobbleWorker(
+            database: appDelegate.database,
+            songScanner: appDelegate.songScanner,
+            scrobbleService: appDelegate.scrobbleService,
+            connectivity: AlamofireConnectivity()
         )
+        let interactor = ScrobbleInteractor(worker: worker)
         let presenter = ScrobblePresenter()
         let router = ScrobbleRouter()
         viewController.interactor = interactor
@@ -97,18 +95,11 @@ class ScrobbleViewController: UIViewController, ScrobbleDisplayLogic {
         }
         
         currentUserButton.isHidden = true
-
-        mediaAuthPrimerView.delegate = self
-        scrobbleView.delegate = self
-        mediaAuthDeniedView.delegate = self
-    }
-
-    private func showContent(view: UIView) {
-        scrobbleView.removeFromSuperview()
-        mediaAuthPrimerView.removeFromSuperview()
         
-        contentContainer.addSubview(view)
-        view.jpfPinToSuperview()        
+        activityIndicator.startAnimating()
+        
+        resetUI()
+        signInButton.isHidden = true
     }
     
     // MARK: Events
@@ -124,61 +115,87 @@ class ScrobbleViewController: UIViewController, ScrobbleDisplayLogic {
         
     }
     
+    @IBAction func tappedRetry(_ sender: UIButton) {
+        let request = Scrobble.SubmitScrobbles.Request()
+        interactor?.submitScrobbles(request: request)
+    }
+    
+    @IBAction func tappedSignInButton(_ sender: UIButton) {
+        performSegue(withIdentifier: "SignIn", sender: nil)
+    }
+    
+    private func resetUI() {
+        statusLabel.isHidden = true
+        activityIndicator.stopAnimating()
+        doneLabel.isHidden = true
+        scrobbleCountLabel.isHidden = true
+        errorLabel.isHidden = true
+        retryButton.isHidden = true
+    }
+    
     // MARK: Refresh
 
     @objc func refresh() {
         let request = Scrobble.Refresh.Request()
         interactor?.refresh(request: request)
     }
-
-    func displayFirstTimeView(viewModel: Scrobble.Refresh.ViewModel) {
-        showContent(view: scrobbleView)
-        scrobbleView.displayFirstTimeView()
-        viewScrobblesButton.isHidden = false
-        viewScrobblesHitAreaButton.isHidden = false
-    }
     
     func displayReadyToScrobble(viewModel: Scrobble.Refresh.ViewModel) {
         DDLogVerbose("ScrobbleViewController::displayReadyToScrobble")
-        showContent(view: scrobbleView)
-        scrobbleView.displayReadyToScrobble()
+        
+        statusLabel.text = ""
         viewScrobblesButton.isHidden = false
         viewScrobblesHitAreaButton.isHidden = false
     }
 
-    func displayAuthorizationPrimer() {
-        showContent(view: mediaAuthPrimerView)
-        viewScrobblesButton.isHidden = true
-        viewScrobblesHitAreaButton.isHidden = true
-    }
-    
-    func displayAuthorizationDenied() {
-        showContent(view: mediaAuthDeniedView)
-    }
-    
     // MARK: Search for new scrobbles
     
     func displaySearchingForNewScrobbles() {
-        scrobbleView.displaySearchingForNewScrobbles()
+        resetUI()
+        statusLabel.isHidden = false
+        statusLabel.text = "Searching for new scrobbles..."
+        activityIndicator.startAnimating()
     }
     
     func displaySongsToScrobble(viewModel: Scrobble.SearchForNewScrobbles.ViewModel) {
-        scrobbleView.displaySongsToScrobble(viewModel: viewModel)
+        scrobbleCountLabel.isHidden = false
+        statusLabel.isHidden = true
+        activityIndicator.stopAnimating()
+        
+        let message = viewModel.numberOfSongs == 1 ? "Found 1 new scrobble." : "Found \(viewModel.numberOfSongs) new scrobbles."
+        scrobbleCountLabel.text = message
     }
     
     func displayNoSongsToScrobble() {
         DDLogVerbose("ScrobbleViewController::displayNoSongsToScrobble")
-        scrobbleView.displayNoSongsToScrobble()
+        resetUI()
+        statusLabel.isHidden = false
+        statusLabel.text = "No songs to scrobble."
+        activityIndicator.stopAnimating()
     }
     
     // MARK: Submit scrobbles
     
     func displaySubmittingToLastFM() {
-        scrobbleView.displaySubmittingToLastFM()
+        retryButton.isHidden = true
+        errorLabel.isHidden = true
+        statusLabel.isHidden = false
+        activityIndicator.startAnimating()
+        statusLabel.text = "Submitting to last.fm..."
     }
     
     func displayScrobblingComplete(viewModel: Scrobble.SubmitScrobbles.ViewModel) {
-        scrobbleView.displayScrobblingComplete(viewModel: viewModel)
+        statusLabel.isHidden = false
+        
+        if let error = viewModel.error {
+            activityIndicator.stopAnimating()
+            errorLabel.text = error
+            retryButton.isHidden = false
+            errorLabel.isHidden = false
+        } else {
+            doneLabel.isHidden = false
+            activityIndicator.stopAnimating()
+        }
     }
     
     // MARK: Get current user
@@ -189,11 +206,15 @@ class ScrobbleViewController: UIViewController, ScrobbleDisplayLogic {
         if let _ = viewModel.username {
             isLoggedIn = true
             currentUserButton.isHidden = false
-            scrobbleView.displaySignedIn()
+            signInButton.isHidden = true
         } else {
             isLoggedIn = false
             currentUserButton.isHidden = true
-            scrobbleView.displayNotSignedIn()
+            signInButton.isHidden = false
+            signInButton.alpha = 0
+            UIView.animate(withDuration: 0.25, animations: {
+                self.signInButton.alpha = 1
+            })
         }
     }
     
@@ -227,30 +248,3 @@ class ScrobbleViewController: UIViewController, ScrobbleDisplayLogic {
     }
 }
 
-extension ScrobbleViewController: MediaAuthPrimerViewDelegate {
-    func requestAuthorization() {
-        interactor?.requestMediaLibraryAuthorization()
-    }
-}
-
-extension ScrobbleViewController: ScrobbleViewDelegate {
-    func retry() {
-        let request = Scrobble.SubmitScrobbles.Request()
-        interactor?.submitScrobbles(request: request)
-    }
-
-    func signIn() {
-        performSegue(withIdentifier: "SignIn", sender: nil)
-    }
-}
-
-extension ScrobbleViewController: MediaAuthDeniedViewProtocol {
-    func openSettings() {
-        let settingUrl = URL(string: UIApplicationOpenSettingsURLString)!        
-        UIApplication.shared.open(settingUrl) { isOpen in
-            if !isOpen {
-                debugPrint("Error opening:\(settingUrl.absoluteString)")
-            }
-        }
-    }
-}

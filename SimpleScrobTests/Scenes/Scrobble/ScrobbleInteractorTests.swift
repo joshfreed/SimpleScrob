@@ -18,7 +18,6 @@ class ScrobbleInteractorTests: XCTestCase {
     // MARK: Subject under test
 
     var sut: ScrobbleInteractor!
-    let mediaLibrary = MockMediaLibrary()
     let worker = MockScrobbleWorker()
     let database = MockDatabase()
     let spy = ScrobblePresentationLogicSpy()
@@ -40,10 +39,7 @@ class ScrobbleInteractorTests: XCTestCase {
     // MARK: Test setup
 
     func setupScrobbleInteractor() {
-        sut = ScrobbleInteractor(
-            mediaLibrary: mediaLibrary,
-            worker: worker
-        )
+        sut = ScrobbleInteractor(worker: worker)
         sut.presenter = spy
     }
 
@@ -57,14 +53,6 @@ class ScrobbleInteractorTests: XCTestCase {
                 scrobbleService: MockScrobbleService(),
                 connectivity: MockConnectivity()
             )
-        }
-        
-        private var _isFirstTime = false
-        override var isFirstTime: Bool {
-            return _isFirstTime
-        }
-        func setFirstTime() {
-            _isFirstTime = true
         }
         
         private var _isLoggedIn = false
@@ -191,7 +179,6 @@ class ScrobbleInteractorTests: XCTestCase {
     func testRefreshHappyPath() {
         // Given
         worker.loggedIn(as: "jfreed")
-        mediaLibrary.authorized()
         worker.newSongsToScrobble = [
             makePlayedSong(persistendId: 1, playedAt: "2017-12-01 14:00:00", artist: "The Dear Hunter", album: "Act II", track: "Red Hands"),
             makePlayedSong(persistendId: 2, playedAt: "2017-12-01 14:00:00", artist: "Beardfish", album: "Sleeping in Traffic", track: "The Hunter")

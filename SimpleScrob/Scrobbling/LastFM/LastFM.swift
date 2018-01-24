@@ -22,7 +22,7 @@ protocol LastFMAPIEngine {
 }
 
 struct LastFM {
-    enum ErrorType: Error, LocalizedError {
+    enum ErrorType: Error, LocalizedError, CustomStringConvertible {
         case error(code: Int, message: String?)
         case badResponse
         case notSignedIn
@@ -35,6 +35,10 @@ struct LastFM {
             case .notSignedIn: return "Not signed in to Last.FM"
             case .unknown: return "An unknown error has occurred"
             }
+        }
+        
+        var description: String {
+            return errorDescription ?? ""
         }
     }
     
@@ -80,8 +84,8 @@ class FakeLastFM: LastFMAPI {
             print("Scrobbling \(song.track ?? "") by \(song.artist ?? "")")
         }
         delay(seconds: 1.2) {
-//            completion(.failure(.error(code: 77, message: "YOU SUCK")))
-            completion(.success(LastFM.ScrobbleResponse(accepted: [], ignored: [])))
+            completion(.failure(LastFM.ErrorType.error(code: 77, message: "YOU SUCK")))
+//            completion(.success(LastFM.ScrobbleResponse(accepted: [], ignored: [])))
         }
     }
 }

@@ -28,10 +28,6 @@ class ScrobbleWorker {
         return scrobbleService.isLoggedIn
     }
     
-    var isFirstTime: Bool {
-        return !songScanner.isInitialized
-    }
-    
     init(
         database: Database,
         songScanner: SongScanner,        

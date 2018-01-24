@@ -82,39 +82,6 @@ class ScrobbleViewControllerTests: XCTestCase {
 
     // MARK: Tests
 
-    func test_displayAuthorizationPrimer() {
-        // When
-        loadView()
-        sut.displayAuthorizationPrimer()
-        
-        // Then
-        expect(self.sut.mediaAuthPrimerView.superview).toNot(beNil())
-        expect(self.sut.scrobbleView.superview).to(beNil())
-        expect(self.sut.viewScrobblesButton.isHidden).to(beTrue())
-        expect(self.sut.viewScrobblesHitAreaButton.isHidden).to(beTrue())
-    }
-    
-    func test_displayAuthorized_firstTime() {
-        // Given
-        let spy = ScrobbleBusinessLogicSpy()
-        sut.interactor = spy
-        let viewModel = Scrobble.Refresh.ViewModel()
-        loadView()
-        sut.viewScrobblesButton.isHidden = true
-        sut.viewScrobblesHitAreaButton.isHidden = true
-        
-        // When
-        sut.displayFirstTimeView(viewModel: viewModel)
-        
-        // Then
-        expect(self.sut.mediaAuthPrimerView.superview).to(beNil())
-        expect(self.sut.scrobbleView.statusLabel.isHidden).to(beFalse())
-        expect(self.sut.scrobbleView.statusLabel.text).to(equal("Songs you listen to will be scrobbled next time you open the app."))
-        expect(self.sut.viewScrobblesButton.isHidden).to(beFalse())
-        expect(self.sut.viewScrobblesHitAreaButton.isHidden).to(beFalse())
-        expect(self.sut.scrobbleView.activityIndicator.isAnimating).to(beFalse())
-    }
-    
     func testDisplayCurrentUser() {
         // Given
         let viewModel = Scrobble.GetCurrentUser.ViewModel(username: "Brad")
@@ -133,7 +100,7 @@ class ScrobbleViewControllerTests: XCTestCase {
         loadView()
         sut.isLoggedIn = true
         sut.currentUserButton.isHidden = false
-        sut.scrobbleView.signInButton.isHidden = true
+        sut.signInButton.isHidden = true
         let viewModel = Scrobble.GetCurrentUser.ViewModel(username: nil)
         
         // When        
@@ -142,7 +109,7 @@ class ScrobbleViewControllerTests: XCTestCase {
         // Then
         expect(self.sut.currentUserButton.isHidden).to(beTrue())
         expect(self.sut.isLoggedIn).to(beFalse())
-        expect(self.sut.scrobbleView.signInButton.isHidden).to(beFalse())
+        expect(self.sut.signInButton.isHidden).to(beFalse())
     }
     
     func testDisplaySubmittingToLastFM() {
@@ -151,17 +118,17 @@ class ScrobbleViewControllerTests: XCTestCase {
         
         // When
         loadView()
-        sut.scrobbleView.errorLabel.isHidden = false
-        sut.scrobbleView.retryButton.isHidden = false
+        sut.errorLabel.isHidden = false
+        sut.retryButton.isHidden = false
         sut.displaySubmittingToLastFM()
         
         // Then
-        expect(self.sut.scrobbleView.statusLabel.isHidden).to(beFalse())
-        expect(self.sut.scrobbleView.statusLabel.text).to(equal("Submitting to last.fm..."))
-        expect(self.sut.scrobbleView.activityIndicator.isAnimating).to(beTrue())
-        expect(self.sut.scrobbleView.activityIndicator.isHidden).to(beFalse())
-        expect(self.sut.scrobbleView.errorLabel.isHidden).to(beTrue())
-        expect(self.sut.scrobbleView.retryButton.isHidden).to(beTrue())
+        expect(self.sut.statusLabel.isHidden).to(beFalse())
+        expect(self.sut.statusLabel.text).to(equal("Submitting to last.fm..."))
+        expect(self.sut.activityIndicator.isAnimating).to(beTrue())
+        expect(self.sut.activityIndicator.isHidden).to(beFalse())
+        expect(self.sut.errorLabel.isHidden).to(beTrue())
+        expect(self.sut.retryButton.isHidden).to(beTrue())
     }
     
     func testDisplayScrobblingComplete() {
@@ -173,12 +140,12 @@ class ScrobbleViewControllerTests: XCTestCase {
         sut.displayScrobblingComplete(viewModel: viewModel)
         
         // Then
-        expect(self.sut.scrobbleView.statusLabel.isHidden).to(beFalse())
-        expect(self.sut.scrobbleView.doneLabel.isHidden).to(beFalse())
-        expect(self.sut.scrobbleView.activityIndicator.isAnimating).to(beFalse())
-        expect(self.sut.scrobbleView.activityIndicator.isHidden).to(beTrue())
-        expect(self.sut.scrobbleView.errorLabel.isHidden).to(beTrue())
-        expect(self.sut.scrobbleView.retryButton.isHidden).to(beTrue())
+        expect(self.sut.statusLabel.isHidden).to(beFalse())
+        expect(self.sut.doneLabel.isHidden).to(beFalse())
+        expect(self.sut.activityIndicator.isAnimating).to(beFalse())
+        expect(self.sut.activityIndicator.isHidden).to(beTrue())
+        expect(self.sut.errorLabel.isHidden).to(beTrue())
+        expect(self.sut.retryButton.isHidden).to(beTrue())
     }
     
     func testDisplayScrobblingComplete_withErrorMessage() {
@@ -190,11 +157,11 @@ class ScrobbleViewControllerTests: XCTestCase {
         sut.displayScrobblingComplete(viewModel: viewModel)
         
         // Then
-        expect(self.sut.scrobbleView.activityIndicator.isAnimating).to(beFalse())
-        expect(self.sut.scrobbleView.activityIndicator.isHidden).to(beTrue())
-        expect(self.sut.scrobbleView.doneLabel.isHidden).to(beTrue())
-        expect(self.sut.scrobbleView.errorLabel.isHidden).to(beFalse())
-        expect(self.sut.scrobbleView.retryButton.isHidden).to(beFalse())
-        expect(self.sut.scrobbleView.errorLabel.text).to(equal(viewModel.error))
+        expect(self.sut.activityIndicator.isAnimating).to(beFalse())
+        expect(self.sut.activityIndicator.isHidden).to(beTrue())
+        expect(self.sut.doneLabel.isHidden).to(beTrue())
+        expect(self.sut.errorLabel.isHidden).to(beFalse())
+        expect(self.sut.retryButton.isHidden).to(beFalse())
+        expect(self.sut.errorLabel.text).to(equal(viewModel.error))
     }
 }

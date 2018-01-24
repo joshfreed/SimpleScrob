@@ -127,7 +127,7 @@ class LastFmScrobbleServiceTests: XCTestCase {
         allSongs.append(contentsOf: batch2)
         allSongs.append(contentsOf: batch3)
         api.scrobbleResults.append(.success(LastFM.ScrobbleResponse(accepted: [], ignored: [])))
-        api.scrobbleResults.append(.failure(.error(code: 11, message: "Whatever")))
+        api.scrobbleResults.append(.failure(LastFM.ErrorType.error(code: 11, message: "Whatever")))
         api.scrobbleResults.append(.success(LastFM.ScrobbleResponse(accepted: [], ignored: [])))
         var completionCalled = false
         var completionSongs: [PlayedSong] = []

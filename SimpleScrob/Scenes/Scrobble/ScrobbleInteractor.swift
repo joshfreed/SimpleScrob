@@ -15,7 +15,6 @@ import CocoaLumberjack
 
 protocol ScrobbleBusinessLogic {
     func refresh(request: Scrobble.Refresh.Request)
-    func requestMediaLibraryAuthorization()
     func searchForNewScrobbles(request: Scrobble.SearchForNewScrobbles.Request)
     func submitScrobbles(request: Scrobble.SubmitScrobbles.Request)
     func getCurrentUser()
@@ -26,13 +25,6 @@ protocol ScrobbleDataStore {
     
 }
 
-protocol ScrobbleMediaLibrary {
-    func isAuthorized() -> Bool
-    func authorizationDenied() -> Bool
-    func requestAuthorization(complete: @escaping () -> ())
-    func items(since date: Date?) -> [MediaItem]
-}
-
 protocol SongScanner {
     var isInitialized: Bool { get }
     func initializeSongDatabase()
@@ -41,71 +33,21 @@ protocol SongScanner {
 
 class ScrobbleInteractor: ScrobbleBusinessLogic, ScrobbleDataStore {
     var presenter: ScrobblePresentationLogic?
-    let mediaLibrary: ScrobbleMediaLibrary
     let worker: ScrobbleWorker
 
     private var playedSongs: [PlayedSong] = []
     private var isRefreshing = false
     private var isSearchingForScrobbles = false
-    private var isRequestingAuthorization = false
     private var isSubmittingScrobbles = false
     
-    init(
-        mediaLibrary: ScrobbleMediaLibrary,
-        worker: ScrobbleWorker
-    ) {
-        self.mediaLibrary = mediaLibrary
+    init(worker: ScrobbleWorker) {
         self.worker = worker
-    }
-    
-    private func presentMainScreen() {
-        if mediaLibrary.isAuthorized() {
-            presentAuthorized()
-        } else if mediaLibrary.authorizationDenied() {
-            DDLogDebug("presentAuthorizationDenied")
-            presenter?.presentAuthorizationDenied()
-            didEndRefreshing()
-        } else {
-            DDLogDebug("presentAuthorizationPrimer")
-            presenter?.presentAuthorizationPrimer()
-            didEndRefreshing()
-        }
-    }
-    
-    private func presentAuthorized() {
-        DDLogDebug("presentAuthorized")
-        
-        presenter?.presentCurrentUser(response: Scrobble.GetCurrentUser.Response(username: worker.currentUserName))
-        
-        if worker.isFirstTime {
-            DDLogDebug("Preparing for first time")
-            worker.initializeMusicLibrary()
-            presenter?.presentFirstTimeView(response: Scrobble.Refresh.Response())
-            didEndRefreshing()
-        } else {
-            presenter?.presentReadyToScrobble(response: Scrobble.Refresh.Response())
-            
-            // Automatically search for new songs to scrobble
-            let request = Scrobble.SearchForNewScrobbles.Request()
-            searchForNewScrobbles(request: request)
-        }
-    }
-    
-    private func didEndRefreshing() {
-        isRefreshing = false
-        isSearchingForScrobbles = false
-        isSubmittingScrobbles = false
     }
 
     // MARK: Refresh
 
     func refresh(request: Scrobble.Refresh.Request) {
         DDLogDebug("refresh")
-        
-        guard !isRequestingAuthorization else {
-            DDLogVerbose("Refresh aborted: do not refresh while requesting authorization")
-            return
-        }
         
         guard !isRefreshing else {
             DDLogVerbose("Refresh already in progress; aborting")
@@ -116,16 +58,24 @@ class ScrobbleInteractor: ScrobbleBusinessLogic, ScrobbleDataStore {
         presentMainScreen()
     }
     
-    // MARK: Request media library authorization
-    
-    func requestMediaLibraryAuthorization() {
-        isRequestingAuthorization = true
-        mediaLibrary.requestAuthorization {
-            self.presentMainScreen()
-            self.isRequestingAuthorization = false
-        }        
+    private func presentMainScreen() {
+        DDLogDebug("presentMainScreen")
+        
+        presenter?.presentCurrentUser(response: Scrobble.GetCurrentUser.Response(username: worker.currentUserName))
+        
+        presenter?.presentReadyToScrobble(response: Scrobble.Refresh.Response())
+        
+        // Automatically search for new songs to scrobble
+        let request = Scrobble.SearchForNewScrobbles.Request()
+        searchForNewScrobbles(request: request)
     }
-
+    
+    private func didEndRefreshing() {
+        isRefreshing = false
+        isSearchingForScrobbles = false
+        isSubmittingScrobbles = false
+    }
+    
     // MARK: Search for new scrobbles
     
     func searchForNewScrobbles(request: Scrobble.SearchForNewScrobbles.Request) {

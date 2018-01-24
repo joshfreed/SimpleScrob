@@ -139,7 +139,7 @@ class MockDateGenerator: DateGenerator {
 class MockScrobbleService: ScrobbleService {
     var isLoggedIn: Bool = false
     var currentUserName: String? = nil
-    func authenticate(username: String, password: String, completion: @escaping (_ success: Bool) -> ()) {
+    func authenticate(username: String, password: String, completion: @escaping (SignInError?) -> ()) {
         
     }
     func signOut() {

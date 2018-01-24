@@ -13,6 +13,10 @@ import JFLib
 typealias MediaEntityPersistentId = MPMediaEntityPersistentID
 typealias MediaItemArtwork = MPMediaItemArtwork
 
+protocol ScrobbleMediaLibrary {
+    func items(since date: Date?) -> [MediaItem]
+}
+
 class MediaLibrary: ScrobbleMediaLibrary, ViewScrobblesArtworkFetcher {
     static let shared = MediaLibrary()
     
