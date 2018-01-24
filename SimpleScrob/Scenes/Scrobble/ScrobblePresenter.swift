@@ -18,6 +18,7 @@ protocol ScrobblePresentationLogic {
     func presentSongsToScrobble(response: Scrobble.SearchForNewScrobbles.Response)
     func presentSubmittingToLastFM()
     func presentScrobblingComplete(response: Scrobble.SubmitScrobbles.Response)
+    func presentScrobbleFailedNotLoggedIn()
     func presentCurrentUser(response: Scrobble.GetCurrentUser.Response)
 }
 
@@ -62,6 +63,10 @@ class ScrobblePresenter: ScrobblePresentationLogic {
         
         let viewModel = Scrobble.SubmitScrobbles.ViewModel(error: errorMsg)
         viewController?.displayScrobblingComplete(viewModel: viewModel)
+    }
+    
+    func presentScrobbleFailedNotLoggedIn() {
+        viewController?.displayScrobbleFailedNotSignedIn()
     }
     
     // MARK: Get current user

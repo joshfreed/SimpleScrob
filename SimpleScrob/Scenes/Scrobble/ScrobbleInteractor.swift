@@ -119,8 +119,12 @@ class ScrobbleInteractor: ScrobbleBusinessLogic, ScrobbleDataStore {
         presenter?.presentSubmittingToLastFM()
 
         worker.submit(songs: self.playedSongs) { error in
-            let response = Scrobble.SubmitScrobbles.Response(error: error)
-            self.presenter?.presentScrobblingComplete(response: response)
+            if let error = error as? LastFM.ErrorType, case LastFM.ErrorType.notSignedIn = error {
+                self.presenter?.presentScrobbleFailedNotLoggedIn()
+            } else {
+                let response = Scrobble.SubmitScrobbles.Response(error: error)
+                self.presenter?.presentScrobblingComplete(response: response)
+            }
 
             self.didEndRefreshing()
         }

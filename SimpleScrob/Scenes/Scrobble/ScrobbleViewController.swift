@@ -20,6 +20,7 @@ protocol ScrobbleDisplayLogic: class {
     func displayNoSongsToScrobble()
     func displaySubmittingToLastFM()
     func displayScrobblingComplete(viewModel: Scrobble.SubmitScrobbles.ViewModel)
+    func displayScrobbleFailedNotSignedIn()
     func displayCurrentUser(viewModel: Scrobble.GetCurrentUser.ViewModel)
 }
 
@@ -34,10 +35,11 @@ class ScrobbleViewController: UIViewController, ScrobbleDisplayLogic {
     @IBOutlet weak var scrobbleCountLabel: UILabel!
     @IBOutlet weak var statusLabel: UILabel!
     @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
-    @IBOutlet weak var signInButton: UIButton!    
     @IBOutlet weak var doneLabel: UILabel!
     @IBOutlet weak var errorLabel: UILabel!
     @IBOutlet weak var retryButton: UIButton!
+    
+    @IBOutlet weak var signInButton: UIButton!
     
     // MARK: Object lifecycle
 
@@ -93,12 +95,15 @@ class ScrobbleViewController: UIViewController, ScrobbleDisplayLogic {
             NotificationCenter.default.addObserver(self, selector: #selector(refresh), name: .UIApplicationDidBecomeActive, object: nil)
             NotificationCenter.default.addObserver(self, selector: #selector(userSignedIn), name: .signedIn, object: nil)
         }
+
+        scrobbleCountLabel.isHidden = true
+        statusLabel.isHidden = true
+        activityIndicator.stopAnimating()
+        doneLabel.isHidden = true
+        errorLabel.isHidden = true
+        retryButton.isHidden = true
         
         currentUserButton.isHidden = true
-        
-        activityIndicator.startAnimating()
-        
-        resetUI()
         signInButton.isHidden = true
     }
     
@@ -124,13 +129,14 @@ class ScrobbleViewController: UIViewController, ScrobbleDisplayLogic {
         performSegue(withIdentifier: "SignIn", sender: nil)
     }
     
-    private func resetUI() {
-        statusLabel.isHidden = true
-        activityIndicator.stopAnimating()
-        doneLabel.isHidden = true
-        scrobbleCountLabel.isHidden = true
-        errorLabel.isHidden = true
-        retryButton.isHidden = true
+    private func showScrobbleHistoryButton() {
+        viewScrobblesButton.isHidden = false
+        viewScrobblesHitAreaButton.isHidden = false
+    }
+    
+    private func hideScrobbleHistoryButton() {
+        viewScrobblesButton.isHidden = true
+        viewScrobblesHitAreaButton.isHidden = true
     }
     
     // MARK: Refresh
@@ -144,23 +150,29 @@ class ScrobbleViewController: UIViewController, ScrobbleDisplayLogic {
         DDLogVerbose("ScrobbleViewController::displayReadyToScrobble")
         
         statusLabel.text = ""
-        viewScrobblesButton.isHidden = false
-        viewScrobblesHitAreaButton.isHidden = false
+        showScrobbleHistoryButton()
     }
 
     // MARK: Search for new scrobbles
     
     func displaySearchingForNewScrobbles() {
-        resetUI()
+        scrobbleCountLabel.isHidden = true
         statusLabel.isHidden = false
-        statusLabel.text = "Searching for new scrobbles..."
         activityIndicator.startAnimating()
+        doneLabel.isHidden = true
+        errorLabel.isHidden = true
+        retryButton.isHidden = true
+        
+        statusLabel.text = "Searching for new scrobbles..."
     }
     
     func displaySongsToScrobble(viewModel: Scrobble.SearchForNewScrobbles.ViewModel) {
         scrobbleCountLabel.isHidden = false
         statusLabel.isHidden = true
         activityIndicator.stopAnimating()
+        doneLabel.isHidden = true
+        errorLabel.isHidden = true
+        retryButton.isHidden = true
         
         let message = viewModel.numberOfSongs == 1 ? "Found 1 new scrobble." : "Found \(viewModel.numberOfSongs) new scrobbles."
         scrobbleCountLabel.text = message
@@ -168,34 +180,56 @@ class ScrobbleViewController: UIViewController, ScrobbleDisplayLogic {
     
     func displayNoSongsToScrobble() {
         DDLogVerbose("ScrobbleViewController::displayNoSongsToScrobble")
-        resetUI()
+        
+        scrobbleCountLabel.isHidden = true
         statusLabel.isHidden = false
-        statusLabel.text = "No songs to scrobble."
         activityIndicator.stopAnimating()
+        doneLabel.isHidden = true
+        errorLabel.isHidden = true
+        retryButton.isHidden = true
+        
+        statusLabel.text = "No songs to scrobble."
     }
     
     // MARK: Submit scrobbles
     
     func displaySubmittingToLastFM() {
-        retryButton.isHidden = true
-        errorLabel.isHidden = true
+        scrobbleCountLabel.isHidden = false
         statusLabel.isHidden = false
         activityIndicator.startAnimating()
+        doneLabel.isHidden = true
+        errorLabel.isHidden = true
+        retryButton.isHidden = true
+        
         statusLabel.text = "Submitting to last.fm..."
     }
     
     func displayScrobblingComplete(viewModel: Scrobble.SubmitScrobbles.ViewModel) {
+        scrobbleCountLabel.isHidden = false
         statusLabel.isHidden = false
+        activityIndicator.stopAnimating()
+        doneLabel.isHidden = true
+        errorLabel.isHidden = true
+        retryButton.isHidden = true
         
         if let error = viewModel.error {
-            activityIndicator.stopAnimating()
             errorLabel.text = error
             retryButton.isHidden = false
             errorLabel.isHidden = false
         } else {
             doneLabel.isHidden = false
-            activityIndicator.stopAnimating()
         }
+    }
+    
+    func displayScrobbleFailedNotSignedIn() {
+        scrobbleCountLabel.isHidden = false
+        statusLabel.isHidden = false
+        activityIndicator.stopAnimating()
+        doneLabel.isHidden = true
+        errorLabel.isHidden = false
+        retryButton.isHidden = true
+        
+        errorLabel.text = "You are not signed in to Last.fm"
     }
     
     // MARK: Get current user

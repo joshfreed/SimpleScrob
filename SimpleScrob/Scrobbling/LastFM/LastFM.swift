@@ -31,8 +31,8 @@ struct LastFM {
         var errorDescription: String? {
             switch self {
             case .error(let code, let message): return "Error \(code): \(message ?? "")"
-            case .badResponse: return "There was an unexpected response from Last.FM"
-            case .notSignedIn: return "Not signed in to Last.FM"
+            case .badResponse: return "There was an unexpected response from Last.fm"
+            case .notSignedIn: return "Not signed in"
             case .unknown: return "An unknown error has occurred"
             }
         }
@@ -74,8 +74,8 @@ class FakeLastFM: LastFMAPI {
     
     func getMobileSession(username: String, password: String, completion: @escaping (LastFM.Result<LastFM.GetMobileSessionResponse>) -> ()) {
         print("getMobileSession. Username = '\(username)', Password = '\(password)'")
-//        completion(.success(LastFM.GetMobileSessionResponse(name: username, key: "123456", subcriber: false)))
-        completion(.failure(LastFM.ErrorType.error(code: 11, message: "Things and stuff")))
+        completion(.success(LastFM.GetMobileSessionResponse(name: username, key: "123456", subcriber: false)))
+//        completion(.failure(LastFM.ErrorType.error(code: 11, message: "Things and stuff")))
     }
     
     func scrobble(songs: [PlayedSong], completion: @escaping (LastFM.Result<LastFM.ScrobbleResponse>) -> ()) {

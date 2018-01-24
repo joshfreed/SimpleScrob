@@ -154,23 +154,40 @@ class ScrobbleInteractorTests: XCTestCase {
             expect(self.presentScrobblingCompleteCalled).to(beTrue())
             expect(self.presentScrobblingCompleteResponse).toNot(beNil())
             if let error = error {
-                
+                expect(self.presentScrobblingCompleteResponse?.error).toNot(beNil())
+//                expect(self.presentScrobblingCompleteResponse?.error).to(matchError(error)) // this should work, but doesn't compile?!
             } else {
                 expect(self.presentScrobblingCompleteResponse?.error).to(beNil())
             }
+        }
+        
+        var presentScrobbleFailedNotLoggedInCalled = false
+        func presentScrobbleFailedNotLoggedIn() {
+            presentScrobbleFailedNotLoggedInCalled = true
+        }
+        func verifyPresentedScrobbleFailedNotLoggedIn() {
+            expect(self.presentScrobbleFailedNotLoggedInCalled).to(beTrue())
         }
         
         var presentCurrentUserResponse: Scrobble.GetCurrentUser.Response?
         func presentCurrentUser(response: Scrobble.GetCurrentUser.Response) {
             presentCurrentUserResponse = response
         }
-        func verifyPresentedCurrentUser(username: String) {
+        func verifyPresentedCurrentUser(username: String?) {
             guard let response = presentCurrentUserResponse else {
                 fail("presentedCurrentUser was not called")
                 return
             }
             
             expect(response.username).to(equal(username))
+        }
+        func verifyPresentedNilUser() {
+            guard let response = presentCurrentUserResponse else {
+                fail("presentedCurrentUser was not called")
+                return
+            }
+            
+            expect(response.username).to(beNil())
         }
     }
 
@@ -196,6 +213,53 @@ class ScrobbleInteractorTests: XCTestCase {
         spy.verifyPresentedSubmittingToLastFM()
         worker.verifySubmitted(songs: worker.newSongsToScrobble)
         spy.verifyPresentedScrobblingComplete(error: nil)
+    }
+    
+    func testRefreshNotLoggedIn() {
+        // Given
+        worker.newSongsToScrobble = [
+            makePlayedSong(persistendId: 1, playedAt: "2017-12-01 14:00:00", artist: "The Dear Hunter", album: "Act II", track: "Red Hands"),
+            makePlayedSong(persistendId: 2, playedAt: "2017-12-01 14:00:00", artist: "Beardfish", album: "Sleeping in Traffic", track: "The Hunter")
+        ]
+        worker.submit_error = LastFM.ErrorType.notSignedIn
+        
+        // When
+        sut.refresh(request: Scrobble.Refresh.Request())
+        
+        // Then
+        spy.verifyPresentedNilUser()
+        spy.verifyPresentReadyToScrobble()
+        spy.verifyPresentSearchingForNewScrobbles()
+        worker.verifySearchedForNewSongsToScrobble()
+        spy.verifyPresentedSongsToScrobble(songs: worker.newSongsToScrobble)
+        spy.verifyPresentedSubmittingToLastFM()
+        worker.verifySubmitted(songs: worker.newSongsToScrobble)
+        expect(self.spy.presentScrobblingCompleteCalled).to(beFalse())
+        spy.verifyPresentedScrobbleFailedNotLoggedIn()
+    }
+    
+    func testRefreshWithSubmitError() {
+        // Given
+        worker.loggedIn(as: "jfreed")
+        worker.newSongsToScrobble = [
+            makePlayedSong(persistendId: 1, playedAt: "2017-12-01 14:00:00", artist: "The Dear Hunter", album: "Act II", track: "Red Hands"),
+            makePlayedSong(persistendId: 2, playedAt: "2017-12-01 14:00:00", artist: "Beardfish", album: "Sleeping in Traffic", track: "The Hunter")
+        ]
+        worker.submit_error = LastFM.ErrorType.unknown
+        
+        // When
+        sut.refresh(request: Scrobble.Refresh.Request())
+        
+        // Then
+        spy.verifyPresentedCurrentUser(username: "jfreed")
+        spy.verifyPresentReadyToScrobble()
+        spy.verifyPresentSearchingForNewScrobbles()
+        worker.verifySearchedForNewSongsToScrobble()
+        spy.verifyPresentedSongsToScrobble(songs: worker.newSongsToScrobble)
+        spy.verifyPresentedSubmittingToLastFM()
+        worker.verifySubmitted(songs: worker.newSongsToScrobble)
+        spy.verifyPresentedScrobblingComplete(error: LastFM.ErrorType.unknown)
+        expect(self.spy.presentScrobbleFailedNotLoggedInCalled).to(beFalse())
     }
     
     // Helper Funcs

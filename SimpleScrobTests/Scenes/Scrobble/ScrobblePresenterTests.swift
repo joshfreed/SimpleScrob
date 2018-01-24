@@ -75,6 +75,10 @@ class ScrobblePresenterTests: XCTestCase {
             displayScrobblineCompleteCalled = true
         }
         
+        func displayScrobbleFailedNotSignedIn() {
+            
+        }
+        
         func displayCurrentUser(viewModel: Scrobble.GetCurrentUser.ViewModel) {
             
         }
