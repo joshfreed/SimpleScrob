@@ -49,7 +49,7 @@
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="HL8-ya-aWG">
-                                <rect key="frame" x="324" y="36" width="35" height="35"/>
+                                <rect key="frame" x="391" y="36" width="35" height="35"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="35" id="TGb-nR-snJ"/>
                                     <constraint firstAttribute="width" secondItem="HL8-ya-aWG" secondAttribute="height" multiplier="1:1" id="cY7-MW-hNx"/>
@@ -61,7 +61,7 @@
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="gNy-Ug-EPA" userLabel="Current User Hit Area">
-                                <rect key="frame" x="306.5" y="18.5" width="70" height="70"/>
+                                <rect key="frame" x="391" y="18.5" width="70" height="70"/>
                                 <constraints>
                                     <constraint firstAttribute="width" secondItem="gNy-Ug-EPA" secondAttribute="height" multiplier="1:1" id="0kK-Pq-Sg1"/>
                                 </constraints>
@@ -70,44 +70,44 @@
                                 </connections>
                             </button>
                             <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="WYZ-2L-DuV" userLabel="Top Spacer">
-                                <rect key="frame" x="162" y="280" width="50" height="128"/>
+                                <rect key="frame" x="203.5" y="280" width="50" height="128"/>
                                 <color key="backgroundColor" red="0.1764705882" green="0.92156862750000001" blue="0.21176470589999999" alpha="1" colorSpace="calibratedRGB"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="50" id="y1T-aa-15z"/>
                                 </constraints>
                             </view>
                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="16" translatesAutoresizingMaskIntoConstraints="NO" id="cDf-h7-10C">
-                                <rect key="frame" x="32" y="408" width="311" height="61.5"/>
+                                <rect key="frame" x="32" y="408" width="375" height="61.5"/>
                                 <subviews>
                                     <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Found 37 new scrobbles." textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ncc-I0-jpf">
-                                        <rect key="frame" x="0.0" y="0.0" width="311" height="0.0"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="375" height="0.0"/>
                                         <fontDescription key="fontDescription" type="system" weight="light" pointSize="21"/>
                                         <nil key="textColor"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Scanning your music library..." textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ogt-sW-9nv">
-                                        <rect key="frame" x="0.0" y="0.0" width="311" height="25.5"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="375" height="25.5"/>
                                         <fontDescription key="fontDescription" type="system" weight="light" pointSize="21"/>
                                         <nil key="textColor"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" animating="YES" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="7ly-yW-iAm">
-                                        <rect key="frame" x="0.0" y="41.5" width="311" height="20"/>
+                                        <rect key="frame" x="0.0" y="41.5" width="375" height="20"/>
                                     </activityIndicatorView>
                                     <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Done!" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="lbq-xX-Usf">
-                                        <rect key="frame" x="0.0" y="61.5" width="311" height="0.0"/>
+                                        <rect key="frame" x="0.0" y="61.5" width="375" height="0.0"/>
                                         <fontDescription key="fontDescription" type="system" weight="medium" pointSize="21"/>
                                         <nil key="textColor"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Error" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Pre-i3-Z55">
-                                        <rect key="frame" x="0.0" y="61.5" width="311" height="0.0"/>
+                                        <rect key="frame" x="0.0" y="61.5" width="375" height="0.0"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="21"/>
                                         <color key="textColor" red="1" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <button hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="AoU-GA-eaG">
-                                        <rect key="frame" x="0.0" y="61.5" width="311" height="0.0"/>
+                                        <rect key="frame" x="0.0" y="61.5" width="375" height="0.0"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="21"/>
                                         <state key="normal" title="Retry"/>
                                         <connections>
@@ -117,17 +117,17 @@
                                 </subviews>
                             </stackView>
                             <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="hrJ-eO-QUR" userLabel="Bottom Spacer">
-                                <rect key="frame" x="162.5" y="469" width="50" height="128"/>
+                                <rect key="frame" x="203.5" y="469" width="50" height="128"/>
                                 <color key="backgroundColor" red="0.1764705882" green="0.92156862750000001" blue="0.21176470589999999" alpha="1" colorSpace="calibratedRGB"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="50" id="1gL-4l-pK8"/>
                                 </constraints>
                             </view>
                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="xfe-7a-JPH">
-                                <rect key="frame" x="32" y="597" width="311" height="38"/>
+                                <rect key="frame" x="32" y="597" width="375" height="38"/>
                                 <subviews>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="KdE-l2-Bs0">
-                                        <rect key="frame" x="0.0" y="0.0" width="311" height="38"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="375" height="38"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="21"/>
                                         <state key="normal" title="Sign In to Last.fm"/>
                                         <connections>
@@ -584,11 +584,11 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="geL-7K-qOs" customClass="LogoView" customModule="SimpleScrob" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="84" width="375" height="196"/>
+                                <rect key="frame" x="0.0" y="84" width="375" height="351.5"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             </view>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="249" text="SimpleScrob submits the songs you play to Last.FM. An account with Last.FM is required." textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="XHU-CD-dpv">
-                                <rect key="frame" x="32" y="312" width="311" height="181"/>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="249" text="SimpleScrob submits the songs you play to Last.fm. An account with Last.fm is required." textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="XHU-CD-dpv">
+                                <rect key="frame" x="32" y="467.5" width="311" height="25.5"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="21"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
@@ -604,9 +604,9 @@
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Vw2-Vf-JkN">
-                                <rect key="frame" x="128.5" y="597" width="117" height="38"/>
+                                <rect key="frame" x="131" y="597" width="112" height="38"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="21"/>
-                                <state key="normal" title="Join Last.FM"/>
+                                <state key="normal" title="Join Last.fm"/>
                                 <connections>
                                     <action selector="tappedCreateAccount:" destination="kyR-5l-OWl" eventType="touchUpInside" id="Wi7-g1-ayn"/>
                                 </connections>
@@ -730,7 +730,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="upl-04-SH0" customClass="LogoView" customModule="SimpleScrob" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="84" width="375" height="196"/>
+                                <rect key="frame" x="0.0" y="84" width="375" height="405.5"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             </view>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Gwv-vX-YoL" customClass="PrimaryButton" customModule="SimpleScrob" customModuleProvider="target">
@@ -744,8 +744,8 @@
                                     <action selector="getStarted:" destination="bpE-bZ-nTA" eventType="touchUpInside" id="dfT-YS-xbq"/>
                                 </connections>
                             </button>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="249" text="The simplest way to scrobble your songs to Last.FM!" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Zxk-4F-PWY">
-                                <rect key="frame" x="32" y="312" width="311" height="235"/>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="249" text="The simplest way to scrobble your songs to Last.fm!" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Zxk-4F-PWY">
+                                <rect key="frame" x="32" y="521.5" width="311" height="25.5"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="21"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
@@ -785,8 +785,8 @@
     </resources>
     <inferredMetricsTieBreakers>
         <segue reference="Wmd-dA-zsF"/>
-        <segue reference="msY-BO-3CN"/>
-        <segue reference="roR-Ng-QAS"/>
+        <segue reference="KDE-5s-jkx"/>
+        <segue reference="d3j-Hr-Bes"/>
         <segue reference="63I-i9-wkH"/>
     </inferredMetricsTieBreakers>
 </document>
