@@ -134,6 +134,13 @@ class ViewScrobblesViewController: UITableViewController, ViewScrobblesDisplayLo
     func displayScrobbleHistory(viewModel: ViewScrobbles.GetScrobbleHistory.ViewModel) {
         scrobbles = viewModel.scrobbles
         reachedEndOfItems = viewModel.reachedEndOfItems
+        
+        if scrobbles.count == 0 {
+            showEmptyMessage("Nothing here yet!\n\nCheck back after scrobbling some songs.")
+        } else {
+            hideEmptyMessage()
+        }
+        
         tableView.reloadData()
         tableView.setNeedsLayout()
         tableView.layoutIfNeeded()

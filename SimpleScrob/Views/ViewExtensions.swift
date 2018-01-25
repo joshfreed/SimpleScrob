@@ -20,4 +20,16 @@ extension UIView {
         topAnchor.constraint(equalTo: parent.topAnchor).isActive = true
         bottomAnchor.constraint(equalTo: parent.bottomAnchor).isActive = true
     }
+    
+    func jpfPinToSuperview(padding: CGFloat) {
+        guard let parent = superview else {
+            return
+        }
+        
+        translatesAutoresizingMaskIntoConstraints = false
+        leadingAnchor.constraint(equalTo: parent.leadingAnchor, constant: padding).isActive = true
+        trailingAnchor.constraint(equalTo: parent.trailingAnchor, constant: -padding).isActive = true
+        topAnchor.constraint(equalTo: parent.topAnchor, constant: padding).isActive = true
+        bottomAnchor.constraint(equalTo: parent.bottomAnchor, constant: -padding).isActive = true
+    }
 }

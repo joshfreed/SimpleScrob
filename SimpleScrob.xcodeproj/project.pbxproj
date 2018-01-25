@@ -17,6 +17,7 @@
 		5349CC6D1F882ADE0055176B /* PlayedSongTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5349CC6C1F882ADE0055176B /* PlayedSongTests.swift */; };
 		5356DF342000422600BF6C2C /* ViewExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5356DF332000422600BF6C2C /* ViewExtensions.swift */; };
 		5357764C200953A10059E768 /* ReadyToScrobbleViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5357764B200953A10059E768 /* ReadyToScrobbleViewController.swift */; };
+		53660071201A79C60001C2BF /* UITableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53660070201A79C60001C2BF /* UITableViewController.swift */; };
 		536814DF1FB78BDE00F5B233 /* CoreDataDatabase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 536814DE1FB78BDE00F5B233 /* CoreDataDatabase.swift */; };
 		536F7BE32008129B00F3EA0C /* NibDesignable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 536F7BE22008129B00F3EA0C /* NibDesignable.swift */; };
 		5377817E20000E2A000A0312 /* ScrobbleView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 5377817D20000E2A000A0312 /* ScrobbleView.xib */; };
@@ -141,6 +142,7 @@
 		5356DF332000422600BF6C2C /* ViewExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewExtensions.swift; sourceTree = "<group>"; };
 		5357764B200953A10059E768 /* ReadyToScrobbleViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReadyToScrobbleViewController.swift; sourceTree = "<group>"; };
 		535A949D1F83E81100375D4E /* SSTextField.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = SSTextField.xib; sourceTree = "<group>"; };
+		53660070201A79C60001C2BF /* UITableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UITableViewController.swift; sourceTree = "<group>"; };
 		536814DE1FB78BDE00F5B233 /* CoreDataDatabase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataDatabase.swift; sourceTree = "<group>"; };
 		536F7BE22008129B00F3EA0C /* NibDesignable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NibDesignable.swift; sourceTree = "<group>"; };
 		5377817D20000E2A000A0312 /* ScrobbleView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ScrobbleView.xib; sourceTree = "<group>"; };
@@ -293,6 +295,7 @@
 				536F7BE22008129B00F3EA0C /* NibDesignable.swift */,
 				53DB433C20091188003793E8 /* PrimaryButton.swift */,
 				53C6CEA42011056D0047DDCD /* FadeInSegue.swift */,
+				53660070201A79C60001C2BF /* UITableViewController.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -863,6 +866,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				53660071201A79C60001C2BF /* UITableViewController.swift in Sources */,
 				53D6AD0E1F826B5E005F6972 /* SignInRouter.swift in Sources */,
 				53D6AD0C1F826B5E005F6972 /* SignInPresenter.swift in Sources */,
 				53A0DE161F87F81200802FD6 /* PlayedSong.swift in Sources */,
