@@ -17,7 +17,6 @@ protocol ScrobbleBusinessLogic {
     func refresh(request: Scrobble.Refresh.Request)
     func searchForNewScrobbles(request: Scrobble.SearchForNewScrobbles.Request)
     func submitScrobbles(request: Scrobble.SubmitScrobbles.Request)
-    func getCurrentUser()
     func signOut(request: Scrobble.SignOut.Request)
 }
 
@@ -35,13 +34,24 @@ class ScrobbleInteractor: ScrobbleBusinessLogic, ScrobbleDataStore {
     var presenter: ScrobblePresentationLogic?
     let worker: ScrobbleWorker
 
-    private var playedSongs: [PlayedSong] = []
+    var playedSongs: [PlayedSong] = []
     private var isRefreshing = false
     private var isSearchingForScrobbles = false
     private var isSubmittingScrobbles = false
     
     init(worker: ScrobbleWorker) {
         self.worker = worker
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(userSignedIn), name: .signedIn, object: nil)
+    }
+    
+    // MARK: Events
+    
+    @objc func userSignedIn() {
+        let response = Scrobble.GetCurrentUser.Response(username: worker.currentUserName)
+        presenter?.presentCurrentUser(response: response)
+
+        submitScrobbles(request: Scrobble.SubmitScrobbles.Request())
     }
 
     // MARK: Refresh
@@ -122,19 +132,15 @@ class ScrobbleInteractor: ScrobbleBusinessLogic, ScrobbleDataStore {
             if let error = error as? LastFM.ErrorType, case LastFM.ErrorType.notSignedIn = error {
                 self.presenter?.presentScrobbleFailedNotLoggedIn()
             } else {
+                if error == nil {
+                    self.playedSongs = []
+                }                
                 let response = Scrobble.SubmitScrobbles.Response(error: error)
                 self.presenter?.presentScrobblingComplete(response: response)
             }
 
             self.didEndRefreshing()
         }
-    }
-    
-    // MARK: Get current user
-    
-    func getCurrentUser() {
-        let response = Scrobble.GetCurrentUser.Response(username: worker.currentUserName)
-        presenter?.presentCurrentUser(response: response)
     }
     
     // MARK: Sign Out

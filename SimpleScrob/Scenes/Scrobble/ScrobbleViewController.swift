@@ -92,8 +92,7 @@ class ScrobbleViewController: UIViewController, ScrobbleDisplayLogic {
         super.viewDidLoad()
         
         if !UserDefaults.standard.bool(forKey: "isTest") {
-            NotificationCenter.default.addObserver(self, selector: #selector(refresh), name: .UIApplicationDidBecomeActive, object: nil)
-            NotificationCenter.default.addObserver(self, selector: #selector(userSignedIn), name: .signedIn, object: nil)
+            NotificationCenter.default.addObserver(self, selector: #selector(refresh), name: .UIApplicationDidBecomeActive, object: nil)            
         }
 
         scrobbleCountLabel.isHidden = true
@@ -108,14 +107,7 @@ class ScrobbleViewController: UIViewController, ScrobbleDisplayLogic {
     }
     
     // MARK: Events
-    
-    @objc func userSignedIn() {
-        interactor?.getCurrentUser()
-        
-        let request = Scrobble.SubmitScrobbles.Request()
-        interactor?.submitScrobbles(request: request)
-    }
-    
+
     @IBAction func unwindToScrobble(segue: UIStoryboardSegue) {
         
     }
