@@ -13,7 +13,7 @@
 import UIKit
 
 protocol ViewScrobblesArtworkFetcher {
-    func artwork(for persistentId: MediaEntityPersistentId) -> MediaItemArtwork?
+    func artwork(for persistentId: MediaItemId) -> MediaItemArtwork?
 }
 
 protocol GetRecentScrobbles {

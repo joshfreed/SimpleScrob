@@ -137,7 +137,7 @@ class CoreDataDatabase: Database {
                 }) {
                     managedSong.status = song.status.rawValue
                     managedSong.reason = song.reason
-                    DDLogDebug("Updating song entity \(managedSong.persistentId ?? ""), \(managedSong.track ?? ""), \(managedSong.status ?? ""), \(String(describing: managedSong.datePlayed))")
+                    DDLogDebug("Updating song entity \(managedSong.persistentId ?? ""), \(managedSong.track ?? ""), \(managedSong.status ?? ""), \(managedSong.reason ?? ""), \(String(describing: managedSong.datePlayed))")
                 }
             }
             

@@ -8,7 +8,6 @@
 
 import Foundation
 @testable import SimpleScrob
-import MediaPlayer
 
 class MockMediaLibrary: ScrobbleMediaLibrary {
     private var _isAuthorized = false
@@ -71,6 +70,21 @@ class MockDatabase: Database {
     }
 }
 
+class MockMediaItemStore: MediaItemStore {
+    var items: [ScrobbleMediaItem] = []
+    
+    func findAll(byIds ids: [MediaItemId], completion: @escaping ([ScrobbleMediaItem]) -> ()) {
+        let results = items.filter { ids.contains($0.id) }
+        completion(results)
+    }
+    
+    var save_savedItems: [ScrobbleMediaItem]?
+    func save(mediaItems: [ScrobbleMediaItem], completion: @escaping () -> ()) {
+        save_savedItems = mediaItems
+        completion()
+    }    
+}
+
 class MockSongScanner: SongScanner {
     var isInitialized: Bool = false
     
@@ -78,8 +92,8 @@ class MockSongScanner: SongScanner {
         
     }
     
-    func searchForNewScrobbles() -> [PlayedSong] {
-        return []
+    func searchForNewScrobbles(completion: @escaping ([PlayedSong]) -> ()) {
+        completion([])
     }
 }
 

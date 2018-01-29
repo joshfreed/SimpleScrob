@@ -9,8 +9,8 @@
 import Foundation
 import MediaPlayer
 import JFLib
+import CocoaLumberjack
 
-typealias MediaEntityPersistentId = MPMediaEntityPersistentID
 typealias MediaItemArtwork = MPMediaItemArtwork
 
 protocol ScrobbleMediaLibrary {
@@ -27,17 +27,9 @@ class MediaLibrary: ScrobbleMediaLibrary, ViewScrobblesArtworkFetcher {
     var items: [MediaItem] {
         #if DEBUG
             return [
-                MediaItem(persistentId: 4, lastPlayedDate: makeDate(string: "2018-01-05 18:07:00"), artist: "Beardfish", album: "Sleeping in Traffic: Part One", title: "Roulette", artwork: nil),                
-                MediaItem(persistentId: 3, lastPlayedDate: makeDate(string: "2018-01-04 11:34:00"), artist: "Beardfish", album: "Sleeping in Traffic: Part One", title: "And Never Know", artwork: nil),
-                MediaItem(persistentId: 2, lastPlayedDate: makeDate(string: "2018-01-04 11:30:00"), artist: "Beardfish", album: "Sleeping in Traffic: Part One", title: "Afternoon Conversation", artwork: nil),
-                MediaItem(persistentId: 1, lastPlayedDate: makeDate(string: "2018-01-03 17:05:00"), artist: "Beardfish", album: "Sleeping in Traffic: Part One", title: "Sunrise", artwork: nil),
-                MediaItem(persistentId: 5, lastPlayedDate: makeDate(string: "2017-12-11 17:45:00"), artist: "Beardfish", album: "Sleeping in Traffic: Part One", title: "The Ungodly Slob", artwork: nil),
-                MediaItem(persistentId: 4, lastPlayedDate: makeDate(string: "2017-12-11 17:38:00"), artist: "Beardfish", album: "Sleeping in Traffic: Part One", title: "Roulette", artwork: nil),
-                MediaItem(persistentId: 3, lastPlayedDate: makeDate(string: "2017-11-25 21:36:00"), artist: "Beardfish", album: "Sleeping in Traffic: Part One", title: "And Never Know", artwork: nil),
-                MediaItem(persistentId: 2, lastPlayedDate: makeDate(string: "2017-11-25 20:18:58"), artist: "Beardfish", album: "Sleeping in Traffic: Part One", title: "Afternoon Conversation", artwork: nil),
-                MediaItem(persistentId: 1, lastPlayedDate: makeDate(string: "2017-11-19 18:18:58"), artist: "Beardfish", album: "Sleeping in Traffic: Part One", title: "Sunrise", artwork: nil),
-                MediaItem(persistentId: 7, lastPlayedDate: makeDate(string: "2017-10-11 10:15:00"), artist: "Coheed and Camria", album: "Good Apollo I'm Burning Star IV, Vol 1 - From Fear Through the Eyes of Madness", title: "The Willing Well I: Fuel for the Feeding End", artwork: nil),
-                MediaItem(persistentId: 6, lastPlayedDate: makeDate(string: "2017-10-11 10:10:00"), artist: "Coheed and Camria", album: "Good Apollo I'm Burning Star IV, Vol 1 - From Fear Through the Eyes of Madness", title: "Welcome Home", artwork: nil),
+                MediaItem(id: 1, lastPlayedDate: makeDate(string: "2018-01-29 17:55:01"), playCount: 4, artist: "Beardfish", album: "Sleeping in Traffic: Part One", title: "Sunrise"),
+                MediaItem(id: 3, lastPlayedDate: makeDate(string: "2018-01-29 17:54:03"), playCount: 1, artist: "Beardfish", album: "Sleeping in Traffic: Part One", title: "And Never Know"),
+                MediaItem(id: 2, lastPlayedDate: makeDate(string: "2018-01-29 17:53:02"), playCount: 1, artist: "Beardfish", album: "Sleeping in Traffic: Part One", title: "Afternoon Conversation"),
             ]
         #else
             return _items.map { MediaItem(item: $0) }
@@ -50,6 +42,19 @@ class MediaLibrary: ScrobbleMediaLibrary, ViewScrobblesArtworkFetcher {
         return df.date(from: string)
     }
     
+    func debug() {
+        let df = DateFormatter()
+        df.dateFormat = "yyyy-MM-dd HH:mm:ss"
+        
+        DDLogInfo("Media library last modified at: \(df.string(from: MPMediaLibrary.default().lastModifiedDate))")
+        
+//        let songs = MPMediaQuery.songs().items ?? []
+//        for song in songs {
+//            let prettyDate = song.lastPlayedDate != nil ? df.string(from: song.lastPlayedDate!) : "N/A"
+//            DDLogVerbose("\(song.persistentID) \(song.title ?? "N/A") \(prettyDate) \(song.playCount)")
+//        }
+    }
+    
     func items(since date: Date?) -> [MediaItem] {
         guard let date = date else {
             return items
@@ -57,6 +62,7 @@ class MediaLibrary: ScrobbleMediaLibrary, ViewScrobblesArtworkFetcher {
         
         return items.filter({
             guard let lastPlayedDate = $0.lastPlayedDate else {
+//                DDLogWarn("Item does not have last played date: \($0.artist ?? "??"), \($0.title ?? "??")")
                 return false
             }
             return lastPlayedDate.timeIntervalSince1970 >= date.timeIntervalSince1970
@@ -80,7 +86,7 @@ class MediaLibrary: ScrobbleMediaLibrary, ViewScrobblesArtworkFetcher {
         }
     }
     
-    func artwork(for persistentId: MediaEntityPersistentId) -> MediaItemArtwork? {
+    func artwork(for persistentId: MediaItemId) -> MediaItemArtwork? {
         if let item = _items.first(where: { $0.persistentID == persistentId }) {
             return item.artwork
         } else {

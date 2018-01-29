@@ -50,13 +50,13 @@ class ScrobbleWorker {
     
     func searchForNewSongsToScrobble(completion: @escaping ([PlayedSong]) -> ()) {
         DispatchQueue.global(qos: .background).async {
-            let playedSongs: [PlayedSong] = self.songScanner.searchForNewScrobbles()
-            
-            self.database.insert(playedSongs: playedSongs) {
-                self.database.findUnscrobbledSongs { playedSongs in
-                    DispatchQueue.main.async {
-                        DDLogDebug("Found \(playedSongs.count) unscrobbled songs")
-                        completion(playedSongs)
+            self.songScanner.searchForNewScrobbles() { playedSongs in
+                self.database.insert(playedSongs: playedSongs) {
+                    self.database.findUnscrobbledSongs { playedSongs in
+                        DispatchQueue.main.async {
+                            DDLogDebug("Found \(playedSongs.count) unscrobbled songs")
+                            completion(playedSongs)
+                        }
                     }
                 }
             }

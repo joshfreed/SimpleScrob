@@ -84,8 +84,8 @@ class FakeLastFM: LastFMAPI {
             print("Scrobbling \(song.track ?? "") by \(song.artist ?? "")")
         }
         delay(seconds: 1.2) {
-            completion(.failure(LastFM.ErrorType.error(code: 77, message: "YOU SUCK")))
-//            completion(.success(LastFM.ScrobbleResponse(accepted: [], ignored: [])))
+//            completion(.failure(LastFM.ErrorType.error(code: 77, message: "YOU SUCK")))
+            completion(.success(LastFM.ScrobbleResponse(accepted: [], ignored: [])))
         }
     }
 }

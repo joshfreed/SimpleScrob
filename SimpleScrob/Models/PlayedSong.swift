@@ -9,10 +9,10 @@
 import Foundation
 
 struct PlayedSongId: Equatable {
-    let persistentId: MediaEntityPersistentId
+    let persistentId: MediaItemId
     let date: Date
 
-    init(persistentId: MediaEntityPersistentId, date: Date) {
+    init(persistentId: MediaItemId, date: Date) {
         self.persistentId = persistentId
         self.date = date
     }
@@ -24,7 +24,7 @@ struct PlayedSongId: Equatable {
 
 struct PlayedSong: Equatable {
     let id: PlayedSongId
-    let persistentId: MediaEntityPersistentId
+    let persistentId: MediaItemId
     var status: ScrobbleStatus = .notScrobbled
     var reason: String?
     var date: Date
@@ -33,21 +33,21 @@ struct PlayedSong: Equatable {
     var track: String?
     var artwork: MediaItemArtwork?
     
-    init(persistentId: MediaEntityPersistentId, date: Date) {
+    init(persistentId: MediaItemId, date: Date) {
         self.id = PlayedSongId(persistentId: persistentId, date: date)
         self.persistentId = persistentId
         self.date = date
         self.status = .notScrobbled
     }
     
-    init(persistentId: MediaEntityPersistentId, date: Date, status: ScrobbleStatus) {
+    init(persistentId: MediaItemId, date: Date, status: ScrobbleStatus) {
         self.id = PlayedSongId(persistentId: persistentId, date: date)
         self.persistentId = persistentId
         self.date = date
         self.status = status
     }
     
-    init(persistentId: MediaEntityPersistentId, date: Date, artist: String, album: String, track: String) {
+    init(persistentId: MediaItemId, date: Date, artist: String?, album: String?, track: String?) {
         self.id = PlayedSongId(persistentId: persistentId, date: date)
         self.persistentId = persistentId
         self.date = date
@@ -56,21 +56,7 @@ struct PlayedSong: Equatable {
         self.album = album
         self.track = track
     }
-    
-    init?(from item: MediaItem) {
-        guard let date = item.lastPlayedDate else {
-            return nil
-        }
-        
-        persistentId = item.persistentId
-        self.date = date
-        artist = item.artist
-        album = item.album
-        track = item.title
-        artwork = item.artwork
-        id = PlayedSongId(persistentId: persistentId, date: date)
-    }
-    
+
     var scrobbleTimestamp: String? {
         return String(Int(date.timeIntervalSince1970))
     }
@@ -95,7 +81,7 @@ struct PlayedSong: Equatable {
     }
 }
 
-enum ScrobbleStatus: String {
+enum ScrobbleStatus: String, RawRepresentable {
     case notScrobbled
     case scrobbled
     case ignored

@@ -14,3 +14,21 @@ protocol Database: GetRecentScrobbles {
     func insert(playedSongs: [PlayedSong], completion: @escaping () -> ())
     func save(playedSongs: [PlayedSong], completion: @escaping () -> ())    
 }
+
+protocol MediaItemStore {
+    func findAll(byIds ids: [MediaItemId], completion: @escaping ([ScrobbleMediaItem]) -> ())
+    func save(mediaItems: [ScrobbleMediaItem], completion: @escaping () -> ())
+}
+
+class MemoryMediaItemStore: MediaItemStore {
+    private(set) var items: [ScrobbleMediaItem] = []
+    
+    func findAll(byIds ids: [MediaItemId], completion: @escaping ([ScrobbleMediaItem]) -> ()) {
+        completion(items.filter({ ids.contains($0.id) }))
+    }
+    
+    func save(mediaItems: [ScrobbleMediaItem], completion: @escaping () -> ()) {
+        items = mediaItems
+        completion()
+    }
+}

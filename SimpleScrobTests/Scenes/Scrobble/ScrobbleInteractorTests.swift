@@ -354,7 +354,7 @@ class ScrobbleInteractorTests: XCTestCase {
     // Helper Funcs
     
     private func makePlayedSong(
-        persistendId: MediaEntityPersistentId,
+        persistendId: MediaItemId,
         playedAt: String,
         artist: String,
         album: String,

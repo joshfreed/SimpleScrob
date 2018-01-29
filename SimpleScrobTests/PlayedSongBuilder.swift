@@ -10,8 +10,8 @@ import Foundation
 @testable import SimpleScrob
 
 class PlayedSongBuilder {
-    private var lastId: MediaEntityPersistentId = 1
-    private var persistentId: MediaEntityPersistentId?
+    private var lastId: MediaItemId = 1
+    private var persistentId: MediaItemId?
     private var playedDate: Date?
     private var status: ScrobbleStatus?
     

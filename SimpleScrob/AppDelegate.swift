@@ -25,13 +25,24 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         }
     }
     
+    private var _mediaItemStore: MediaItemStore?
+    var mediaItemStore: MediaItemStore {
+        get {
+            if _mediaItemStore == nil {
+                _mediaItemStore = MemoryMediaItemStore()
+            }
+            return _mediaItemStore!
+        }
+    }
+    
     private var _songScanner: SongScanner?
     var songScanner: SongScanner {
         get {
             if _songScanner == nil {
                 _songScanner = SongScannerImpl(
                     mediaLibrary: MediaLibrary.shared,
-                    dateGenerator: DateGenerator()
+                    dateGenerator: DateGenerator(),
+                    mediaItemStore: mediaItemStore
                 )
             }
             return _songScanner!
@@ -102,6 +113,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         } else {
             window?.rootViewController = storyboard.instantiateViewController(withIdentifier: "GetStartedViewController")
         }
+        
+        let itemCache = mediaLibrary.items.map { ScrobbleMediaItem(id: $0.id, playCount: $0.playCount, lastPlayedDate: $0.lastPlayedDate) }
+        mediaItemStore.save(mediaItems: itemCache, completion: {})
         
         return true
     }
