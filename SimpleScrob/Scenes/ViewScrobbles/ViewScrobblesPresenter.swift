@@ -19,6 +19,8 @@ protocol ViewScrobblesPresentationLogic {
 
 class ViewScrobblesPresenter: ViewScrobblesPresentationLogic {
     weak var viewController: ViewScrobblesDisplayLogic?
+    var dateGenerator = DateGenerator()
+    let scrobbledColor = UIColor(red: 46/255, green: 162/255, blue: 66/255, alpha: 1)
 
     // MARK: Get scrobble history
 
@@ -32,7 +34,7 @@ class ViewScrobblesPresenter: ViewScrobblesPresentationLogic {
             switch $0.status {
             case .scrobbled:
                 imageName = "scrobbled"
-                statusColor = UIColor(red: 46/255, green: 162/255, blue: 66/255, alpha: 1)
+                statusColor = self.scrobbledColor
             case .failed:
                 imageName = "failed"
                 statusColor = .red
@@ -44,14 +46,12 @@ class ViewScrobblesPresenter: ViewScrobblesPresentationLogic {
                 statusColor = .yellow
             }
             
-//            DDLogVerbose("Date Played \(df.string(from: $0.date)), \($0.date.shortTimeAgoSinceNow)")
-            
             return ViewScrobbles.DisplayedScrobble(
                 artist: $0.artist,
                 album: $0.album,
                 track: $0.track,
                 artwork: $0.artwork?.image(at: CGSize(width: 64, height: 64)),
-                datePlayed: $0.date.shortTimeAgoSinceNow,
+                datePlayed: $0.date.shortTimeAgo(since: dateGenerator.now),
                 statusMessage: makeStatusMessage($0),
                 statusImageName: imageName,
                 statusColor: statusColor,

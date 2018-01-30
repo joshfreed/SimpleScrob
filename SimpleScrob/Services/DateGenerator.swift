@@ -9,6 +9,10 @@
 import UIKit
 
 class DateGenerator {
+    var now: Date {
+        return Date()
+    }
+    
     func currentDate() -> Date {
         return Date()
     }

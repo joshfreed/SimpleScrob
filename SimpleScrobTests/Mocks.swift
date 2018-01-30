@@ -129,6 +129,15 @@ class MockLastFMApi: LastFMAPI {
 class MockDateGenerator: DateGenerator {
     private var date = Date()
     
+    override var now: Date {
+        get {
+            return date
+        }
+        set {
+            self.date = newValue
+        }
+    }
+    
     func tick(_ seconds: TimeInterval) {
         date = date.addingTimeInterval(seconds)
     }
@@ -140,9 +149,9 @@ class MockDateGenerator: DateGenerator {
     func advance(_ seconds: TimeInterval) {
         date = date.addingTimeInterval(seconds)
     }
-    
+
     override func currentDate() -> Date {
-        return date
+        return now
     }
     
     override func date(timeIntervalSince1970: TimeInterval) -> Date {
