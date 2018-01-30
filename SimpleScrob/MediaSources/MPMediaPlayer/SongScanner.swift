@@ -62,7 +62,12 @@ class SongScanner: MediaSource {
     
     func initialize(completion: @escaping () -> ()) {
         initializeSongDatabase()
-        completion()
+        
+        let itemCache = mediaLibrary.items.map {
+            ScrobbleMediaItem(id: $0.id, playCount: $0.playCount, lastPlayedDate: $0.lastPlayedDate)
+        }
+        
+        mediaItemStore.save(mediaItems: itemCache, completion: completion)
     }
     
     func initializeSongDatabase() {

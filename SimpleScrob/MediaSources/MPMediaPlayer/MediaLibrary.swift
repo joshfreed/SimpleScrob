@@ -14,6 +14,7 @@ import CocoaLumberjack
 typealias MediaItemArtwork = MPMediaItemArtwork
 
 protocol ScrobbleMediaLibrary {
+    var items: [MediaItem] { get }
     func items(since date: Date?) -> [MediaItem]
 }
 

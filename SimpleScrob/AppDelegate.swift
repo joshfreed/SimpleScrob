@@ -29,7 +29,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     var mediaItemStore: MediaItemStore {
         get {
             if _mediaItemStore == nil {
-                _mediaItemStore = MemoryMediaItemStore()
+                _mediaItemStore = CoreDataMediaItemStore(container: persistentContainer)
             }
             return _mediaItemStore!
         }
@@ -113,9 +113,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         } else {
             window?.rootViewController = storyboard.instantiateViewController(withIdentifier: "GetStartedViewController")
         }
-        
-        let itemCache = mediaLibrary.items.map { ScrobbleMediaItem(id: $0.id, playCount: $0.playCount, lastPlayedDate: $0.lastPlayedDate) }
-        mediaItemStore.save(mediaItems: itemCache, completion: {})
         
         return true
     }

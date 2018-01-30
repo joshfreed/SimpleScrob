@@ -9,7 +9,6 @@
 import Foundation
 import CoreData
 import CocoaLumberjack
-import MediaPlayer
 
 class CoreDataPlayedSongStore: PlayedSongStore {
     let container: NSPersistentContainer
@@ -79,7 +78,7 @@ class CoreDataPlayedSongStore: PlayedSongStore {
     func makePlayedSong(entity: ManagedPlayedSong) -> PlayedSong? {
         guard
             let persistentIdStr = entity.persistentId,
-            let persistentId = MPMediaEntityPersistentID(persistentIdStr),
+            let persistentId = MediaItemId(persistentIdStr),
             let statusStr = entity.status,
             let status = ScrobbleStatus(rawValue: statusStr),
             let date = entity.datePlayed
