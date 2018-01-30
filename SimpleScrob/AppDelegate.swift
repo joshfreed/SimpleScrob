@@ -15,11 +15,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     var window: UIWindow?
     
-    private var _database: Database?
-    var database: Database {
+    private var _database: PlayedSongStore?
+    var database: PlayedSongStore {
         get {
             if _database == nil {
-                _database = CoreDataDatabase(container: persistentContainer)
+                _database = CoreDataPlayedSongStore(container: persistentContainer)
             }
             return _database!
         }
@@ -35,11 +35,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         }
     }
     
-    private var _songScanner: SongScanner?
-    var songScanner: SongScanner {
+    private var _songScanner: MediaSource?
+    var mediaSource: MediaSource {
         get {
             if _songScanner == nil {
-                _songScanner = SongScannerImpl(
+                _songScanner = SongScanner(
                     mediaLibrary: MediaLibrary.shared,
                     dateGenerator: DateGenerator(),
                     mediaItemStore: mediaItemStore
@@ -108,7 +108,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         if mediaLibrary.authorizationDenied() {
             window?.rootViewController = storyboard.instantiateViewController(withIdentifier: "MediaAuthDeniedViewController")
-        } else if songScanner.isInitialized {
+        } else if mediaSource.isInitialized {
             window?.rootViewController = storyboard.instantiateViewController(withIdentifier: "ScrobbleViewController")
         } else {
             window?.rootViewController = storyboard.instantiateViewController(withIdentifier: "GetStartedViewController")

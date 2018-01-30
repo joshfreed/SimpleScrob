@@ -49,7 +49,7 @@ class ScrobbleInteractorTests: XCTestCase {
         init() {
             super.init(
                 database: MockDatabase(),
-                songScanner: MockSongScanner(),
+                mediaSource: MockSongScanner(),
                 scrobbleService: MockScrobbleService(),
                 connectivity: MockConnectivity()
             )

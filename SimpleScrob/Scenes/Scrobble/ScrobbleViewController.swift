@@ -60,7 +60,7 @@ class ScrobbleViewController: UIViewController, ScrobbleDisplayLogic {
         let viewController = self
         let worker = ScrobbleWorker(
             database: appDelegate.database,
-            songScanner: appDelegate.songScanner,
+            mediaSource: appDelegate.mediaSource,
             scrobbleService: appDelegate.scrobbleService,
             connectivity: AlamofireConnectivity()
         )

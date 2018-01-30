@@ -44,7 +44,7 @@ class MockMediaLibrary: ScrobbleMediaLibrary {
     }
 }
 
-class MockDatabase: Database {
+class MockDatabase: PlayedSongStore {
     func findById(_ id: PlayedSongId) -> PlayedSong? {
         return nil
     }
@@ -85,14 +85,14 @@ class MockMediaItemStore: MediaItemStore {
     }    
 }
 
-class MockSongScanner: SongScanner {
+class MockSongScanner: MediaSource {
     var isInitialized: Bool = false
     
-    func initializeSongDatabase() {
-        
+    func initialize(completion: @escaping () -> ()) {
+        completion()
     }
     
-    func searchForNewScrobbles(completion: @escaping ([PlayedSong]) -> ()) {
+    func getSongsPlayedSinceLastTime(completion: @escaping ([PlayedSong]) -> ()) {
         completion([])
     }
 }

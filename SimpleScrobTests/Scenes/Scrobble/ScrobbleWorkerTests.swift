@@ -40,7 +40,7 @@ class ScrobbleWorkerTests: XCTestCase {
     func setupScrobbleWorker() {
         sut = ScrobbleWorker(
             database: database,
-            songScanner: songScanner,
+            mediaSource: songScanner,
             scrobbleService: scrobbleService,
             connectivity: connectivity
         )

@@ -11,7 +11,7 @@ import CoreData
 import CocoaLumberjack
 import MediaPlayer
 
-class CoreDataDatabase: Database {
+class CoreDataPlayedSongStore: PlayedSongStore {
     let container: NSPersistentContainer
     
     init(container: NSPersistentContainer) {

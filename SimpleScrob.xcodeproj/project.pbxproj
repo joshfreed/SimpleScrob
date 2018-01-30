@@ -18,7 +18,10 @@
 		5356DF342000422600BF6C2C /* ViewExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5356DF332000422600BF6C2C /* ViewExtensions.swift */; };
 		5357764C200953A10059E768 /* ReadyToScrobbleViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5357764B200953A10059E768 /* ReadyToScrobbleViewController.swift */; };
 		53660071201A79C60001C2BF /* UITableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53660070201A79C60001C2BF /* UITableViewController.swift */; };
-		536814DF1FB78BDE00F5B233 /* CoreDataDatabase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 536814DE1FB78BDE00F5B233 /* CoreDataDatabase.swift */; };
+		5366007B2020E4560001C2BF /* CoreDataMediaItemStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5366007A2020E4560001C2BF /* CoreDataMediaItemStore.swift */; };
+		5366007F2020E4750001C2BF /* MediaItemStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5366007E2020E4750001C2BF /* MediaItemStore.swift */; };
+		536600832020E8590001C2BF /* MediaSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 536600822020E8590001C2BF /* MediaSource.swift */; };
+		536814DF1FB78BDE00F5B233 /* CoreDataPlayedSongStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 536814DE1FB78BDE00F5B233 /* CoreDataPlayedSongStore.swift */; };
 		536F7BE32008129B00F3EA0C /* NibDesignable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 536F7BE22008129B00F3EA0C /* NibDesignable.swift */; };
 		5377817E20000E2A000A0312 /* ScrobbleView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 5377817D20000E2A000A0312 /* ScrobbleView.xib */; };
 		53825B881F7E8CC600566F2C /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53825B871F7E8CC600566F2C /* AppDelegate.swift */; };
@@ -73,7 +76,7 @@
 		53D6AD1B1F82AD81005F6972 /* JFLib.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 53D6AD1A1F82AD81005F6972 /* JFLib.framework */; };
 		53D6AD1C1F82AD81005F6972 /* JFLib.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 53D6AD1A1F82AD81005F6972 /* JFLib.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		53D8CA231F8C2D1E00207EC6 /* MediaItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53D8CA221F8C2D1E00207EC6 /* MediaItem.swift */; };
-		53D9B5761F8156F300C8581B /* Database.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53D9B5751F8156F300C8581B /* Database.swift */; };
+		53D9B5761F8156F300C8581B /* PlayedSongStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53D9B5751F8156F300C8581B /* PlayedSongStore.swift */; };
 		53DB433B2009111B003793E8 /* GetStartedViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53DB433A2009111B003793E8 /* GetStartedViewController.swift */; };
 		53DB433D20091188003793E8 /* PrimaryButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53DB433C20091188003793E8 /* PrimaryButton.swift */; };
 		53DB4342200914E6003793E8 /* GrantAccessViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53DB4341200914E6003793E8 /* GrantAccessViewController.swift */; };
@@ -143,7 +146,10 @@
 		5357764B200953A10059E768 /* ReadyToScrobbleViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReadyToScrobbleViewController.swift; sourceTree = "<group>"; };
 		535A949D1F83E81100375D4E /* SSTextField.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = SSTextField.xib; sourceTree = "<group>"; };
 		53660070201A79C60001C2BF /* UITableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UITableViewController.swift; sourceTree = "<group>"; };
-		536814DE1FB78BDE00F5B233 /* CoreDataDatabase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataDatabase.swift; sourceTree = "<group>"; };
+		5366007A2020E4560001C2BF /* CoreDataMediaItemStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataMediaItemStore.swift; sourceTree = "<group>"; };
+		5366007E2020E4750001C2BF /* MediaItemStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MediaItemStore.swift; sourceTree = "<group>"; };
+		536600822020E8590001C2BF /* MediaSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MediaSource.swift; sourceTree = "<group>"; };
+		536814DE1FB78BDE00F5B233 /* CoreDataPlayedSongStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataPlayedSongStore.swift; sourceTree = "<group>"; };
 		536F7BE22008129B00F3EA0C /* NibDesignable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NibDesignable.swift; sourceTree = "<group>"; };
 		5377817D20000E2A000A0312 /* ScrobbleView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ScrobbleView.xib; sourceTree = "<group>"; };
 		53825B841F7E8CC600566F2C /* SimpleScrob.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SimpleScrob.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -203,7 +209,7 @@
 		53D6AD0B1F826B5E005F6972 /* SignInInteractor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInInteractor.swift; sourceTree = "<group>"; };
 		53D6AD1A1F82AD81005F6972 /* JFLib.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = JFLib.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		53D8CA221F8C2D1E00207EC6 /* MediaItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MediaItem.swift; sourceTree = "<group>"; };
-		53D9B5751F8156F300C8581B /* Database.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Database.swift; sourceTree = "<group>"; };
+		53D9B5751F8156F300C8581B /* PlayedSongStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayedSongStore.swift; sourceTree = "<group>"; };
 		53DB433A2009111B003793E8 /* GetStartedViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetStartedViewController.swift; sourceTree = "<group>"; };
 		53DB433C20091188003793E8 /* PrimaryButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrimaryButton.swift; sourceTree = "<group>"; };
 		53DB4341200914E6003793E8 /* GrantAccessViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GrantAccessViewController.swift; sourceTree = "<group>"; };
@@ -300,6 +306,37 @@
 			path = Views;
 			sourceTree = "<group>";
 		};
+		536600802020E4DA0001C2BF /* MPMediaPlayer */ = {
+			isa = PBXGroup;
+			children = (
+				53D8CA221F8C2D1E00207EC6 /* MediaItem.swift */,
+				5366007A2020E4560001C2BF /* CoreDataMediaItemStore.swift */,
+				5366007E2020E4750001C2BF /* MediaItemStore.swift */,
+				53825BBD1F802C7700566F2C /* MediaLibrary.swift */,
+				5316A6501F82BFB5005193EB /* SongScanner.swift */,
+			);
+			path = MPMediaPlayer;
+			sourceTree = "<group>";
+		};
+		536600812020E8450001C2BF /* MediaSources */ = {
+			isa = PBXGroup;
+			children = (
+				536600802020E4DA0001C2BF /* MPMediaPlayer */,
+				536600822020E8590001C2BF /* MediaSource.swift */,
+			);
+			path = MediaSources;
+			sourceTree = "<group>";
+		};
+		536600842020E8A10001C2BF /* PlayedSongs */ = {
+			isa = PBXGroup;
+			children = (
+				53A0DE151F87F81200802FD6 /* PlayedSong.swift */,
+				53D9B5751F8156F300C8581B /* PlayedSongStore.swift */,
+				536814DE1FB78BDE00F5B233 /* CoreDataPlayedSongStore.swift */,
+			);
+			path = PlayedSongs;
+			sourceTree = "<group>";
+		};
 		53825B7B1F7E8CC600566F2C = {
 			isa = PBXGroup;
 			children = (
@@ -328,6 +365,8 @@
 		53825B861F7E8CC600566F2C /* SimpleScrob */ = {
 			isa = PBXGroup;
 			children = (
+				536600842020E8A10001C2BF /* PlayedSongs */,
+				536600812020E8450001C2BF /* MediaSources */,
 				53C75DC71FA0D0F00056D1AB /* Scrobbling */,
 				535A949A1F83E74A00375D4E /* Views */,
 				53825BCF1F803F2400566F2C /* Models */,
@@ -398,12 +437,8 @@
 		53825BCE1F80330E00566F2C /* Services */ = {
 			isa = PBXGroup;
 			children = (
-				53D9B5751F8156F300C8581B /* Database.swift */,
-				53825BBD1F802C7700566F2C /* MediaLibrary.swift */,
-				5316A6501F82BFB5005193EB /* SongScanner.swift */,
 				53CE43B51F8A88000050A8C7 /* DateGenerator.swift */,
 				53EA38231F93E5CF00078D20 /* Connectivity.swift */,
-				536814DE1FB78BDE00F5B233 /* CoreDataDatabase.swift */,
 			);
 			path = Services;
 			sourceTree = "<group>";
@@ -412,8 +447,6 @@
 			isa = PBXGroup;
 			children = (
 				53ACED661F8160F6008BAB39 /* User.swift */,
-				53A0DE151F87F81200802FD6 /* PlayedSong.swift */,
-				53D8CA221F8C2D1E00207EC6 /* MediaItem.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -884,6 +917,7 @@
 				5357764C200953A10059E768 /* ReadyToScrobbleViewController.swift in Sources */,
 				53D6AD101F826B5E005F6972 /* SignInViewController.swift in Sources */,
 				53CE43BE1F8A90870050A8C7 /* ViewScrobblesPresenter.swift in Sources */,
+				5366007B2020E4560001C2BF /* CoreDataMediaItemStore.swift in Sources */,
 				536F7BE32008129B00F3EA0C /* NibDesignable.swift in Sources */,
 				53825B881F7E8CC600566F2C /* AppDelegate.swift in Sources */,
 				53DB434420091A4E003793E8 /* LfmAccountViewController.swift in Sources */,
@@ -898,8 +932,9 @@
 				53B7DA9A20080C3100C60283 /* LogoView.swift in Sources */,
 				53CE43C31F8A90870050A8C7 /* ViewScrobblesInteractor.swift in Sources */,
 				53CE43B61F8A88000050A8C7 /* DateGenerator.swift in Sources */,
+				536600832020E8590001C2BF /* MediaSource.swift in Sources */,
 				53825BB81F7EE4FD00566F2C /* UIViewLoading.swift in Sources */,
-				536814DF1FB78BDE00F5B233 /* CoreDataDatabase.swift in Sources */,
+				536814DF1FB78BDE00F5B233 /* CoreDataPlayedSongStore.swift in Sources */,
 				53825BBC1F802A3100566F2C /* LastFM.swift in Sources */,
 				53EA38241F93E5CF00078D20 /* Connectivity.swift in Sources */,
 				5316A6511F82BFB5005193EB /* SongScanner.swift in Sources */,
@@ -909,7 +944,8 @@
 				53DB4342200914E6003793E8 /* GrantAccessViewController.swift in Sources */,
 				53825BCC1F8032CF00566F2C /* ScrobbleInteractor.swift in Sources */,
 				5316A6561F82CBD7005193EB /* SimpleScrob.xcdatamodeld in Sources */,
-				53D9B5761F8156F300C8581B /* Database.swift in Sources */,
+				5366007F2020E4750001C2BF /* MediaItemStore.swift in Sources */,
+				53D9B5761F8156F300C8581B /* PlayedSongStore.swift in Sources */,
 				53825BC91F8032CF00566F2C /* ScrobbleRouter.swift in Sources */,
 				53CE43BF1F8A90870050A8C7 /* ViewScrobblesWorker.swift in Sources */,
 				53CE43C21F8A90870050A8C7 /* ViewScrobblesViewController.swift in Sources */,

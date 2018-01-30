@@ -12,7 +12,7 @@ import Nimble
 import JFLib
 
 class SongScannerTests: XCTestCase {
-    var sut: SongScannerImpl!
+    var sut: SongScanner!
     let deviceMediaLibrary = MockMediaLibrary()
     let cachedMediaItemStore = MockMediaItemStore()
     let dateGenerator = MockDateGenerator()
@@ -27,7 +27,7 @@ class SongScannerTests: XCTestCase {
 
         deviceMediaLibrary._items = []
         
-        sut = SongScannerImpl(
+        sut = SongScanner(
             mediaLibrary: deviceMediaLibrary,
             dateGenerator: dateGenerator,
             mediaItemStore: cachedMediaItemStore

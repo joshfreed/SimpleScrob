@@ -15,8 +15,8 @@ import JFLib
 import CocoaLumberjack
 
 class ScrobbleWorker {
-    let database: Database
-    let songScanner: SongScanner    
+    let database: PlayedSongStore
+    let mediaSource: MediaSource
     let scrobbleService: ScrobbleService
     let connectivity: Connectivity
     
@@ -29,28 +29,24 @@ class ScrobbleWorker {
     }
     
     init(
-        database: Database,
-        songScanner: SongScanner,        
+        database: PlayedSongStore,
+        mediaSource: MediaSource,
         scrobbleService: ScrobbleService,
         connectivity: Connectivity
     ) {
         self.database = database
-        self.songScanner = songScanner        
+        self.mediaSource = mediaSource
         self.scrobbleService = scrobbleService
         self.connectivity = connectivity
     }
 
     func signOut() {
         scrobbleService.signOut()
-    }
-    
-    func initializeMusicLibrary() {
-        songScanner.initializeSongDatabase()
-    }
+    }    
     
     func searchForNewSongsToScrobble(completion: @escaping ([PlayedSong]) -> ()) {
         DispatchQueue.global(qos: .background).async {
-            self.songScanner.searchForNewScrobbles() { playedSongs in
+            self.mediaSource.getSongsPlayedSinceLastTime() { playedSongs in
                 self.database.insert(playedSongs: playedSongs) {
                     self.database.findUnscrobbledSongs { playedSongs in
                         DispatchQueue.main.async {

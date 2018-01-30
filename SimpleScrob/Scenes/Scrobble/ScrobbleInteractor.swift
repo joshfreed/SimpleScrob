@@ -24,12 +24,6 @@ protocol ScrobbleDataStore {
     
 }
 
-protocol SongScanner {
-    var isInitialized: Bool { get }
-    func initializeSongDatabase()
-    func searchForNewScrobbles(completion: @escaping ([PlayedSong]) -> ())
-}
-
 class ScrobbleInteractor: ScrobbleBusinessLogic, ScrobbleDataStore {
     var presenter: ScrobblePresentationLogic?
     let worker: ScrobbleWorker

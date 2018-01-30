@@ -12,14 +12,14 @@ import CoreData
 import Nimble
 
 class CareDataDatabaseTests: XCTestCase {
-    var sut: CoreDataDatabase!
+    var sut: CoreDataPlayedSongStore!
     var container: NSPersistentContainer!
     
     override func setUp() {
         super.setUp()
         continueAfterFailure = false
         container = setUpInMemoryPersistentContainer()
-        sut = CoreDataDatabase(container: container)
+        sut = CoreDataPlayedSongStore(container: container)
     }
     
     override func tearDown() {

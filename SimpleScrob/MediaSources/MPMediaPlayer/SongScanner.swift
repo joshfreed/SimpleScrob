@@ -13,7 +13,7 @@ import DateToolsSwift
 let ONE_HOUR: Double = 3600
 let ONE_DAY: Double = ONE_HOUR * 24
 
-class SongScannerImpl: SongScanner {
+class SongScanner: MediaSource {
     let mediaLibrary: ScrobbleMediaLibrary
     let dateGenerator: DateGenerator
     let mediaItemStore: MediaItemStore
@@ -60,16 +60,21 @@ class SongScannerImpl: SongScanner {
         UserDefaults.standard.removeObject(forKey: "musicLibraryIsInitialized")
     }
     
+    func initialize(completion: @escaping () -> ()) {
+        initializeSongDatabase()
+        completion()
+    }
+    
     func initializeSongDatabase() {
         UserDefaults.standard.set(true, forKey: "musicLibraryIsInitialized")
         UserDefaults.standard.set(dateGenerator.currentDate().timeIntervalSince1970, forKey: "initlizationDate")
         UserDefaults.standard.set(dateGenerator.currentDate().timeIntervalSince1970, forKey: "lastScrobbleDate")
     }
     
-    func searchForNewScrobbles(completion: @escaping ([PlayedSong]) -> ()) {
+    func getSongsPlayedSinceLastTime(completion: @escaping ([PlayedSong]) -> ()) {
         DDLogDebug("searchForNewScrobbles")
         DDLogInfo("Current Date: \(df.string(from: Date())), Last scan date: \(df.string(from: scrobbleSearchDate))")
-
+        
         let recentlyPlayedItems = mediaLibrary.items(since: scrobbleSearchDate)
         DDLogDebug("Found \(recentlyPlayedItems.count) recently played songs")
         
@@ -83,9 +88,13 @@ class SongScannerImpl: SongScanner {
             let mediaItemIds = self.getUniqueMediaItemIds(from: songs)
             let itemsToUpdate = recentlyPlayedItems.filter({ mediaItemIds.contains($0.id) })
             self.updateCachedMediaItems(from: itemsToUpdate)
-
+            
             completion(songs)
         }
+    }
+    
+    func searchForNewScrobbles(completion: @escaping ([PlayedSong]) -> ()) {
+        getSongsPlayedSinceLastTime(completion: completion)
     }
     
     private func getUniqueMediaItemIds(from songs: [PlayedSong]) -> [MediaItemId] {
