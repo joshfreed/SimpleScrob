@@ -12,6 +12,7 @@
 
 import UIKit
 import CocoaLumberjack
+import JFLib
 
 protocol ViewScrobblesPresentationLogic {
     func presentScrobbleHistory(response: ViewScrobbles.GetScrobbleHistory.Response)
@@ -51,7 +52,7 @@ class ViewScrobblesPresenter: ViewScrobblesPresentationLogic {
                 album: $0.album,
                 track: $0.track,
                 artwork: $0.artwork?.image(at: CGSize(width: 64, height: 64)),
-                datePlayed: $0.date.shortTimeAgo(since: dateGenerator.now),
+                datePlayed: $0.date.jpfShortTimeAgo(since: dateGenerator.now),
                 statusMessage: makeStatusMessage($0),
                 statusImageName: imageName,
                 statusColor: statusColor,

@@ -110,23 +110,6 @@ class ViewScrobblesPresenterTests: XCTestCase {
         verify(expected: expected2, equals: spy.displayScrobbleHistoryViewModel?.scrobbles[1])
     }
     
-    func testShortTimeAgoSinceNow_bug_1() {
-        let now = Date(dateString: "2018-01-30 00:15:00", format: "yyyy-MM-dd HH:mm:ss")
-        let date = now.subtract(TimeChunk(seconds: 13, minutes: 42, hours: 16, days: 0, weeks: 0, months: 0, years: 0))
-        expect(date.shortTimeAgo(since: now)).to(equal("16h"))
-    }
-    
-    func testShortTimeAgoSinceNow_bug_2() {
-        let now = Date(dateString: "2018-01-30 00:15:00", format: "yyyy-MM-dd HH:mm:ss")
-        let date = now.subtract(TimeChunk(seconds: 00, minutes: 00, hours: 1, days: 0, weeks: 0, months: 0, years: 0))
-        expect(date.shortTimeAgo(since: now)).to(equal("1h"))
-    }
-    
-    private func dateSubtracting(seconds: Int, minutes: Int, hours: Int, days: Int, weeks: Int, months: Int, years: Int) -> Date {
-        let timeChunk = TimeChunk(seconds: seconds, minutes: minutes, hours: hours, days: days, weeks: weeks, months: months, years: years)
-        return Date().subtract(timeChunk)
-    }
-    
     //
     // Helper funcs
     //
