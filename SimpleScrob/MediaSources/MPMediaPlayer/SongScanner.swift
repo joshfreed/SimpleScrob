@@ -80,19 +80,18 @@ class SongScanner: MediaSource {
         DDLogDebug("searchForNewScrobbles")
         DDLogInfo("Current Date: \(df.string(from: Date())), Last scan date: \(df.string(from: scrobbleSearchDate))")
         
-        let recentlyPlayedItems = mediaLibrary.items(since: scrobbleSearchDate)
-        DDLogDebug("Found \(recentlyPlayedItems.count) recently played songs")
+        let currentMediaItems = mediaLibrary.items
+        DDLogDebug("Found \(currentMediaItems.count) recently played songs")
         
-        mediaItemStore.findAll(byIds: recentlyPlayedItems.map({ $0.id })) { cachedMediaItems in
+        mediaItemStore.findAll(byIds: currentMediaItems.map({ $0.id })) { cachedMediaItems in
             
-            let songs = self.makeSongsToScrobble(currentMediaItems: recentlyPlayedItems, cachedMediaItems: cachedMediaItems)
+            DDLogDebug("Loaded \(cachedMediaItems.count) cached media items")
+            
+            let songs = self.makeSongsToScrobble(currentMediaItems: currentMediaItems, cachedMediaItems: cachedMediaItems)
             DDLogDebug("Found \(songs.count) songs to scrobble")
             
             self.updateLastScrobbleDate()
-            
-            let mediaItemIds = self.getUniqueMediaItemIds(from: songs)
-            let itemsToUpdate = recentlyPlayedItems.filter({ mediaItemIds.contains($0.id) })
-            self.updateCachedMediaItems(from: itemsToUpdate)
+            self.updateCachedMediaItems(from: currentMediaItems)
             
             completion(songs)
         }
@@ -108,13 +107,22 @@ class SongScanner: MediaSource {
     
     func makeSongsToScrobble(currentMediaItems: [MediaItem], cachedMediaItems: [ScrobbleMediaItem]) -> [PlayedSong] {
         var playedSongs: [PlayedSong] = []
-        
+        let cachedMediaItemDict = getCachedItemsAsDictionary(cachedMediaItems: cachedMediaItems)
+
         for currentItem in currentMediaItems {
-            let cachedItem = cachedMediaItems.filter({ $0.id == currentItem.id }).first
+            let cachedItem = cachedMediaItemDict[currentItem.id]
             playedSongs.append(contentsOf: makeSongToScrobble(currentItem: currentItem, cachedItem: cachedItem))
         }
 
         return playedSongs
+    }
+    
+    private func getCachedItemsAsDictionary(cachedMediaItems: [ScrobbleMediaItem]) -> [MediaItemId: ScrobbleMediaItem] {
+        var cachedItemsDict: [MediaItemId: ScrobbleMediaItem] = [:]
+        for cached in cachedMediaItems {
+            cachedItemsDict[cached.id] = cached
+        }
+        return cachedItemsDict
     }
     
     func makeSongToScrobble(currentItem: MediaItem, cachedItem: ScrobbleMediaItem?) -> [PlayedSong] {
@@ -163,6 +171,7 @@ class SongScanner: MediaSource {
     }
     
     private func updateCachedMediaItems(from currentItems: [MediaItem]) {
+        DDLogDebug("updateCachedMediaItems")
         let cachedItems = currentItems.map {
             ScrobbleMediaItem(id: $0.id, playCount: $0.playCount, lastPlayedDate: $0.lastPlayedDate)
         }

@@ -18,42 +18,20 @@ protocol ScrobbleMediaLibrary {
     func items(since date: Date?) -> [MediaItem]
 }
 
-class MediaLibrary: ScrobbleMediaLibrary, ViewScrobblesArtworkFetcher {
-    static let shared = MediaLibrary()
-    
+protocol MediaLibrary: ScrobbleMediaLibrary, ViewScrobblesArtworkFetcher {
+    func isAuthorized() -> Bool
+    func authorizationDenied() -> Bool
+    func requestAuthorization(complete: @escaping () -> ())
+}
+
+class RealMediaLibrary: MediaLibrary {
     private var _items: [MPMediaItem] {
         return MPMediaQuery.songs().items ?? []
     }
     
     var items: [MediaItem] {
-        #if DEBUG
-            return [
-                MediaItem(id: 1, lastPlayedDate: makeDate(string: "2018-01-29 17:55:01"), playCount: 4, artist: "Beardfish", album: "Sleeping in Traffic: Part One", title: "Sunrise"),
-                MediaItem(id: 3, lastPlayedDate: makeDate(string: "2018-01-29 17:54:03"), playCount: 1, artist: "Beardfish", album: "Sleeping in Traffic: Part One", title: "And Never Know"),
-                MediaItem(id: 2, lastPlayedDate: makeDate(string: "2018-01-29 17:53:02"), playCount: 1, artist: "Beardfish", album: "Sleeping in Traffic: Part One", title: "Afternoon Conversation"),
-            ]
-        #else
-            return _items.map { MediaItem(item: $0) }
-        #endif
-    }
-    
-    private func makeDate(string: String) -> Date? {
-        let df = DateFormatter()
-        df.dateFormat = "yyyy-MM-dd HH:mm:ss"
-        return df.date(from: string)
-    }
-    
-    func debug() {
-        let df = DateFormatter()
-        df.dateFormat = "yyyy-MM-dd HH:mm:ss"
-        
-        DDLogInfo("Media library last modified at: \(df.string(from: MPMediaLibrary.default().lastModifiedDate))")
-        
-//        let songs = MPMediaQuery.songs().items ?? []
-//        for song in songs {
-//            let prettyDate = song.lastPlayedDate != nil ? df.string(from: song.lastPlayedDate!) : "N/A"
-//            DDLogVerbose("\(song.persistentID) \(song.title ?? "N/A") \(prettyDate) \(song.playCount)")
-//        }
+        DDLogDebug("Media library last modified at: \(MPMediaLibrary.default().lastModifiedDate.format(with: "yyyy-MM-dd HH:mm:ss"))")
+        return _items.map { MediaItem(item: $0) }
     }
     
     func items(since date: Date?) -> [MediaItem] {
@@ -63,7 +41,6 @@ class MediaLibrary: ScrobbleMediaLibrary, ViewScrobblesArtworkFetcher {
         
         return items.filter({
             guard let lastPlayedDate = $0.lastPlayedDate else {
-//                DDLogWarn("Item does not have last played date: \($0.artist ?? "??"), \($0.title ?? "??")")
                 return false
             }
             return lastPlayedDate.timeIntervalSince1970 >= date.timeIntervalSince1970
@@ -93,5 +70,31 @@ class MediaLibrary: ScrobbleMediaLibrary, ViewScrobblesArtworkFetcher {
         } else {
             return nil
         }
+    }
+}
+
+class FakeMediaLibrary: MediaLibrary {
+    var authorized: Bool?
+    var items: [MediaItem] = []
+    
+    func isAuthorized() -> Bool {
+        return authorized != nil && authorized!
+    }
+    
+    func authorizationDenied() -> Bool {
+        return authorized != nil && !authorized!
+    }
+    
+    func requestAuthorization(complete: @escaping () -> ()) {
+        authorized = true
+        complete()
+    }
+
+    func items(since date: Date?) -> [MediaItem] {
+        return items
+    }
+    
+    func artwork(for persistentId: MediaItemId) -> MediaItemArtwork? {
+        return nil
     }
 }

@@ -29,10 +29,11 @@ class CoreDataMediaItemStore: MediaItemStore {
         DDLogDebug("Saving \(mediaItems.count) media items")
         
         container.performBackgroundTask { context in
-            let managedMediaItems = self.fetchManagedMediaItems(for: mediaItems, in: context)
+            let managedMediaItems = self.getManagedMediaItemsAsDictionary(for: mediaItems, from: context)
             
             for item in mediaItems {
-                if let managedItem = managedMediaItems.first(where: { $0.persistentId == String(item.id) }) {
+                let managedItem = managedMediaItems[String(item.id)]
+                if let managedItem = managedItem {
                     managedItem.playCount = Int16(item.playCount)
                     managedItem.lastPlayedDate = item.lastPlayedDate
                 } else {
@@ -50,6 +51,17 @@ class CoreDataMediaItemStore: MediaItemStore {
             
             completion()
         }
+    }
+    
+    private func getManagedMediaItemsAsDictionary(for mediaItems: [ScrobbleMediaItem], from context: NSManagedObjectContext) -> [String: ManagedMediaItem] {
+        let managedMediaItems = self.fetchManagedMediaItems(for: mediaItems, in: context)
+        var managedMediaItemDict: [String: ManagedMediaItem] = [:]
+        for item in managedMediaItems {
+            if let id = item.persistentId {
+                managedMediaItemDict[id] = item
+            }
+        }
+        return managedMediaItemDict
     }
     
     private func fetchManagedMediaItems(for mediaItems: [ScrobbleMediaItem], in context: NSManagedObjectContext) -> [ManagedMediaItem] {

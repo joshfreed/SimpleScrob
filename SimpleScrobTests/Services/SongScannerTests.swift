@@ -103,7 +103,7 @@ class SongScannerTests: XCTestCase {
         expect(self.cachedMediaItemStore.save_savedItems?[0].lastPlayedDate).to(equal(Date.makeDate(from: "2018-01-29 15:16:00")))
     }
     
-    func test_searchForSongsToScrobble_onlyUpdatesCacheOfMediaItemsThatPlayed() {
+    func test_searchForSongsToScrobble_updatesCacheForEntireMediaLibrary() {
         deviceMediaLibrary._items = [
             makeMediaItem(id: 1, lastPlayedDate: "2018-01-29 15:16:00", playCount: 2, artist: "The Dear Hunter", album: "Migrant", title: "Bring You Down"),
             makeMediaItem(id: 2, lastPlayedDate: "2018-01-29 15:20:00", playCount: 1, artist: "The Dear Hunter", album: "Migrant", title: "Whisper"),
@@ -124,8 +124,8 @@ class SongScannerTests: XCTestCase {
         
         // Then
         wait(for: [completionExpectation], timeout: 3)
-        expect(self.cachedMediaItemStore.save_savedItems).to(haveCount(2))
-        expect(self.cachedMediaItemStore.save_savedItems).to(allPass({ [1, 3].contains($0!.id) }))
+        expect(self.cachedMediaItemStore.save_savedItems).to(haveCount(4))
+        expect(self.cachedMediaItemStore.save_savedItems).to(allPass({ [1, 2, 3, 4].contains($0!.id) }))
     }
     
     //

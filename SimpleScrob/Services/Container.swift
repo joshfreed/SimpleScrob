@@ -30,7 +30,7 @@ class Container {
         #endif
     }()
     lazy var scrobbleService: ScrobbleService = LastFmScrobbleService(api: lastFM)
-    lazy var mediaLibrary: MediaLibrary = MediaLibrary.shared
+    lazy var mediaLibrary: MediaLibrary = RealMediaLibrary()
     lazy var signInAuthentication: SignInAuthentication = scrobbleService
     
     // MARK: Core Data
