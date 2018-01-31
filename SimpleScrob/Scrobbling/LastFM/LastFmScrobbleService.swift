@@ -143,5 +143,14 @@ class LastFmScrobbleService: ScrobbleService {
         }
         return _songs
     }
+    
+    func love(song: PlayedSong, completion: @escaping (Error?) -> ()) {
+        api.love(song: song) { result in
+            switch result {
+            case .success: completion(nil)
+            case .failure(let error): completion(error)
+            }
+        }
+    }
 }
 

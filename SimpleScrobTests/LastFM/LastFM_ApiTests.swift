@@ -95,4 +95,62 @@ class LastFM_ApiTests: XCTestCase {
         expect(response?.ignored).to(haveCount(0))
         expect(response?.accepted[0].track).to(equal("Sunrise"))
     }
+    
+    //
+    // love
+    //
+    
+    func testLoveTrack() {
+        // Given
+        sut.sessionKey = "MySessionKey"
+        let json: [String: Any] = [:]
+        engine.post_result = .success(json)
+        let songToLove = PlayedSongBuilder
+            .aSong()
+            .with(artist: "The Dear Hunter")
+            .with(track: "A Night on the Town")
+            .build()
+        
+        // When
+        var response: LastFM.LoveResponse?
+        sut.love(song: songToLove) { result in
+            if case let .success(_response) = result {
+                response = _response
+            }
+        }
+        
+        // Then
+        expect(self.engine.post_method).to(equal("track.love"))
+        
+        expect(self.engine.post_params).toNot(beNil())
+        let params = engine.post_params!
+        expect(params["sk"]).to(equal("MySessionKey"))
+        expect(params["track"]).to(equal("A Night on the Town"))
+        expect(params["artist"]).to(equal("The Dear Hunter"))
+        
+        expect(response).toNot(beNil())
+    }
+    
+    func testLoveTrackWithError() {
+        // Given
+        sut.sessionKey = "MySessionKey"
+        let songToLove = PlayedSongBuilder
+            .aSong()
+            .with(artist: "The Dear Hunter")
+            .with(track: "A Night on the Town")
+            .build()
+        let expectedError = LastFM.ErrorType.error(code: 11, message: "Some Error")
+        engine.post_result = .failure(expectedError)
+        
+        // When
+        var error: Error?
+        sut.love(song: songToLove) { result in
+            if case let .failure(_error) = result {
+                error = _error
+            }
+        }
+        
+        // Then
+        expect(error).to(matchError(expectedError))
+    }
 }

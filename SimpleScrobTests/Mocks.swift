@@ -124,6 +124,10 @@ class MockLastFMApi: LastFMAPI {
             completion(result)
         }
     }
+    
+    func love(song: PlayedSong, completion: @escaping (LastFM.Result<LastFM.LoveResponse>) -> ()) {
+        
+    }
 }
 
 class MockDateGenerator: DateGenerator {
@@ -180,6 +184,14 @@ class MockScrobbleService: ScrobbleService {
         scrobbleCallCount += 1
         scrobble_songs = songs
         completion(scrobble_updatedSongs, scrobble_error)
+    }
+    
+    var loveCallCount = 0
+    var lovedSongs: [PlayedSong] = []
+    func love(song: PlayedSong, completion: @escaping (Error?) -> ()) {
+        loveCallCount += 1
+        lovedSongs.append(song)
+        completion(nil)
     }
 }
 

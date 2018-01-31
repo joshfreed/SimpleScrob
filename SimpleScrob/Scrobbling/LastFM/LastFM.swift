@@ -15,6 +15,7 @@ protocol LastFMAPI {
     var sessionKey: String? { get set }
     func getMobileSession(username: String, password: String, completion: @escaping (LastFM.Result<LastFM.GetMobileSessionResponse>) -> ())
     func scrobble(songs: [PlayedSong], completion: @escaping (LastFM.Result<LastFM.ScrobbleResponse>) -> ())
+    func love(song: PlayedSong, completion: @escaping (LastFM.Result<LastFM.LoveResponse>) -> ())
 }
 
 protocol LastFMAPIEngine {
@@ -67,6 +68,10 @@ struct LastFM {
             let timestamp: Int?
         }
     }
+    
+    struct LoveResponse {
+        
+    }
 }
 
 class FakeLastFM: LastFMAPI {
@@ -87,5 +92,10 @@ class FakeLastFM: LastFMAPI {
 //            completion(.failure(LastFM.ErrorType.error(code: 77, message: "YOU SUCK")))
             completion(.success(LastFM.ScrobbleResponse(accepted: [], ignored: [])))
         }
+    }
+    
+    func love(song: PlayedSong, completion: @escaping (LastFM.Result<LastFM.LoveResponse>) -> ()) {
+        print("LOVE: \(song.track ?? "N/A")")
+        completion(.success(LastFM.LoveResponse()))
     }
 }

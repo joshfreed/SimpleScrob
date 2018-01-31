@@ -14,6 +14,7 @@ protocol ScrobbleService: SignInAuthentication {
     func signOut()
     func resumeSession()
     func scrobble(songs: [PlayedSong], completion: @escaping ([PlayedSong], Error?) -> ())
+    func love(song: PlayedSong, completion: @escaping (Error?) -> ())
 }
 
 extension Notification.Name {

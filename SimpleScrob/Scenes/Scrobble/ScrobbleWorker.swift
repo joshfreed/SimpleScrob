@@ -70,9 +70,20 @@ class ScrobbleWorker {
             
             self.scrobbleService.scrobble(songs: songs) { updatedSongs, error in
                 self.database.save(playedSongs: updatedSongs, completion: {})
+                self.loveScrobbledSongs(songs: updatedSongs)
                 completion(error)
             }
         }
+    }
+    
+    func loveScrobbledSongs(songs: [PlayedSong]) {
+        DDLogDebug("Loving scrobbled songs")
+        
+        songs
+            .filter({ $0.status == .scrobbled })
+            .forEach {
+                self.scrobbleService.love(song: $0, completion: { _ in })
+            }        
     }
     
     func markNotScrobbled(songs: [PlayedSong], with reason: String) -> [PlayedSong] {

@@ -87,6 +87,20 @@ extension LastFM {
                 }
             }
         }
+        
+        func love(song: PlayedSong, completion: @escaping (Result<LoveResponse>) -> ()) {
+            var params: [String: String] = [:]
+            params["sk"] = sessionKey
+            params["track"] = song.track
+            params["artist"] = song.artist
+            
+            engine.post(method: "track.love", params: params) { result in
+                switch result {
+                case .success: completion(.success(LoveResponse()))
+                case .failure(let error): completion(.failure(error))
+                }
+            }
+        }
     }
     
 }
