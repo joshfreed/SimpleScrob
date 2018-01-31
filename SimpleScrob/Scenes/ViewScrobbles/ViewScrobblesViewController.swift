@@ -44,8 +44,8 @@ class ViewScrobblesViewController: UITableViewController, ViewScrobblesDisplayLo
         viewController.router = router
         interactor.presenter = presenter
         interactor.worker = ViewScrobblesWorker(
-            database: (UIApplication.shared.delegate as! AppDelegate).database,
-            artworkService: (UIApplication.shared.delegate as! AppDelegate).mediaLibrary
+            database: Container.shared.playedSongStore,
+            artworkService: Container.shared.mediaLibrary
         )
         presenter.viewController = viewController
         router.viewController = viewController

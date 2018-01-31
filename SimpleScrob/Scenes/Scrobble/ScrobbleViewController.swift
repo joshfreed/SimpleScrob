@@ -56,12 +56,11 @@ class ScrobbleViewController: UIViewController, ScrobbleDisplayLogic {
     // MARK: Setup
 
     private func setup() {
-        let appDelegate = UIApplication.shared.delegate as! AppDelegate
         let viewController = self
         let worker = ScrobbleWorker(
-            database: appDelegate.database,
-            mediaSource: appDelegate.mediaSource,
-            scrobbleService: appDelegate.scrobbleService,
+            database: Container.shared.playedSongStore,
+            mediaSource: Container.shared.mediaSource,
+            scrobbleService: Container.shared.scrobbleService,
             connectivity: AlamofireConnectivity()
         )
         let interactor = ScrobbleInteractor(worker: worker)

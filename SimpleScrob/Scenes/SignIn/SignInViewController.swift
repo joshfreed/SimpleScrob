@@ -49,8 +49,7 @@ class SignInViewController: UIViewController, SignInDisplayLogic {
 
     private func setup() {
         let viewController = self
-        let appDelegate = (UIApplication.shared.delegate as! AppDelegate)
-        let interactor = SignInInteractor(auth: appDelegate.signInAuthentication)
+        let interactor = SignInInteractor(auth: Container.shared.signInAuthentication)
         let presenter = SignInPresenter()
         let router = SignInRouter()
         viewController.interactor = interactor

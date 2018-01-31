@@ -9,13 +9,10 @@
 import UIKit
 
 class GrantAccessViewController: UIViewController {
-    var mediaLibrary: MediaLibrary!
+    lazy var mediaLibrary: MediaLibrary = Container.shared.mediaLibrary
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        let appDelegate = UIApplication.shared.delegate as! AppDelegate
-        mediaLibrary = appDelegate.mediaLibrary
     }
 
     @IBAction func tappedGrantAccess(_ sender: PrimaryButton) {

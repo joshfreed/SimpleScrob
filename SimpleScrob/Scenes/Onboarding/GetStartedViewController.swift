@@ -9,13 +9,10 @@
 import UIKit
 
 class GetStartedViewController: UIViewController {
-    var mediaLibrary: MediaLibrary!
+    lazy var mediaLibrary: MediaLibrary = Container.shared.mediaLibrary
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        let appDelegate = UIApplication.shared.delegate as! AppDelegate
-        mediaLibrary = appDelegate.mediaLibrary
     }
 
     @IBAction func getStarted(_ sender: PrimaryButton) {

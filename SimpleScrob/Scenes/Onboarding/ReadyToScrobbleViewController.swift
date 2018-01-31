@@ -10,15 +10,13 @@ import UIKit
 import CocoaLumberjack
 
 class ReadyToScrobbleViewController: UIViewController {
-    var mediaSource: MediaSource!
+    lazy var mediaSource: MediaSource = Container.shared.mediaSource
     
     override func viewDidLoad() {
         super.viewDidLoad()
 
         NotificationCenter.default.addObserver(self, selector: #selector(applicationWillEnterForeground), name: .UIApplicationWillEnterForeground, object: nil)
         
-        let appDelegate = UIApplication.shared.delegate as! AppDelegate
-        mediaSource = appDelegate.mediaSource
         mediaSource.initialize(completion: {})
     }
     

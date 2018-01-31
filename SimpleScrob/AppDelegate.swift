@@ -15,72 +15,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     var window: UIWindow?
     
-    private var _database: PlayedSongStore?
-    var database: PlayedSongStore {
-        get {
-            if _database == nil {
-                _database = CoreDataPlayedSongStore(container: persistentContainer)
-            }
-            return _database!
-        }
-    }
-    
-    private var _mediaItemStore: MediaItemStore?
-    var mediaItemStore: MediaItemStore {
-        get {
-            if _mediaItemStore == nil {
-                _mediaItemStore = CoreDataMediaItemStore(container: persistentContainer)
-            }
-            return _mediaItemStore!
-        }
-    }
-    
-    private var _songScanner: MediaSource?
-    var mediaSource: MediaSource {
-        get {
-            if _songScanner == nil {
-                _songScanner = SongScanner(
-                    mediaLibrary: MediaLibrary.shared,
-                    dateGenerator: DateGenerator(),
-                    mediaItemStore: mediaItemStore
-                )
-            }
-            return _songScanner!
-        }
-    }
-    
-    private var _lastFM: LastFMAPI?
-    var lastFM: LastFMAPI {
-        get {
-            if _lastFM == nil {
-                #if DEBUG
-                _lastFM = FakeLastFM()
-                #else
-                let apiKey = "f27fb27503f9aa73c6f308fd9e3bc7f0"
-                let secret = "f0ec0f81ae932843046997ef89ce60cc"
-                _lastFM = LastFM.API(engine: LastFM.RestEngine(apiKey: apiKey, secret: secret))
-                #endif
-            }
-            return _lastFM!
-        }
-    }
-    
-    private var _scrobbleService: ScrobbleService?
-    var scrobbleService: ScrobbleService {
-        if _scrobbleService == nil {
-            _scrobbleService = LastFmScrobbleService(api: lastFM)
-        }
-        return _scrobbleService!
-    }    
-    
-    var mediaLibrary: MediaLibrary {
-        return MediaLibrary.shared
-    }
-
-    var signInAuthentication: SignInAuthentication {
-        return scrobbleService
-    }
-    
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
         DDLog.add(DDOSLogger.sharedInstance) // TTY = Xcode console
         
@@ -96,19 +30,19 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         NotificationCenter.default.addObserver(self, selector: #selector(userSignedIn), name: .signedIn, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(userSignedOut), name: .signedOut, object: nil)
         
-        scrobbleService.resumeSession()
+        Container.shared.scrobbleService.resumeSession()
         
-        if scrobbleService.isLoggedIn {
-            paperTrailLogger?.programName = scrobbleService.currentUserName
+        if Container.shared.scrobbleService.isLoggedIn {
+            paperTrailLogger?.programName = Container.shared.scrobbleService.currentUserName
         }
         
         DDLogVerbose("Hi papertrailapp.com")
         
         let storyboard = UIStoryboard(name: "Main", bundle: Bundle.main)
         
-        if mediaLibrary.authorizationDenied() {
+        if Container.shared.mediaLibrary.authorizationDenied() {
             window?.rootViewController = storyboard.instantiateViewController(withIdentifier: "MediaAuthDeniedViewController")
-        } else if mediaSource.isInitialized {
+        } else if Container.shared.mediaSource.isInitialized {
             window?.rootViewController = storyboard.instantiateViewController(withIdentifier: "ScrobbleViewController")
         } else {
             window?.rootViewController = storyboard.instantiateViewController(withIdentifier: "GetStartedViewController")
@@ -118,7 +52,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
     
     @objc func userSignedIn() {
-        RMPaperTrailLogger.sharedInstance()?.programName = scrobbleService.currentUserName
+        RMPaperTrailLogger.sharedInstance()?.programName = Container.shared.scrobbleService.currentUserName
     }
     
     @objc func userSignedOut() {
@@ -163,50 +97,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             try FileManager.default.removeItem(at: url)
         } catch {
             fatalError("\(error)")
-        }
-    }
-    
-    lazy var persistentContainer: NSPersistentContainer = {
-        /*
-         The persistent container for the application. This implementation
-         creates and returns a container, having loaded the store for the
-         application to it. This property is optional since there are legitimate
-         error conditions that could cause the creation of the store to fail.
-         */
-        let container = NSPersistentContainer(name: "SimpleScrob")
-        print(NSPersistentContainer.defaultDirectoryURL())
-        container.loadPersistentStores(completionHandler: { (storeDescription, error) in
-            if let error = error as NSError? {
-                // Replace this implementation with code to handle the error appropriately.
-                // fatalError() causes the application to generate a crash log and terminate. You should not use this function in a shipping application, although it may be useful during development.
-                
-                /*
-                 Typical reasons for an error here include:
-                 * The parent directory does not exist, cannot be created, or disallows writing.
-                 * The persistent store is not accessible, due to permissions or data protection when the device is locked.
-                 * The device is out of space.
-                 * The store could not be migrated to the current model version.
-                 Check the error message to determine what the actual problem was.
-                 */
-                fatalError("Unresolved error \(error), \(error.userInfo)")
-            }
-        })
-        return container
-    }()
-    
-    // MARK: - Core Data Saving support
-    
-    func saveContext () {
-        let context = persistentContainer.viewContext
-        if context.hasChanges {
-            do {
-                try context.save()
-            } catch {
-                // Replace this implementation with code to handle the error appropriately.
-                // fatalError() causes the application to generate a crash log and terminate. You should not use this function in a shipping application, although it may be useful during development.
-                let nserror = error as NSError
-                fatalError("Unresolved error \(nserror), \(nserror.userInfo)")
-            }
         }
     }
 }
