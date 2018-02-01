@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="13771" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" launchScreen="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="01J-lp-oVM">
-    <device id="retina4_7" orientation="portrait">
+    <device id="ipad12_9" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
@@ -15,30 +15,38 @@
             <objects>
                 <viewController id="01J-lp-oVM" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="Ze5-6b-2t3">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <rect key="frame" x="0.0" y="0.0" width="1024" height="1366"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Logo" translatesAutoresizingMaskIntoConstraints="NO" id="eUZ-pb-yef">
-                                <rect key="frame" x="80" y="84" width="215" height="128"/>
+                                <rect key="frame" x="356" y="84" width="312" height="185.5"/>
                                 <constraints>
                                     <constraint firstAttribute="width" secondItem="eUZ-pb-yef" secondAttribute="height" multiplier="220:131" id="RMf-qw-W6W"/>
-                                    <constraint firstAttribute="height" constant="128" id="aKJ-gl-XFN"/>
+                                    <constraint firstAttribute="height" constant="128" id="aKJ-gl-XFN">
+                                        <variation key="heightClass=regular-widthClass=regular" constant="185.5"/>
+                                    </constraint>
                                 </constraints>
                             </imageView>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Zde-oM-mNQ" userLabel="Title View">
-                                <rect key="frame" x="42" y="220" width="291" height="60"/>
+                                <rect key="frame" x="256.5" y="277.5" width="511" height="106.5"/>
                                 <subviews>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Scrob" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hju-6q-HpN">
-                                        <rect key="frame" x="172" y="0.0" width="119" height="60"/>
+                                        <rect key="frame" x="302" y="0.0" width="209" height="106.5"/>
                                         <fontDescription key="fontDescription" type="system" weight="thin" pointSize="50"/>
                                         <nil key="textColor"/>
                                         <nil key="highlightedColor"/>
+                                        <variation key="heightClass=regular-widthClass=regular">
+                                            <fontDescription key="fontDescription" type="system" weight="thin" pointSize="89"/>
+                                        </variation>
                                     </label>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Simple" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="MbZ-el-LrS">
-                                        <rect key="frame" x="0.0" y="0.0" width="171.5" height="60"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="301.5" height="106.5"/>
                                         <fontDescription key="fontDescription" type="system" weight="black" pointSize="50"/>
                                         <nil key="textColor"/>
                                         <nil key="highlightedColor"/>
+                                        <variation key="heightClass=regular-widthClass=regular">
+                                            <fontDescription key="fontDescription" type="system" weight="black" pointSize="89"/>
+                                        </variation>
                                     </label>
                                 </subviews>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -53,24 +61,32 @@
                                 </constraints>
                             </view>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="249" text="The simplest way to scrobble your songs to Last.fm!" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="3Qa-aW-T4Q">
-                                <rect key="frame" x="32" y="312" width="311" height="235"/>
+                                <rect key="frame" x="72" y="416" width="880" height="822"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="21"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
+                                <variation key="heightClass=regular-widthClass=regular">
+                                    <fontDescription key="fontDescription" type="system" pointSize="28"/>
+                                </variation>
                             </label>
                         </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
-                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="bottom" secondItem="3Qa-aW-T4Q" secondAttribute="bottom" constant="120" id="0r9-gr-C54"/>
+                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="bottom" secondItem="3Qa-aW-T4Q" secondAttribute="bottom" constant="120" id="0r9-gr-C54">
+                                <variation key="heightClass=regular-widthClass=regular" constant="128"/>
+                            </constraint>
                             <constraint firstItem="eUZ-pb-yef" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" constant="64" id="EUf-Ii-uV4"/>
-                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="3Qa-aW-T4Q" secondAttribute="trailing" constant="32" id="IZT-zB-3XK"/>
+                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="3Qa-aW-T4Q" secondAttribute="trailing" constant="32" id="IZT-zB-3XK">
+                                <variation key="heightClass=regular-widthClass=regular" constant="72"/>
+                            </constraint>
                             <constraint firstItem="Zde-oM-mNQ" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="8" id="N6R-Sp-lOq"/>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="Zde-oM-mNQ" secondAttribute="trailing" constant="8" id="UL8-Sg-btU"/>
-                            <constraint firstItem="eUZ-pb-yef" firstAttribute="width" secondItem="eUZ-pb-yef" secondAttribute="height" multiplier="220:131" id="VEu-RD-UcI"/>
                             <constraint firstItem="3Qa-aW-T4Q" firstAttribute="top" secondItem="Zde-oM-mNQ" secondAttribute="bottom" constant="32" id="XX4-dx-4hG"/>
                             <constraint firstItem="Zde-oM-mNQ" firstAttribute="centerX" secondItem="6Tk-OE-BBY" secondAttribute="centerX" id="Yiy-pM-xOR"/>
                             <constraint firstItem="eUZ-pb-yef" firstAttribute="centerX" secondItem="6Tk-OE-BBY" secondAttribute="centerX" id="dwB-9f-ThY"/>
-                            <constraint firstItem="3Qa-aW-T4Q" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="32" id="fqT-7D-OpY"/>
+                            <constraint firstItem="3Qa-aW-T4Q" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="32" id="fqT-7D-OpY">
+                                <variation key="heightClass=regular-widthClass=regular" constant="72"/>
+                            </constraint>
                             <constraint firstItem="Zde-oM-mNQ" firstAttribute="top" secondItem="eUZ-pb-yef" secondAttribute="bottom" constant="8" id="pJ9-UX-wME"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
