@@ -10,9 +10,6 @@ import Foundation
 import CocoaLumberjack
 import DateToolsSwift
 
-let ONE_HOUR: Double = 3600
-let ONE_DAY: Double = ONE_HOUR * 24
-
 class SongScanner: MediaSource {
     let mediaLibrary: ScrobbleMediaLibrary
     let dateGenerator: DateGenerator
@@ -22,30 +19,6 @@ class SongScanner: MediaSource {
     var isInitialized: Bool {
         return UserDefaults.standard.bool(forKey: "musicLibraryIsInitialized")
     }
-
-    /**
-        Returns the date and time from which to look for songs that have been played.
-     
-        I have it returning 24 hours before the date and time you last scrobbled songs. I do this because
-        there are times where songs played on another device and synced with iCloud Music Library don't
-        sync immediately. 24 hours seems to catch all the plays.
-    */
-    var scrobbleSearchDate: Date {
-        let lastSearchedAt = UserDefaults.standard.double(forKey: "lastScrobbleDate")
-        let date = Date(timeIntervalSince1970: lastSearchedAt)
-        let minSearchDate = date.addingTimeInterval(-ONE_DAY)
-        
-        if minSearchDate.isEarlier(than: initializationDate) {
-            return initializationDate
-        } else {
-            return minSearchDate
-        }
-    }
-    
-    var initializationDate: Date {
-        let initializedAt = UserDefaults.standard.double(forKey: "initlizationDate")
-        return Date(timeIntervalSince1970: initializedAt)
-    }
     
     init(mediaLibrary: ScrobbleMediaLibrary, dateGenerator: DateGenerator, mediaItemStore: MediaItemStore) {
         self.mediaLibrary = mediaLibrary
@@ -53,56 +26,30 @@ class SongScanner: MediaSource {
         self.mediaItemStore = mediaItemStore
         df.dateFormat = "yyyy-MM-dd HH:mm:ss"
     }
-    
-    func reset() {
-        UserDefaults.standard.removeObject(forKey: "initlizationDate")
-        UserDefaults.standard.removeObject(forKey: "lastScrobbleDate")
-        UserDefaults.standard.removeObject(forKey: "musicLibraryIsInitialized")
-    }
-    
+
     func initialize(completion: @escaping () -> ()) {
-        initializeSongDatabase()
-        
-        let itemCache = mediaLibrary.items.map {
-            ScrobbleMediaItem(id: $0.id, playCount: $0.playCount, lastPlayedDate: $0.lastPlayedDate)
+        updateCachedMediaItems(from: mediaLibrary.items) {
+            UserDefaults.standard.set(true, forKey: "musicLibraryIsInitialized")
+            completion()
         }
-        
-        mediaItemStore.save(mediaItems: itemCache, completion: completion)
-    }
-    
-    func initializeSongDatabase() {
-        UserDefaults.standard.set(true, forKey: "musicLibraryIsInitialized")
-        UserDefaults.standard.set(dateGenerator.currentDate().timeIntervalSince1970, forKey: "initlizationDate")
-        UserDefaults.standard.set(dateGenerator.currentDate().timeIntervalSince1970, forKey: "lastScrobbleDate")
     }
     
     func getSongsPlayedSinceLastTime(completion: @escaping ([PlayedSong]) -> ()) {
         DDLogDebug("searchForNewScrobbles")
-        DDLogInfo("Current Date: \(df.string(from: Date())), Last scan date: \(df.string(from: scrobbleSearchDate))")
         
         let currentMediaItems = mediaLibrary.items
-        DDLogDebug("Found \(currentMediaItems.count) recently played songs")
+        DDLogDebug("Found \(currentMediaItems.count) items in the media library")
         
         mediaItemStore.findAll(byIds: currentMediaItems.map({ $0.id })) { cachedMediaItems in
-            
             DDLogDebug("Loaded \(cachedMediaItems.count) cached media items")
             
             let songs = self.makeSongsToScrobble(currentMediaItems: currentMediaItems, cachedMediaItems: cachedMediaItems)
             DDLogDebug("Found \(songs.count) songs to scrobble")
             
-            self.updateLastScrobbleDate()
-            self.updateCachedMediaItems(from: currentMediaItems)
-            
-            completion(songs)
+            self.updateCachedMediaItems(from: currentMediaItems) {
+                completion(songs)
+            }
         }
-    }
-    
-    func searchForNewScrobbles(completion: @escaping ([PlayedSong]) -> ()) {
-        getSongsPlayedSinceLastTime(completion: completion)
-    }
-    
-    private func getUniqueMediaItemIds(from songs: [PlayedSong]) -> [MediaItemId] {
-        return Array(Set(songs.map({ $0.persistentId })))
     }
     
     func makeSongsToScrobble(currentMediaItems: [MediaItem], cachedMediaItems: [ScrobbleMediaItem]) -> [PlayedSong] {
@@ -166,15 +113,13 @@ class SongScanner: MediaSource {
         )
     }
     
-    private func updateLastScrobbleDate() {
-        UserDefaults.standard.set(dateGenerator.currentDate().timeIntervalSince1970, forKey: "lastScrobbleDate")
-    }
-    
-    private func updateCachedMediaItems(from currentItems: [MediaItem]) {
+    private func updateCachedMediaItems(from currentItems: [MediaItem], completion: @escaping () -> ()) {
         DDLogDebug("updateCachedMediaItems")
+
         let cachedItems = currentItems.map {
             ScrobbleMediaItem(id: $0.id, playCount: $0.playCount, lastPlayedDate: $0.lastPlayedDate)
         }
-        mediaItemStore.save(mediaItems: cachedItems, completion: {})
+        
+        mediaItemStore.save(mediaItems: cachedItems, completion: completion)
     }
 }

@@ -16,9 +16,6 @@ class SongScannerTests: XCTestCase {
     let deviceMediaLibrary = MockMediaLibrary()
     let cachedMediaItemStore = MockMediaItemStore()
     let dateGenerator = MockDateGenerator()
-    let oneHour: TimeInterval = 3600
-    let oneDay: TimeInterval = 3600 * 24
-    let twoDays: TimeInterval = 3600 * 24 * 2
     
     override func setUp() {
         super.setUp()
@@ -32,7 +29,6 @@ class SongScannerTests: XCTestCase {
             dateGenerator: dateGenerator,
             mediaItemStore: cachedMediaItemStore
         )
-        sut.reset()
     }
     
     override func tearDown() {
@@ -40,42 +36,22 @@ class SongScannerTests: XCTestCase {
         super.tearDown()
     }
     
-    func testScrobbleSearchDate_set_to_the_date_first_initialized() {
-        let expected = dateGenerator.currentDate()
-        
-        sut.initializeSongDatabase()
-        
-        expect(self.sut.scrobbleSearchDate).to(beCloseTo(expected))
-    }
-
-    func testScrobbleSearchDate_never_goes_earlier_than_the_first_initialization_date() {
-        dateGenerator.rewind(oneHour)
-        let expected = dateGenerator.currentDate()
-        sut.initializeSongDatabase()
-        dateGenerator.advance(oneHour)
-
-        expect(self.sut.scrobbleSearchDate).to(beCloseTo(expected))
-    }
-    
     func testIsInitialized_returns_false_at_first() {
+        UserDefaults.standard.removeObject(forKey: "musicLibraryIsInitialized")
         expect(self.sut.isInitialized).to(beFalse())
     }
     
     func testIsInitialize_true_after_initializing_the_library() {
-        sut.initializeSongDatabase()
+        sut.initialize(completion: {})
         expect(self.sut.isInitialized).to(beTrue())
     }
     
     //
-    // searchForSongsToScrobble
+    // getSongsPlayedSinceLastTime
     //
     
-    func test_searchForSongsToScrobble() {
+    func test_getSongsPlayedSinceLastTime() {
         // Given
-        dateGenerator.rewind(twoDays)
-        sut.initializeSongDatabase()
-        dateGenerator.advance(twoDays)
-        let expectedScrobbleSearchDate = dateGenerator.currentDate().addingTimeInterval(-oneDay)
         deviceMediaLibrary._items = [
             makeMediaItem(id: 1, lastPlayedDate: "2018-01-29 15:16:00", playCount: 2, artist: "The Dear Hunter", album: "Migrant", title: "Bring You Down")
         ]
@@ -86,7 +62,7 @@ class SongScannerTests: XCTestCase {
         
         // When
         var playedSongs: [PlayedSong] = []
-        sut.searchForNewScrobbles() { _playedSongs in
+        sut.getSongsPlayedSinceLastTime() { _playedSongs in
             playedSongs = _playedSongs
             completionExpectation.fulfill()
         }
@@ -95,7 +71,6 @@ class SongScannerTests: XCTestCase {
         wait(for: [completionExpectation], timeout: 3)
         expect(playedSongs).to(haveCount(1))
         verifyPlayedSong(playedSongs[0], id: 1, date: "2018-01-29 15:16:00", artist: "The Dear Hunter", album: "Migrant", title: "Bring You Down")
-        expect(self.sut.scrobbleSearchDate).to(beCloseTo(expectedScrobbleSearchDate))
         expect(self.cachedMediaItemStore.save_savedItems).toNot(beNil())
         expect(self.cachedMediaItemStore.save_savedItems).to(haveCount(1))
         expect(self.cachedMediaItemStore.save_savedItems?[0].id).to(equal(1))
@@ -103,7 +78,7 @@ class SongScannerTests: XCTestCase {
         expect(self.cachedMediaItemStore.save_savedItems?[0].lastPlayedDate).to(equal(Date.makeDate(from: "2018-01-29 15:16:00")))
     }
     
-    func test_searchForSongsToScrobble_updatesCacheForEntireMediaLibrary() {
+    func test_getSongsPlayedSinceLastTime_updatesCacheForEntireMediaLibrary() {
         deviceMediaLibrary._items = [
             makeMediaItem(id: 1, lastPlayedDate: "2018-01-29 15:16:00", playCount: 2, artist: "The Dear Hunter", album: "Migrant", title: "Bring You Down"),
             makeMediaItem(id: 2, lastPlayedDate: "2018-01-29 15:20:00", playCount: 1, artist: "The Dear Hunter", album: "Migrant", title: "Whisper"),
@@ -118,7 +93,7 @@ class SongScannerTests: XCTestCase {
         let completionExpectation = expectation(description: "searchForNewScrobbles")
         
         // When
-        sut.searchForNewScrobbles() { _ in
+        sut.getSongsPlayedSinceLastTime() { _ in
             completionExpectation.fulfill()
         }
         
