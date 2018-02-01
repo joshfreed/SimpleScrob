@@ -48,6 +48,10 @@ struct LastFM {
         case failure(Error)
     }
     
+    struct ScrobbleTimestamp {
+        
+    }
+    
     struct GetMobileSessionResponse {
         let name: String?
         let key: String?
@@ -59,13 +63,17 @@ struct LastFM {
         let ignored: [Scrobble]
         
         struct Scrobble {
-            let track: String?
-            let artist: String?
-            let album: String?
-            let albumArtist: String?
-            let ignoredMessage: String?
-            let ignoredCode: Int?
-            let timestamp: Int?
+            var track: String?
+            var artist: String?
+            var album: String?
+            var albumArtist: String?
+            var trackCorrected: Bool?
+            var artistCorrected: Bool?
+            var albumCorrected: Bool?
+            var albumArtistCorrected: Bool?
+            var ignoredMessage: String?
+            var ignoredCode: Int?
+            var timestamp: Int?
         }
     }
     

@@ -24,7 +24,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         paperTrailLogger?.port = 22232
         paperTrailLogger?.machineName = "SimpleScrob"
         paperTrailLogger?.programName = "no user"
-        DDLog.add(paperTrailLogger!)
+        DDLog.add(paperTrailLogger!, with: .debug)
         #endif
         
         NotificationCenter.default.addObserver(self, selector: #selector(userSignedIn), name: .signedIn, object: nil)

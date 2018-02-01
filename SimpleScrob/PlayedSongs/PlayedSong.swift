@@ -66,6 +66,11 @@ struct PlayedSong: Equatable {
         reason = nil
     }
     
+    mutating func ignored(reason: String?) {
+        status = .ignored
+        self.reason = reason
+    }
+    
     mutating func notScrobbled(reason: String?) {
         status = .notScrobbled
         self.reason = reason

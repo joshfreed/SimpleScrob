@@ -178,6 +178,32 @@ class LastFmScrobbleServiceTests: XCTestCase {
         expect(completionSongs).to(allPass { $0?.status == .notScrobbled })
     }
     
+    func test_submit_ignored_tracks_are_marked_ignored() {
+        // Given
+        sut.configureWithSession()
+        let acceptedSong = PlayedSongBuilder.aSong().build()
+        let ignoredSong = PlayedSongBuilder.aSong().build()
+        let songs = [acceptedSong, ignoredSong]
+        let response = LastFM.ScrobbleResponse(accepted: [], ignored: [
+            makeIgnored(from: ignoredSong, code: 3, message: "This track was ignored")
+        ])
+        api.scrobbleResults.append(.success(response))
+        var completionSongs: [PlayedSong] = []
+        let completionExpectation = expectation(description: "Submission completes")
+        
+        // When
+        sut.scrobble(songs: songs) { (playedSongs, error) in
+            completionSongs = playedSongs
+            completionExpectation.fulfill()
+        }
+        
+        // Then
+        wait(for: [completionExpectation], timeout: 3)
+        expect(completionSongs).to(haveCount(2))
+        expect(completionSongs[0].status.rawValue).to(equal(ScrobbleStatus.scrobbled.rawValue))
+        expect(completionSongs[1].status.rawValue).to(equal(ScrobbleStatus.ignored.rawValue))
+    }
+    
     // MARK: Helper Funcs
     
     private var _songId: MPMediaEntityPersistentID = 1
@@ -189,5 +215,13 @@ class LastFmScrobbleServiceTests: XCTestCase {
             _songId += 1
         }
         return songs
+    }
+    
+    private func makeIgnored(from song: PlayedSong, code: Int, message: String) -> LastFM.ScrobbleResponse.Scrobble {
+        var s = LastFM.ScrobbleResponse.Scrobble()
+        s.timestamp = Int(song.date.timeIntervalSince1970)
+        s.ignoredCode = code
+        s.ignoredMessage = message
+        return s
     }
 }

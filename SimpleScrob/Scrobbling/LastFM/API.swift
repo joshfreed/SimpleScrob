@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import SwiftyJSON
 
 extension LastFM {
     
@@ -60,32 +61,43 @@ extension LastFM {
             engine.post(method: "track.scrobble", params: params) { result in
                 switch result {
                 case .success(let json):
-                    let scrobblesTag = json["scrobbles"] as? [String: Any]
-                    let scrobbles = scrobblesTag?["scrobble"] as? [[String: Any]]
-                    var accepted: [LastFM.ScrobbleResponse.Scrobble] = []
-                    var ignored: [LastFM.ScrobbleResponse.Scrobble] = []
-                    if let scrobbles = scrobbles {
-                        for scrobble in scrobbles {
-                            let s = LastFM.ScrobbleResponse.Scrobble(
-                                track: (scrobble["track"] as? [String: Any])?["#text"] as? String,
-                                artist: nil,
-                                album: nil,
-                                albumArtist: nil,
-                                ignoredMessage: nil,
-                                ignoredCode: nil,
-                                timestamp: nil
-                            )
-                            accepted.append(s)
-                        }
-                    }
-                    let response = LastFM.ScrobbleResponse(
-                        accepted: accepted,
-                        ignored: ignored
-                    )
+                    let response = self.buildScrobbleResponse(json: JSON(json))
                     completion(.success(response))
-                case .failure(let error): completion(.failure(error))
+                case .failure(let error):
+                    completion(.failure(error))
                 }
             }
+        }
+        
+        private func buildScrobbleResponse(json: JSON) -> LastFM.ScrobbleResponse {
+            var accepted: [LastFM.ScrobbleResponse.Scrobble] = []
+            var ignored: [LastFM.ScrobbleResponse.Scrobble] = []
+            
+            let acceptedCount = json["scrobbles"]["@attr"]["accepted"].intValue
+            let ignoredCount = json["scrobbles"]["@attr"]["ignored"].intValue
+            print("Accepted: \(acceptedCount), Ignored: \(ignoredCount)")
+            
+            let scrobblesJson = json["scrobbles"]["scrobble"].arrayValue
+            for scrobbleJson in scrobblesJson {
+                if scrobbleJson["ignoredMessage"]["code"].intValue == 0 {
+                    accepted.append(self.makeScrobble(json: scrobbleJson))
+                } else {
+                    ignored.append(self.makeScrobble(json: scrobbleJson))
+                }
+            }
+
+            return LastFM.ScrobbleResponse(accepted: accepted, ignored: ignored)
+        }
+        
+        private func makeScrobble(json: JSON) -> LastFM.ScrobbleResponse.Scrobble {
+            var s = LastFM.ScrobbleResponse.Scrobble()
+            s.timestamp = json["timestamp"].int
+            s.track = json["track"]["#text"].string
+            s.artist = json["artist"]["#text"].string
+            s.album = json["album"]["#text"].string
+            s.ignoredMessage = json["ignoredMessage"]["#text"].string
+            s.ignoredCode = json["ignoredMessage"]["code"].int
+            return s
         }
         
         func love(song: PlayedSong, completion: @escaping (Result<LoveResponse>) -> ()) {

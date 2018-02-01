@@ -119,7 +119,7 @@ class LastFmScrobbleService: ScrobbleService {
         DDLogDebug("Scrobbling batch with \(batch.count) songs")
         
         for song in batch {
-            DDLogDebug("Scrobbling \(song.track ?? "") by \(song.artist ?? "") last played \(song.date)")
+            DDLogVerbose("Scrobbling \(song.track ?? "") by \(song.artist ?? "") last played \(song.date)")
         }
         
         api.scrobble(songs: batch) { result in
@@ -131,19 +131,54 @@ class LastFmScrobbleService: ScrobbleService {
             
             switch result {
             case .success(let response):
-                DDLogDebug("Batch scrobbled successfully")
-                completion(self.markScrobbled(songs: batch), nil)
+                DDLogVerbose("Batch scrobbled successfully")
+                let updatedSongs = self.updateSongs(batch, from: response)
+                completion(updatedSongs, nil)
             case .failure(let error):
-                DDLogDebug("Error scrobbling batch: \(error)")
+                DDLogError("Error scrobbling batch: \(error)")
                 completion(self.markFailed(songs: batch, with: error), error)
             }
         }
     }
 
+    private func updateSongs(_ songs: [PlayedSong], from response: LastFM.ScrobbleResponse) -> [PlayedSong] {
+        var acceptedSongs: [PlayedSong] = []
+        var ignoredSongs: [PlayedSong] = []
+
+        for ignored in response.ignored {
+            if let match = songs.first(where: { Int($0.date.timeIntervalSince1970) == ignored.timestamp }) {
+                var ignoredSong = match
+                ignoredSong.ignored(reason: ignored.ignoredMessage)
+                ignoredSongs.append(ignoredSong)
+            }
+        }
+        
+        if ignoredSongs.count == 0 {
+            acceptedSongs = songs
+        } else {
+            acceptedSongs = songs.filter { !ignoredSongs.contains($0) }
+        }
+        
+        acceptedSongs = self.markScrobbled(songs: acceptedSongs)
+        
+        var updatedSongs: [PlayedSong] = []
+        updatedSongs.append(contentsOf: acceptedSongs)
+        updatedSongs.append(contentsOf: ignoredSongs)
+        return updatedSongs
+    }
+    
     func markScrobbled(songs: [PlayedSong]) -> [PlayedSong] {
         var _songs = songs
         for i in 0..<_songs.count {
             _songs[i].scrobbled()
+        }
+        return _songs
+    }
+    
+    func markIgnored(songs: [PlayedSong], with reason: String) -> [PlayedSong] {
+        var _songs = songs
+        for i in 0..<_songs.count {
+            _songs[i].ignored(reason: reason)
         }
         return _songs
     }

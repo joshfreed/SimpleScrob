@@ -76,6 +76,7 @@ class LastFM_ApiTests: XCTestCase {
                     [
                         "track": ["corrected": 0, "#text": "Sunrise"],
                         "artist": ["corrected": 0, "#text": "Beardfish"],
+                        "album": ["corrected": 0, "#text": "Sleeping in Traffic"],
                         "ignoredMessage": ["#text": "", "code": 0],
                         "timestamp": 1507156068
                     ]
@@ -85,7 +86,7 @@ class LastFM_ApiTests: XCTestCase {
         engine.post_result = .success(json)
         
         var response: LastFM.ScrobbleResponse?
-        let songs = [PlayedSong(persistentId: 1, date: Date(), artist: "Beardfish", album: "Sleeping in Traffic", track: "Sunrise")]
+        let songs = [PlayedSongBuilder.aSong().build()]
         sut.scrobble(songs: songs) { result in
             if case let .success(_response) = result {
                 response = _response
@@ -96,6 +97,61 @@ class LastFM_ApiTests: XCTestCase {
         expect(response?.accepted).to(haveCount(1))
         expect(response?.ignored).to(haveCount(0))
         expect(response?.accepted[0].track).to(equal("Sunrise"))
+        expect(response?.accepted[0].artist).to(equal("Beardfish"))
+        expect(response?.accepted[0].album).to(equal("Sleeping in Traffic"))
+        expect(response?.accepted[0].timestamp).to(equal(1507156068))
+    }
+    
+    func testScrobbleAddsIgnoredTracksToTheIgnoredArray() {
+        // Given
+        let json: [String: Any] = [
+            "scrobbles": [
+                "@attr": [
+                    "accepted": 2,
+                    "ignored": 1,
+                ],
+                "scrobble": [
+                    [
+                        "track": ["corrected": 0, "#text": "Sunrise"],
+                        "artist": ["corrected": 0, "#text": "Beardfish"],
+                        "ignoredMessage": ["#text": "", "code": 0],
+                        "timestamp": 1507156068
+                    ],
+                    [
+                        "track": ["corrected": 0, "#text": "Afternoon Conversation"],
+                        "artist": ["corrected": 0, "#text": "Beardfish"],
+                        "ignoredMessage": ["#text": "Ignored this track", "code": 1],
+                        "timestamp": 1507156368
+                    ],
+                    [
+                        "track": ["corrected": 0, "#text": "And Never Know"],
+                        "artist": ["corrected": 0, "#text": "Beardfish"],
+                        "ignoredMessage": ["#text": "", "code": 0],
+                        "timestamp": 1507156968
+                    ]
+                ]
+            ]
+        ]
+        engine.post_result = .success(json)
+        let songs = [PlayedSongBuilder.aSong().build()]
+        
+        // When
+        var response: LastFM.ScrobbleResponse?
+        sut.scrobble(songs: songs) { result in
+            if case let .success(_response) = result {
+                response = _response
+            }
+        }
+        
+        // Then
+        expect(response).toNot(beNil())
+        expect(response?.accepted).to(haveCount(2))
+        expect(response?.ignored).to(haveCount(1))
+        expect(response?.accepted[0].track).to(equal("Sunrise"))
+        expect(response?.accepted[1].track).to(equal("And Never Know"))
+        expect(response?.ignored[0].track).to(equal("Afternoon Conversation"))
+        expect(response?.ignored[0].ignoredCode).to(equal(1))
+        expect(response?.ignored[0].ignoredMessage).to(equal("Ignored this track"))
     }
     
     // MARK: love
