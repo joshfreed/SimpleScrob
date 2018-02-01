@@ -42,6 +42,8 @@ class LastFM_ApiTests: XCTestCase {
         }
     }
     
+    // MARK: scrobble
+    
     func testSongParams() {
         var cmp = DateComponents()
         cmp.hour = -1
@@ -96,9 +98,7 @@ class LastFM_ApiTests: XCTestCase {
         expect(response?.accepted[0].track).to(equal("Sunrise"))
     }
     
-    //
-    // love
-    //
+    // MARK: love
     
     func testLoveTrack() {
         // Given

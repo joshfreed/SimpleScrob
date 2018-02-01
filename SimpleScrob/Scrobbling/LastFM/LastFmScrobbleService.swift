@@ -67,32 +67,57 @@ class LastFmScrobbleService: ScrobbleService {
     func scrobble(songs: [PlayedSong], completion: @escaping ([PlayedSong], Error?) -> ()) {
         DDLogDebug("Scrobbling \(songs.count) songs")
         
-        guard isLoggedIn else {
-            return completion(
-                markNotScrobbled(songs: songs, with: .notSignedIn),
-                LastFM.ErrorType.notSignedIn
-            )
-        }
-        
-        submitBatch(start: 0, songs: songs, completion: completion, done: [])
-    }
-
-    func submitBatch(start: Int, songs: [PlayedSong], completion: @escaping ([PlayedSong], Error?) -> (), done: [PlayedSong]) {
         guard songs.count > 0 else {
-            return completion(done, nil)
-        }
-        guard start < songs.count else {
-            return completion(done, nil)
+            return completion([], nil)
         }
         
-        let end = min(start + 50, songs.count)
-        let batch = Array(songs[start..<end])
+        guard isLoggedIn else {
+            let error = LastFM.ErrorType.notSignedIn
+            return completion(markNotScrobbled(songs: songs, with: error), error)
+        }
+
+        let batches = makeBatches(from: songs)
+        scrobble(batches: batches, completion: completion)
+    }
+    
+    private func makeBatches(from songs: [PlayedSong]) -> [[PlayedSong]] {
+        let batchSize = 50
+        var batches: [[PlayedSong]] = []
+        for index in stride(from: 0, to: songs.count, by: batchSize) {
+            let start = index
+            let end = min(start + batchSize, songs.count)
+            let songBatch: [PlayedSong] = Array(songs[start..<end])
+            batches.append(songBatch)
+        }
+        return batches
+    }
+    
+    private func scrobble(batches: [[PlayedSong]], completion: @escaping ([PlayedSong], Error?) -> ()) {
+        DDLogDebug("Scrobbling \(batches.count) batches")
         
-        guard batch.count > 0 else {
-            return completion(done, nil)
+        let group = DispatchGroup()
+        var updatedSongs: [PlayedSong] = []
+        var scrobbleError: Error?
+        
+        for batch in batches {
+            group.enter()
+            scrobble(batch: batch) { (updatedBatch, error) in
+                updatedSongs.append(contentsOf: updatedBatch)
+                if scrobbleError == nil {
+                    scrobbleError = error
+                }
+                group.leave()
+            }
         }
         
+        group.notify(queue: .main) {
+            completion(updatedSongs, scrobbleError)
+        }
+    }
+    
+    private func scrobble(batch: [PlayedSong], completion: @escaping ([PlayedSong], Error?) -> ()) {
         DDLogDebug("Scrobbling batch with \(batch.count) songs")
+        
         for song in batch {
             DDLogDebug("Scrobbling \(song.track ?? "") by \(song.artist ?? "") last played \(song.date)")
         }
@@ -107,19 +132,14 @@ class LastFmScrobbleService: ScrobbleService {
             switch result {
             case .success(let response):
                 DDLogDebug("Batch scrobbled successfully")
-                var _done = done
-                _done.append(contentsOf: self.markScrobbled(songs: batch))
-                self.submitBatch(start: end, songs: songs, completion: completion, done: _done)
+                completion(self.markScrobbled(songs: batch), nil)
             case .failure(let error):
                 DDLogDebug("Error scrobbling batch: \(error)")
-                var _done = done
-                _done.append(contentsOf: self.markFailed(songs: batch, with: error))
-                _done.append(contentsOf: songs[end..<songs.count])
-                completion(_done, error)
+                completion(self.markFailed(songs: batch, with: error), error)
             }
         }
     }
-    
+
     func markScrobbled(songs: [PlayedSong]) -> [PlayedSong] {
         var _songs = songs
         for i in 0..<_songs.count {
@@ -131,7 +151,7 @@ class LastFmScrobbleService: ScrobbleService {
     func markFailed(songs: [PlayedSong], with error: Error) -> [PlayedSong] {
         var _songs = songs
         for i in 0..<_songs.count {
-            _songs[i].failedToScrobble(error: "\(error)")
+            _songs[i].failedToScrobble(reason: "\(error)")
         }
         return _songs
     }

@@ -71,9 +71,9 @@ struct PlayedSong: Equatable {
         self.reason = reason
     }
     
-    mutating func failedToScrobble(error: String?) {
+    mutating func failedToScrobble(reason: String?) {
         status = .failed
-        reason = error
+        self.reason = reason
     }
     
     static func ==(lhs: PlayedSong, rhs: PlayedSong) -> Bool {

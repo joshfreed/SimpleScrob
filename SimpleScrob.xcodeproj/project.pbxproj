@@ -286,7 +286,6 @@
 		53221B391F8587B700FB1A0F /* LastFM */ = {
 			isa = PBXGroup;
 			children = (
-				53221B3A1F8587D900FB1A0F /* LastFM_ApiTests.swift */,
 			);
 			path = LastFM;
 			sourceTree = "<group>";
@@ -496,6 +495,7 @@
 			isa = PBXGroup;
 			children = (
 				538ED2721FC23E4D00C2162B /* LastFmScrobbleService.swift */,
+				53221B3A1F8587D900FB1A0F /* LastFM_ApiTests.swift */,
 			);
 			path = LastFM;
 			sourceTree = "<group>";

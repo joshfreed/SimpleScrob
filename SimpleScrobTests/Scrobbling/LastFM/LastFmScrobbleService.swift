@@ -146,11 +146,11 @@ class LastFmScrobbleServiceTests: XCTestCase {
         wait(for: [completionExpectation], timeout: 3)
         expect(completionCalled).to(beTrue())
         expect(completionError).to(matchError(LastFM.ErrorType.error(code: 11, message: "Whatever")))
-        expect(self.api.scrobbleCallCount).to(equal(2))
+        expect(self.api.scrobbleCallCount).to(equal(3))
         expect(completionSongs).to(haveCount(allSongs.count))
         expect(completionSongs[0..<50]).to(allPass{ $0?.status == .scrobbled })
         expect(completionSongs[50..<100]).to(allPass{ $0?.status == .failed })
-        expect(completionSongs[100..<126]).to(allPass{ $0?.status == .notScrobbled })
+        expect(completionSongs[100..<126]).to(allPass{ $0?.status == .scrobbled })
     }
     
     func test_submit_not_logged_in() {
