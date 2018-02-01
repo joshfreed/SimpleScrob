@@ -9,6 +9,7 @@ target 'SimpleScrob' do
   pod 'Alamofire'
   pod 'DateToolsSwift'
   pod 'PaperTrailLumberjack/Swift', :git => 'https://github.com/joshfreed/papertraillumberjack'
+  pod 'SwiftyJSON'
 
   target 'SimpleScrobTests' do
     inherit! :search_paths

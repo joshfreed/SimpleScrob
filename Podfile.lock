@@ -17,12 +17,14 @@ PODS:
   - PaperTrailLumberjack/Swift (0.1.8):
     - CocoaLumberjack/Swift (~> 3.0)
     - PaperTrailLumberjack/Core
+  - SwiftyJSON (4.0.0)
 
 DEPENDENCIES:
   - Alamofire
   - DateToolsSwift
   - Nimble
   - PaperTrailLumberjack/Swift (from `https://github.com/joshfreed/papertraillumberjack`)
+  - SwiftyJSON
 
 EXTERNAL SOURCES:
   PaperTrailLumberjack:
@@ -40,7 +42,8 @@ SPEC CHECKSUMS:
   DateToolsSwift: bf69bf9056d9e53c5c03f06e51f219b9b8b02f9e
   Nimble: bfe1f814edabba69ff145cb1283e04ed636a67f2
   PaperTrailLumberjack: fb0664959c23b17e9663ad01ebd242d34d2082fd
+  SwiftyJSON: 070dabdcb1beb81b247c65ffa3a79dbbfb3b48aa
 
-PODFILE CHECKSUM: 68b05a4fd5f638438409ad0f75db25d6f5a23fc8
+PODFILE CHECKSUM: dc1ee70979455b3d57b86b55cc1937a86317c90d
 
 COCOAPODS: 1.3.1
