@@ -54,22 +54,14 @@ class SongScanner: MediaSource {
     
     func makeSongsToScrobble(currentMediaItems: [MediaItem], cachedMediaItems: [ScrobbleMediaItem]) -> [PlayedSong] {
         var playedSongs: [PlayedSong] = []
-        let cachedMediaItemDict = getCachedItemsAsDictionary(cachedMediaItems: cachedMediaItems)
+        let cachedItemsDictionary = cachedMediaItems.reduce(into: [MediaItemId: ScrobbleMediaItem]()) { $0[$1.id] = $1 }
 
         for currentItem in currentMediaItems {
-            let cachedItem = cachedMediaItemDict[currentItem.id]
+            let cachedItem = cachedItemsDictionary[currentItem.id]
             playedSongs.append(contentsOf: makeSongToScrobble(currentItem: currentItem, cachedItem: cachedItem))
         }
 
         return playedSongs
-    }
-    
-    private func getCachedItemsAsDictionary(cachedMediaItems: [ScrobbleMediaItem]) -> [MediaItemId: ScrobbleMediaItem] {
-        var cachedItemsDict: [MediaItemId: ScrobbleMediaItem] = [:]
-        for cached in cachedMediaItems {
-            cachedItemsDict[cached.id] = cached
-        }
-        return cachedItemsDict
     }
     
     func makeSongToScrobble(currentItem: MediaItem, cachedItem: ScrobbleMediaItem?) -> [PlayedSong] {
