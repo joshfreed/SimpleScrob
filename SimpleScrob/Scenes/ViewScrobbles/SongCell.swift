@@ -46,7 +46,11 @@ class SongCell: UITableViewCell {
         statusLabel.text = scrobble.statusMessage
         statusLabel.textColor = scrobble.statusColor
         statusImageView.image = UIImage(named: scrobble.statusImageName)
+        #if DEBUG
         fullDateLabel.text = scrobble.fullDate
+        #else
+        fullDateLabel.text = ""
+        #endif
     }
     
     func expand() {
