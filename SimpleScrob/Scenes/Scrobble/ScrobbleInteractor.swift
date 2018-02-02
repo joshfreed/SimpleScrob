@@ -54,7 +54,7 @@ class ScrobbleInteractor: ScrobbleBusinessLogic, ScrobbleDataStore {
         DDLogDebug("refresh")
         
         guard !isRefreshing else {
-            DDLogVerbose("Refresh already in progress; aborting")
+            DDLogDebug("Refresh already in progress; aborting")
             return
         }
         
@@ -63,7 +63,7 @@ class ScrobbleInteractor: ScrobbleBusinessLogic, ScrobbleDataStore {
     }
     
     private func presentMainScreen() {
-        DDLogDebug("presentMainScreen")
+        DDLogVerbose("presentMainScreen")
         
         presenter?.presentCurrentUser(response: Scrobble.GetCurrentUser.Response(username: worker.currentUserName))
         
@@ -85,7 +85,7 @@ class ScrobbleInteractor: ScrobbleBusinessLogic, ScrobbleDataStore {
     func searchForNewScrobbles(request: Scrobble.SearchForNewScrobbles.Request) {
         DDLogVerbose("ScrobbleInteractor::searchForNewScrobbles")
         guard !isSearchingForScrobbles else {
-            DDLogVerbose("Already searching for new scrobbles; Aborting")
+            DDLogDebug("Already searching for new scrobbles; Aborting")
             didEndRefreshing()
             return
         }
@@ -108,8 +108,9 @@ class ScrobbleInteractor: ScrobbleBusinessLogic, ScrobbleDataStore {
     // MARK: Submit scrobbles
     
     func submitScrobbles(request: Scrobble.SubmitScrobbles.Request) {
+        DDLogVerbose("ScrobbleInteractor::submitScrobbles")
         guard !isSubmittingScrobbles else {
-            DDLogVerbose("Already submitting scrobbles; aborting")
+            DDLogDebug("Already submitting scrobbles; aborting")
             didEndRefreshing()
             return
         }

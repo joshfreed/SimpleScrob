@@ -24,12 +24,12 @@ extension LastFM {
         func post(method: String, params: [String: String], completion: @escaping (LastFM.Result<[String: Any]>) -> ()) {
             let params = makeParams(method: method, params: params)
             
-            DDLogVerbose("POST \(method) \(params.debugDescription)")
+            DDLogDebug("POST \(method) \(params.debugDescription)")
             
             Alamofire
                 .request("https://ws.audioscrobbler.com/2.0", method: .post, parameters: params)
                 .responseJSON { response in
-                    DDLogDebug(response.debugDescription)
+                    DDLogVerbose(response.debugDescription)
                     
                     if let json = response.result.value as? [String: Any] {
                         if let code = json["error"] as? Int {
@@ -61,7 +61,7 @@ extension LastFM {
                 signature += _params[key] ?? ""
             }
             signature += secret
-            DDLogDebug(signature)
+            DDLogVerbose(signature)
             return MD5(string: signature)
         }
         

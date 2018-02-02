@@ -136,7 +136,7 @@ class CoreDataPlayedSongStore: PlayedSongStore {
                 }) {
                     managedSong.status = song.status.rawValue
                     managedSong.reason = song.reason
-                    DDLogDebug("Updating song entity \(managedSong.persistentId ?? ""), \(managedSong.track ?? ""), \(managedSong.status ?? ""), \(managedSong.reason ?? ""), \(String(describing: managedSong.datePlayed))")
+                    DDLogVerbose("Updating song entity \(managedSong.persistentId ?? ""), \(managedSong.track ?? ""), \(managedSong.status ?? ""), \(managedSong.reason ?? ""), \(String(describing: managedSong.datePlayed))")
                 }
             }
             

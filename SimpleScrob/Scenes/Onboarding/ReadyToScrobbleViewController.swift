@@ -21,8 +21,6 @@ class ReadyToScrobbleViewController: UIViewController {
     }
     
     @objc func applicationWillEnterForeground() {
-        DDLogVerbose("ReadyToScrobbleViewController::applicationWillEnterForeground")
-        
         if mediaSource.isInitialized {
             let storyboard = UIStoryboard(name: "Main", bundle: Bundle.main)
             let vc = storyboard.instantiateViewController(withIdentifier: "ScrobbleViewController")

@@ -138,8 +138,6 @@ class ScrobbleViewController: UIViewController, ScrobbleDisplayLogic {
     }
     
     func displayReadyToScrobble(viewModel: Scrobble.Refresh.ViewModel) {
-        DDLogVerbose("ScrobbleViewController::displayReadyToScrobble")
-        
         statusLabel.text = ""
         showScrobbleHistoryButton()
     }
@@ -170,8 +168,6 @@ class ScrobbleViewController: UIViewController, ScrobbleDisplayLogic {
     }
     
     func displayNoSongsToScrobble() {
-        DDLogVerbose("ScrobbleViewController::displayNoSongsToScrobble")
-        
         scrobbleCountLabel.isHidden = true
         statusLabel.isHidden = false
         activityIndicator.stopAnimating()
