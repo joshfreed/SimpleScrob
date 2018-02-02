@@ -22,6 +22,7 @@ class ViewScrobblesPresenter: ViewScrobblesPresentationLogic {
     weak var viewController: ViewScrobblesDisplayLogic?
     var dateGenerator = DateGenerator()
     let scrobbledColor = UIColor(red: 46/255, green: 162/255, blue: 66/255, alpha: 1)
+    let ignoredColor = #colorLiteral(red: 1, green: 0.5843137255, blue: 0, alpha: 1)
 
     // MARK: Get scrobble history
 
@@ -43,8 +44,8 @@ class ViewScrobblesPresenter: ViewScrobblesPresentationLogic {
                 imageName = "not-scrobbled"
                 statusColor = .lightGray
             case .ignored:
-                imageName = "not-scrobbled"
-                statusColor = .yellow
+                imageName = "ignored"
+                statusColor = self.ignoredColor
             }
             
             return ViewScrobbles.DisplayedScrobble(
@@ -74,7 +75,11 @@ class ViewScrobblesPresenter: ViewScrobblesPresentationLogic {
                 return "Not Scrobbled."
             }
         case .ignored:
-            return "Ignored: "
+            if let reason = scrobble.reason {
+                return "Ignored: \(reason)"
+            } else {
+                return "Ignored by Last.fm"
+            }
         }
     }
 }

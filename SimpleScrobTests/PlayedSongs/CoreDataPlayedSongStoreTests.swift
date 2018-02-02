@@ -11,7 +11,7 @@ import CoreData
 @testable import SimpleScrob
 import Nimble
 
-class CareDataDatabaseTests: XCTestCase {
+class CoreDataPlayedSongStoreTests: XCTestCase {
     var sut: CoreDataPlayedSongStore!
     var container: NSPersistentContainer!
     
@@ -40,6 +40,8 @@ class CareDataDatabaseTests: XCTestCase {
         expect(actual).toNot(beNil())
         expect(actual).to(equal(playedSong))
     }
+    
+    // MARK: insert
     
     func testInsertsSongs() {
         // Given
@@ -83,7 +85,36 @@ class CareDataDatabaseTests: XCTestCase {
         expect(managedSongs).to(haveCount(3))
     }
     
-    // Helper Funcs
+    // MARK: findUnscrobbledSongs
+    
+    func test_findUnscrobbledSongs() {
+        // Given
+        let song1 = PlayedSongBuilder.aSong().with(status: .notScrobbled).build()
+        let song2 = PlayedSongBuilder.aSong().with(status: .scrobbled).build()
+        let song3 = PlayedSongBuilder.aSong().with(status: .ignored).build()
+        let song4 = PlayedSongBuilder.aSong().with(status: .failed).build()
+        insert(song1)
+        insert(song2)
+        insert(song3)
+        insert(song4)
+        saveContext()
+        var unscrobbledSongs: [PlayedSong] = []
+        let completionExpectation = expectation(description: "operation complete")
+        
+        // When
+        sut.findUnscrobbledSongs { results in
+            unscrobbledSongs = results
+            completionExpectation.fulfill()
+        }
+        
+        // Then
+        wait(for: [completionExpectation], timeout: 5)
+        expect(unscrobbledSongs).to(haveCount(2))
+        expect(unscrobbledSongs).to(containElementSatisfying({ $0.id == song1.id }))
+        expect(unscrobbledSongs).to(containElementSatisfying({ $0.id == song4.id }))
+    }
+    
+    // MARK: Helper Funcs
     
     func getAll() -> [ManagedPlayedSong] {
         let request: NSFetchRequest<ManagedPlayedSong> = ManagedPlayedSong.fetchRequest()

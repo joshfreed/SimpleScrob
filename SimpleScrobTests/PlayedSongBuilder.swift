@@ -14,6 +14,7 @@ class PlayedSongBuilder {
     private var persistentId: MediaItemId?
     private var playedDate: Date?
     private var status: ScrobbleStatus?
+    private var reason: String?
     private var artist: String?
     private var album: String?
     private var track: String?
@@ -30,10 +31,21 @@ class PlayedSongBuilder {
         if playedDate == nil {
             playedDate = Date()
         }
+        if artist == nil {
+            artist = "Artist\(persistentId)"
+        }
+        if album == nil {
+            album = "Album\(persistentId)"
+        }
+        if track == nil {
+            track = "Track\(persistentId)"
+        }
+        
         var song = PlayedSong(persistentId: persistentId!, date: playedDate!)
         if let status = status {
             song.status = status
         }
+        song.reason = reason
         song.artist = artist
         song.album = album
         song.track = track
@@ -42,6 +54,12 @@ class PlayedSongBuilder {
     
     func with(status: ScrobbleStatus) -> PlayedSongBuilder {
         self.status = status
+        return self
+    }
+    
+    func with(status: ScrobbleStatus, because reason: String) -> PlayedSongBuilder {
+        self.status = status
+        self.reason = reason
         return self
     }
     

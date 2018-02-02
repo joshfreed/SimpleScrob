@@ -60,7 +60,7 @@ class CoreDataPlayedSongStore: PlayedSongStore {
     
     func findUnscrobbledSongs(completion: @escaping ([PlayedSong]) -> ()) {
         let request: NSFetchRequest<ManagedPlayedSong> = ManagedPlayedSong.fetchRequest()
-        request.predicate = NSPredicate(format: "status != 'scrobbled'")
+        request.predicate = NSPredicate(format: "status != 'scrobbled' && status != 'ignored'")
         
         let managedSongs: [ManagedPlayedSong]
         

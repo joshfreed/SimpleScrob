@@ -97,7 +97,7 @@ class LastFmScrobbleService: ScrobbleService {
         
         let group = DispatchGroup()
         var updatedSongs: [PlayedSong] = []
-        var scrobbleError: Error?
+        var scrobbleError: Error? = nil
         
         for batch in batches {
             group.enter()
@@ -147,6 +147,7 @@ class LastFmScrobbleService: ScrobbleService {
 
         for ignored in response.ignored {
             if let match = songs.first(where: { Int($0.date.timeIntervalSince1970) == ignored.timestamp }) {
+                DDLogWarn("Ignored. Code \(ignored.ignoredCode ?? -1): \(ignored.ignoredMessage ?? ""). Artist: \(ignored.artist ?? ""), Album: \(ignored.album ?? ""), Track: \(ignored.track ?? "")")
                 var ignoredSong = match
                 ignoredSong.ignored(reason: ignored.ignoredMessage)
                 ignoredSongs.append(ignoredSong)

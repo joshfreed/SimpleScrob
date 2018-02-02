@@ -130,14 +130,14 @@ class LastFmScrobbleServiceTests: XCTestCase {
         api.scrobbleResults.append(.failure(LastFM.ErrorType.error(code: 11, message: "Whatever")))
         api.scrobbleResults.append(.success(LastFM.ScrobbleResponse(accepted: [], ignored: [])))
         var completionCalled = false
-        var completionSongs: [PlayedSong] = []
+        var completionSongs: [MediaItemId: PlayedSong] = [:]
         var completionError: Error?
-        let completionExpectation = expectation(description: "Submission completes")
+        let completionExpectation = expectation(description: "Submission completed")
         
         // When
         sut.scrobble(songs: allSongs) { (playedSongs, error) in
             completionCalled = true
-            completionSongs = playedSongs
+            completionSongs = playedSongs.reduce(into: [:]) { $0[$1.persistentId] = $1 }
             completionError = error
             completionExpectation.fulfill()
         }
@@ -148,9 +148,15 @@ class LastFmScrobbleServiceTests: XCTestCase {
         expect(completionError).to(matchError(LastFM.ErrorType.error(code: 11, message: "Whatever")))
         expect(self.api.scrobbleCallCount).to(equal(3))
         expect(completionSongs).to(haveCount(allSongs.count))
-        expect(completionSongs[0..<50]).to(allPass{ $0?.status == .scrobbled })
-        expect(completionSongs[50..<100]).to(allPass{ $0?.status == .failed })
-        expect(completionSongs[100..<126]).to(allPass{ $0?.status == .scrobbled })
+        for song in batch1 {
+            expect(completionSongs[song.persistentId]?.status).to(equal(ScrobbleStatus.scrobbled))
+        }
+        for song in batch2 {
+            expect(completionSongs[song.persistentId]?.status).to(equal(ScrobbleStatus.failed))
+        }
+        for song in batch3 {
+            expect(completionSongs[song.persistentId]?.status).to(equal(ScrobbleStatus.scrobbled))
+        }
     }
     
     func test_submit_not_logged_in() {
@@ -200,8 +206,8 @@ class LastFmScrobbleServiceTests: XCTestCase {
         // Then
         wait(for: [completionExpectation], timeout: 3)
         expect(completionSongs).to(haveCount(2))
-        expect(completionSongs[0].status.rawValue).to(equal(ScrobbleStatus.scrobbled.rawValue))
-        expect(completionSongs[1].status.rawValue).to(equal(ScrobbleStatus.ignored.rawValue))
+        expect(completionSongs[0].status).to(equal(ScrobbleStatus.scrobbled))
+        expect(completionSongs[1].status).to(equal(ScrobbleStatus.ignored))
     }
     
     // MARK: Helper Funcs

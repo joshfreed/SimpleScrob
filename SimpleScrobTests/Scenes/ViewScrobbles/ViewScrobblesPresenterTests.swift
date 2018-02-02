@@ -110,6 +110,37 @@ class ViewScrobblesPresenterTests: XCTestCase {
         verify(expected: expected2, equals: spy.displayScrobbleHistoryViewModel?.scrobbles[1])
     }
     
+    func testPresentScrobbleHistory_ignoredSong() {
+        // Given
+        dateGenerator.now = Date(dateString: "2018-01-30 11:15:00", format: "yyyy-MM-dd HH:mm:ss")
+        let song = PlayedSongBuilder
+            .aSong()
+            .playedAt(dateGenerator.now.subtract(17.hours))
+            .with(status: .ignored, because: "This track is vague")
+            .build()
+        let scrobbles: [PlayedSong] = [song, PlayedSongBuilder.aSong().with(status: .ignored).build()]
+        let expected1 = ViewScrobbles.DisplayedScrobble(
+            artist: song.artist,
+            album: song.album,
+            track: song.track,
+            artwork: nil,
+            datePlayed: "17h",
+            statusMessage: "Ignored: This track is vague",
+            statusImageName: "ignored",
+            statusColor: sut.ignoredColor,
+            fullDate: ""
+        )
+        let response = ViewScrobbles.GetScrobbleHistory.Response(scrobbles: scrobbles, reachedEndOfItems: false)
+        
+        // When
+        sut.presentScrobbleHistory(response: response)
+        
+        // Then
+        XCTAssertTrue(spy.displayScrobbleHistoryCalled, "presentScrobbleHistory(response:) should ask the view controller to display the result")
+        verify(expected: expected1, equals: spy.displayScrobbleHistoryViewModel?.scrobbles[0])
+        expect(self.spy.displayScrobbleHistoryViewModel?.scrobbles[1].statusMessage).to(equal("Ignored by Last.fm"))
+    }
+    
     //
     // Helper funcs
     //
