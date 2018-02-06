@@ -21,13 +21,9 @@ class Container {
         mediaItemStore: mediaItemStore
     )
     lazy var lastFM: LastFMAPI = {
-        #if DEBUG
-            return FakeLastFM()
-        #else
-            let apiKey = "f27fb27503f9aa73c6f308fd9e3bc7f0"
-            let secret = "f0ec0f81ae932843046997ef89ce60cc"
-            return LastFM.API(engine: LastFM.RestEngine(apiKey: apiKey, secret: secret))
-        #endif
+        let apiKey = "f27fb27503f9aa73c6f308fd9e3bc7f0"
+        let secret = "f0ec0f81ae932843046997ef89ce60cc"
+        return LastFM.API(engine: LastFM.RestEngine(apiKey: apiKey, secret: secret))
     }()
     lazy var scrobbleService: ScrobbleService = LastFmScrobbleService(api: lastFM)
     lazy var mediaLibrary: MediaLibrary = RealMediaLibrary()

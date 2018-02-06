@@ -77,6 +77,33 @@ class FakeMediaLibrary: MediaLibrary {
     var authorized: Bool?
     var items: [MediaItem] = []
     
+    init() {
+        addItem(id: 1, playCount: 0, lastPlayedDate: nil, artist: "I the Mighty", album: "Connector", track: "Lady of Death")
+    }
+    
+    private func addItem(id: MediaItemId, playCount: Int, lastPlayedDate dateString: String?, artist: String, album: String, track: String) {
+        var lastPlayedDate: Date? = nil
+        if let dateString = dateString {
+            lastPlayedDate = Date(dateString: dateString, format: "yyyy-MM-dd HH:mm:ss")
+        }
+        let item = MediaItem(id: id, lastPlayedDate: lastPlayedDate, playCount: playCount, artist: artist, album: album, title: track)
+        items.append(item)
+    }
+    
+    func play(id: Int, times: Int, lastPlayedDate dateString: String) {
+        if let index = items.index(where: { $0.id == id }) {
+            let updated = MediaItem(
+                id: items[index].id,
+                lastPlayedDate: Date(dateString: dateString, format: "yyyy-MM-dd HH:mm:ss"),
+                playCount: times,
+                artist: items[index].artist,
+                album: items[index].album,
+                title: items[index].title
+            )
+            items[index] = updated
+        }
+    }
+    
     func isAuthorized() -> Bool {
         return authorized != nil && authorized!
     }

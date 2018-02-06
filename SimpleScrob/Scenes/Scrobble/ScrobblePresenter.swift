@@ -13,7 +13,6 @@
 import UIKit
 
 protocol ScrobblePresentationLogic {
-    func presentReadyToScrobble(response: Scrobble.Refresh.Response)
     func presentSearchingForNewScrobbles()
     func presentSongsToScrobble(response: Scrobble.SearchForNewScrobbles.Response)
     func presentSubmittingToLastFM()
@@ -25,13 +24,6 @@ protocol ScrobblePresentationLogic {
 class ScrobblePresenter: ScrobblePresentationLogic {
     weak var viewController: ScrobbleDisplayLogic?
 
-    // MARK: Refresh
-
-    func presentReadyToScrobble(response: Scrobble.Refresh.Response) {
-        let viewModel = Scrobble.Refresh.ViewModel()
-        viewController?.displayReadyToScrobble(viewModel: viewModel)
-    }
-    
     // MARK: Search for new scrobbles
     
     func presentSearchingForNewScrobbles() {

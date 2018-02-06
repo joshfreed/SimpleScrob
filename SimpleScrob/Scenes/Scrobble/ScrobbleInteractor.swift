@@ -12,11 +12,13 @@
 
 import UIKit
 import CocoaLumberjack
+import JFLib
 
 protocol ScrobbleBusinessLogic {
     func refresh(request: Scrobble.Refresh.Request)
     func searchForNewScrobbles(request: Scrobble.SearchForNewScrobbles.Request)
     func submitScrobbles(request: Scrobble.SubmitScrobbles.Request)
+    func getCurrentUser(request: Scrobble.GetCurrentUser.Request)
     func signOut(request: Scrobble.SignOut.Request)
 }
 
@@ -28,8 +30,9 @@ class ScrobbleInteractor: ScrobbleBusinessLogic, ScrobbleDataStore {
     var presenter: ScrobblePresentationLogic?
     let worker: ScrobbleWorker
 
-    var playedSongs: [PlayedSong] = []
-    private var isRefreshing = false
+    private var isRefreshing: Bool {
+        return isSearchingForScrobbles || isSubmittingScrobbles
+    }
     private var isSearchingForScrobbles = false
     private var isSubmittingScrobbles = false
     
@@ -52,41 +55,24 @@ class ScrobbleInteractor: ScrobbleBusinessLogic, ScrobbleDataStore {
 
     func refresh(request: Scrobble.Refresh.Request) {
         DDLogDebug("refresh")
-        
+
         guard !isRefreshing else {
             DDLogDebug("Refresh already in progress; aborting")
             return
         }
         
-        isRefreshing = true
-        presentMainScreen()
-    }
-    
-    private func presentMainScreen() {
-        DDLogVerbose("presentMainScreen")
-        
-        presenter?.presentCurrentUser(response: Scrobble.GetCurrentUser.Response(username: worker.currentUserName))
-        
-        presenter?.presentReadyToScrobble(response: Scrobble.Refresh.Response())
-        
-        // Automatically search for new songs to scrobble
-        let request = Scrobble.SearchForNewScrobbles.Request()
+        let request = Scrobble.SearchForNewScrobbles.Request(autoSubmit: true, delay: request.delay)
         searchForNewScrobbles(request: request)
     }
-    
-    private func didEndRefreshing() {
-        isRefreshing = false
-        isSearchingForScrobbles = false
-        isSubmittingScrobbles = false
-    }
-    
+
     // MARK: Search for new scrobbles
     
     func searchForNewScrobbles(request: Scrobble.SearchForNewScrobbles.Request) {
-        DDLogVerbose("ScrobbleInteractor::searchForNewScrobbles")
+        DDLogDebug("Searching for songs that need to be scrobbled...")
+        
         guard !isSearchingForScrobbles else {
-            DDLogDebug("Already searching for new scrobbles; Aborting")
-            didEndRefreshing()
+            DDLogDebug("Already searching for scrobbles; Aborting")
+            isSearchingForScrobbles = false
             return
         }
         
@@ -94,28 +80,37 @@ class ScrobbleInteractor: ScrobbleBusinessLogic, ScrobbleDataStore {
         
         presenter?.presentSearchingForNewScrobbles()
 
-        worker.searchForNewSongsToScrobble() { playedSongs in
-            self.playedSongs = playedSongs
-
-            let response = Scrobble.SearchForNewScrobbles.Response(songs: self.playedSongs)
+        if request.delay {
+            delay(seconds: 1) {
+                self.doSearchForNewSongsToScrobble(request: request)
+            }
+        } else {
+            doSearchForNewSongsToScrobble(request: request)
+        }
+    }
+    
+    private func doSearchForNewSongsToScrobble(request: Scrobble.SearchForNewScrobbles.Request) {
+        worker.searchForNewSongsToScrobble() { songsToScrobble in
+            let response = Scrobble.SearchForNewScrobbles.Response(songs: songsToScrobble)
             self.presenter?.presentSongsToScrobble(response: response)
-
-            let request = Scrobble.SubmitScrobbles.Request()
-            self.submitScrobbles(request: request)
+            
+            if request.autoSubmit && songsToScrobble.count > 0 {
+                let request = Scrobble.SubmitScrobbles.Request()
+                self.submitScrobbles(request: request)
+            }
+            
+            self.isSearchingForScrobbles = false
         }
     }
     
     // MARK: Submit scrobbles
     
     func submitScrobbles(request: Scrobble.SubmitScrobbles.Request) {
-        DDLogVerbose("ScrobbleInteractor::submitScrobbles")
+        DDLogDebug("Submitting scrobbles...")
+        
         guard !isSubmittingScrobbles else {
             DDLogDebug("Already submitting scrobbles; aborting")
-            didEndRefreshing()
-            return
-        }
-        guard playedSongs.count > 0 else {
-            didEndRefreshing()
+            isSubmittingScrobbles = false
             return
         }
         
@@ -123,19 +118,22 @@ class ScrobbleInteractor: ScrobbleBusinessLogic, ScrobbleDataStore {
         
         presenter?.presentSubmittingToLastFM()
 
-        worker.submit(songs: self.playedSongs) { error in
+        worker.submitUnscrobbledSongs() { updatedSongs, error in
             if let error = error as? LastFM.ErrorType, case LastFM.ErrorType.notSignedIn = error {
                 self.presenter?.presentScrobbleFailedNotLoggedIn()
             } else {
-                if error == nil {
-                    self.playedSongs = []
-                }                
                 let response = Scrobble.SubmitScrobbles.Response(error: error)
                 self.presenter?.presentScrobblingComplete(response: response)
             }
 
-            self.didEndRefreshing()
+            self.isSubmittingScrobbles = false
         }
+    }
+    
+    // MARK: Get Current User
+    
+    func getCurrentUser(request: Scrobble.GetCurrentUser.Request) {
+        presenter?.presentCurrentUser(response: Scrobble.GetCurrentUser.Response(username: worker.currentUserName))
     }
     
     // MARK: Sign Out

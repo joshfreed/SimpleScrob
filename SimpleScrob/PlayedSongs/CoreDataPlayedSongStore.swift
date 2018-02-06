@@ -29,6 +29,7 @@ class CoreDataPlayedSongStore: PlayedSongStore {
             try container.viewContext.execute(request)
         } catch {
             let nserror = error as NSError
+            DDLogError("Unresolved error \(nserror), \(nserror.userInfo)")
             fatalError("Unresolved error \(nserror), \(nserror.userInfo)")
         }
     }
@@ -68,6 +69,7 @@ class CoreDataPlayedSongStore: PlayedSongStore {
             managedSongs = try container.viewContext.fetch(request)
         } catch {
             let nserror = error as NSError
+            DDLogError("Unresolved error \(nserror), \(nserror.userInfo)")
             fatalError("Unresolved error \(nserror), \(nserror.userInfo)")
         }
         
@@ -117,6 +119,7 @@ class CoreDataPlayedSongStore: PlayedSongStore {
             do {
                 try context.save()
             } catch {
+                DDLogError("Failure to save context: \(error)")
                 fatalError("Failure to save context: \(error)")
             }
             
@@ -143,6 +146,7 @@ class CoreDataPlayedSongStore: PlayedSongStore {
             do {
                 try context.save()
             } catch {
+                DDLogError("Failure to save context: \(error)")
                 fatalError("Failure to save context: \(error)")
             }
             
@@ -160,6 +164,7 @@ class CoreDataPlayedSongStore: PlayedSongStore {
             managedSongs = try context.fetch(request)
         } catch {
             let nserror = error as NSError
+            DDLogError("Unresolved error \(nserror), \(nserror.userInfo)")
             fatalError("Unresolved error \(nserror), \(nserror.userInfo)")
         }
         return managedSongs
@@ -177,6 +182,7 @@ class CoreDataPlayedSongStore: PlayedSongStore {
                 scrobbles = try context.fetch(request)
             } catch {
                 let nserror = error as NSError
+                DDLogError("Unresolved error \(nserror), \(nserror.userInfo)")
                 fatalError("Unresolved error \(nserror), \(nserror.userInfo)")
             }
             

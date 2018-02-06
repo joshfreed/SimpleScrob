@@ -12,9 +12,9 @@
 
 import UIKit
 import CocoaLumberjack
+import MediaPlayer
 
 protocol ScrobbleDisplayLogic: class {
-    func displayReadyToScrobble(viewModel: Scrobble.Refresh.ViewModel)
     func displaySearchingForNewScrobbles()
     func displaySongsToScrobble(viewModel: Scrobble.SearchForNewScrobbles.ViewModel)
     func displayNoSongsToScrobble()
@@ -91,7 +91,8 @@ class ScrobbleViewController: UIViewController, ScrobbleDisplayLogic {
         super.viewDidLoad()
         
         if !UserDefaults.standard.bool(forKey: "isTest") {
-            NotificationCenter.default.addObserver(self, selector: #selector(refresh), name: .UIApplicationDidBecomeActive, object: nil)            
+            NotificationCenter.default.addObserver(self, selector: #selector(applicationDidBecomeActive), name: .UIApplicationDidBecomeActive, object: nil)
+            NotificationCenter.default.addObserver(self, selector: #selector(mediaLibraryDidChange), name: .MPMediaLibraryDidChange, object: nil)
         }
 
         scrobbleCountLabel.isHidden = true
@@ -103,6 +104,9 @@ class ScrobbleViewController: UIViewController, ScrobbleDisplayLogic {
         
         currentUserButton.isHidden = true
         signInButton.isHidden = true
+        
+        let request = Scrobble.GetCurrentUser.Request()
+        interactor?.getCurrentUser(request: request)
     }
     
     // MARK: Events
@@ -130,18 +134,16 @@ class ScrobbleViewController: UIViewController, ScrobbleDisplayLogic {
         viewScrobblesHitAreaButton.isHidden = true
     }
     
-    // MARK: Refresh
-
-    @objc func refresh() {
-        let request = Scrobble.Refresh.Request()
+    @objc func applicationDidBecomeActive() {
+        let request = Scrobble.Refresh.Request(delay: true)
         interactor?.refresh(request: request)
     }
     
-    func displayReadyToScrobble(viewModel: Scrobble.Refresh.ViewModel) {
-        statusLabel.text = ""
-        showScrobbleHistoryButton()
+    @objc func mediaLibraryDidChange() {
+        DDLogInfo("MPMediaLibraryDidChange")
+        DDLogDebug("Media library last modified at: \(MPMediaLibrary.default().lastModifiedDate.format(with: "yyyy-MM-dd HH:mm:ss"))")
     }
-
+    
     // MARK: Search for new scrobbles
     
     func displaySearchingForNewScrobbles() {

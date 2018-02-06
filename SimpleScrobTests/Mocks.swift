@@ -49,8 +49,9 @@ class MockDatabase: PlayedSongStore {
         return nil
     }
     
+    var unscrobbledSongs: [PlayedSong] = []
     func findUnscrobbledSongs(completion: @escaping ([PlayedSong]) -> ()) {
-        
+        completion(unscrobbledSongs)
     }
     
     func insert(playedSongs: [PlayedSong], completion: @escaping () -> ()) {

@@ -94,6 +94,13 @@ class FakeLastFM: LastFMAPI {
     func scrobble(songs: [PlayedSong], completion: @escaping (LastFM.Result<LastFM.ScrobbleResponse>) -> ()) {
         delay(seconds: 1.2) {
 //            completion(.failure(LastFM.ErrorType.error(code: 77, message: "YOU SUCK")))
+            
+//            var ignored = LastFM.ScrobbleResponse.Scrobble()
+//            ignored.ignoredCode = 2
+//            ignored.ignoredMessage = "This track was ignored"
+//            if let song = songs.first {
+//                ignored.timestamp = Int(song.date.timeIntervalSince1970)
+//            }
             completion(.success(LastFM.ScrobbleResponse(accepted: [], ignored: [])))
         }
     }

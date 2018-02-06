@@ -45,33 +45,34 @@ class ScrobbleWorker {
     }    
     
     func searchForNewSongsToScrobble(completion: @escaping ([PlayedSong]) -> ()) {
-        DispatchQueue.global(qos: .background).async {
-            self.mediaSource.getSongsPlayedSinceLastTime() { playedSongs in
-                self.database.insert(playedSongs: playedSongs) {
-                    self.database.findUnscrobbledSongs { playedSongs in
-                        DispatchQueue.main.async {
-                            DDLogDebug("Found \(playedSongs.count) unscrobbled songs")
-                            completion(playedSongs)
+        mediaSource.getSongsPlayedSinceLastTime() { playedSongs in
+            self.database.insert(playedSongs: playedSongs) {
+                self.database.findUnscrobbledSongs { playedSongs in
+                    DispatchQueue.main.async {
+                        DDLogDebug("Found \(playedSongs.count) unscrobbled songs")
+                        for song in playedSongs.sorted(by: { $0.date < $1.date }) {
+                            DDLogDebug("\(song.track ?? "") by \(song.artist ?? "") on \(song.album ?? "") at \(song.date.format(with: "yyyy-MM-dd HH:mm:ss")). ID: \(song.id)")
                         }
+                        completion(playedSongs)
                     }
                 }
             }
         }
     }
 
-    func submit(songs: [PlayedSong], completion: @escaping (Error?) -> ()) {
-        delay(seconds: 0.5) {
+    func submitUnscrobbledSongs(completion: @escaping ([PlayedSong], Error?) -> ()) {
+        database.findUnscrobbledSongs { songs in
             guard self.connectivity.isConnectedToInternet else {
                 let updatedSongs = self.markNotScrobbled(songs: songs, with: ScrobbleError.notConnected.description)
                 self.database.save(playedSongs: updatedSongs, completion: {})
-                completion(ScrobbleError.notConnected)
+                completion(updatedSongs, ScrobbleError.notConnected)
                 return
             }
             
             self.scrobbleService.scrobble(songs: songs) { updatedSongs, error in
                 self.database.save(playedSongs: updatedSongs, completion: {})
-                self.loveScrobbledSongs(songs: updatedSongs)
-                completion(error)
+//                self.loveScrobbledSongs(songs: updatedSongs)
+                completion(updatedSongs, error)
             }
         }
     }

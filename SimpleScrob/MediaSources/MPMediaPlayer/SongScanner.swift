@@ -14,7 +14,6 @@ class SongScanner: MediaSource {
     let mediaLibrary: ScrobbleMediaLibrary
     let dateGenerator: DateGenerator
     let mediaItemStore: MediaItemStore
-    let df = DateFormatter()
     
     var isInitialized: Bool {
         return UserDefaults.standard.bool(forKey: "musicLibraryIsInitialized")
@@ -24,7 +23,6 @@ class SongScanner: MediaSource {
         self.mediaLibrary = mediaLibrary
         self.dateGenerator = dateGenerator
         self.mediaItemStore = mediaItemStore
-        df.dateFormat = "yyyy-MM-dd HH:mm:ss"
     }
 
     func initialize(completion: @escaping () -> ()) {
@@ -44,7 +42,7 @@ class SongScanner: MediaSource {
             DDLogDebug("Loaded \(cachedMediaItems.count) cached media items")
             
             let songs = self.makeSongsToScrobble(currentMediaItems: currentMediaItems, cachedMediaItems: cachedMediaItems)
-            DDLogDebug("Found \(songs.count) songs to scrobble")
+            DDLogDebug("Found \(songs.count) songs played since last time")
             
             self.updateCachedMediaItems(from: currentMediaItems) {
                 completion(songs)

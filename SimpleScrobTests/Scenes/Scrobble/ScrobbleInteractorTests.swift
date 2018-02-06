@@ -72,10 +72,9 @@ class ScrobbleInteractorTests: XCTestCase {
         var submitCallCount = 0
         var submit_songs: [PlayedSong] = []
         var submit_error: Error?
-        override func submit(songs: [PlayedSong], completion: @escaping (Error?) -> ()) {
+        override func submitUnscrobbledSongs(completion: @escaping ([PlayedSong], Error?) -> ()) {
             submitCallCount += 1
-            submit_songs = songs
-            completion(submit_error)
+            completion(submit_songs, submit_error)
         }
         
         var newSongsToScrobble: [PlayedSong] = []
@@ -89,9 +88,8 @@ class ScrobbleInteractorTests: XCTestCase {
             expect(self.searchForNewSongsToScrobbleWasCalled).to(beTrue())
         }
         
-        func verifySubmitted(songs: [PlayedSong], callCount: Int = 1) {
+        func verifySubmitted(callCount: Int = 1) {
             expect(self.submitCallCount).to(equal(callCount))
-            expect(self.submit_songs).to(equal(songs))
         }
         func verifySubmitSongs(callCount: Int) {
             expect(self.submitCallCount).to(equal(callCount))
@@ -101,14 +99,6 @@ class ScrobbleInteractorTests: XCTestCase {
     class ScrobblePresentationLogicSpy: ScrobblePresentationLogic {
         func presentFirstTimeView(response: Scrobble.Refresh.Response) {
             
-        }
-        
-        private var presentReadyToScrobbleWasCalled = false
-        func presentReadyToScrobble(response: Scrobble.Refresh.Response) {
-            presentReadyToScrobbleWasCalled = true
-        }
-        func verifyPresentReadyToScrobble() {
-            expect(self.presentReadyToScrobbleWasCalled).to(beTrue())
         }
         
         func presentAuthorizationPrimer() {
@@ -203,25 +193,21 @@ class ScrobbleInteractorTests: XCTestCase {
 
     func testRefreshHappyPath() {
         // Given
-        worker.loggedIn(as: "jfreed")
         worker.newSongsToScrobble = [
             makePlayedSong(persistendId: 1, playedAt: "2017-12-01 14:00:00", artist: "The Dear Hunter", album: "Act II", track: "Red Hands"),
             makePlayedSong(persistendId: 2, playedAt: "2017-12-01 14:00:00", artist: "Beardfish", album: "Sleeping in Traffic", track: "The Hunter")
         ]
 
         // When
-        sut.refresh(request: Scrobble.Refresh.Request())
+        sut.refresh(request: Scrobble.Refresh.Request(delay: false))
         
         // Then
-        spy.verifyPresentedCurrentUser(username: "jfreed")
-        spy.verifyPresentReadyToScrobble()
         spy.verifyPresentSearchingForNewScrobbles()
         worker.verifySearchedForNewSongsToScrobble()
         spy.verifyPresentedSongsToScrobble(songs: worker.newSongsToScrobble)
         spy.verifyPresentedSubmittingToLastFM()
-        worker.verifySubmitted(songs: worker.newSongsToScrobble)
+        worker.verifySubmitted()
         spy.verifyPresentedScrobblingComplete(error: nil)
-        expect(self.sut.playedSongs).to(haveCount(0))
     }
     
     func testRefreshNotLoggedIn() {
@@ -233,24 +219,20 @@ class ScrobbleInteractorTests: XCTestCase {
         worker.submit_error = LastFM.ErrorType.notSignedIn
         
         // When
-        sut.refresh(request: Scrobble.Refresh.Request())
+        sut.refresh(request: Scrobble.Refresh.Request(delay: false))
         
         // Then
-        spy.verifyPresentedNilUser()
-        spy.verifyPresentReadyToScrobble()
         spy.verifyPresentSearchingForNewScrobbles()
         worker.verifySearchedForNewSongsToScrobble()
         spy.verifyPresentedSongsToScrobble(songs: worker.newSongsToScrobble)
         spy.verifyPresentedSubmittingToLastFM()
-        worker.verifySubmitted(songs: worker.newSongsToScrobble)
+        worker.verifySubmitted()
         spy.verifyPresentedScrobblingComplete(callCount: 0)
         spy.verifyPresentedScrobbleFailedNotLoggedIn()
-        expect(self.sut.playedSongs.count).to(beGreaterThan(0))
     }
     
     func testRefreshWithSubmitError() {
         // Given
-        worker.loggedIn(as: "jfreed")
         worker.newSongsToScrobble = [
             makePlayedSong(persistendId: 1, playedAt: "2017-12-01 14:00:00", artist: "The Dear Hunter", album: "Act II", track: "Red Hands"),
             makePlayedSong(persistendId: 2, playedAt: "2017-12-01 14:00:00", artist: "Beardfish", album: "Sleeping in Traffic", track: "The Hunter")
@@ -258,19 +240,16 @@ class ScrobbleInteractorTests: XCTestCase {
         worker.submit_error = LastFM.ErrorType.unknown
         
         // When
-        sut.refresh(request: Scrobble.Refresh.Request())
+        sut.refresh(request: Scrobble.Refresh.Request(delay: false))
         
         // Then
-        spy.verifyPresentedCurrentUser(username: "jfreed")
-        spy.verifyPresentReadyToScrobble()
         spy.verifyPresentSearchingForNewScrobbles()
         worker.verifySearchedForNewSongsToScrobble()
         spy.verifyPresentedSongsToScrobble(songs: worker.newSongsToScrobble)
         spy.verifyPresentedSubmittingToLastFM()
-        worker.verifySubmitted(songs: worker.newSongsToScrobble)
+        worker.verifySubmitted()
         spy.verifyPresentedScrobblingComplete(error: LastFM.ErrorType.unknown)
         expect(self.spy.presentScrobbleFailedNotLoggedInCalled).to(beFalse())
-        expect(self.sut.playedSongs.count).to(beGreaterThan(0))
     }
     
     // submitScrobbles
@@ -278,37 +257,14 @@ class ScrobbleInteractorTests: XCTestCase {
     func test_submitScrobbles_submitsPlayedsongs() {
         // Given
         let request = Scrobble.SubmitScrobbles.Request()
-        let songs = [
-            makePlayedSong(persistendId: 1, playedAt: "2017-12-01 14:00:00", artist: "The Dear Hunter", album: "Act II", track: "Red Hands"),
-            makePlayedSong(persistendId: 2, playedAt: "2017-12-01 14:00:00", artist: "Beardfish", album: "Sleeping in Traffic", track: "The Hunter")
-        ]
-        sut.playedSongs = songs
         
         // When
         sut.submitScrobbles(request: request)
         
         // Then
         spy.verifyPresentedSubmittingToLastFM(called: 1)
-        worker.verifySubmitted(songs: songs)
+        worker.verifySubmitted()
         spy.verifyPresentedScrobblingComplete(error: nil)
-    }
-    
-    func test_submitScrobbles_doesNotSubmitTwiceInARow() {
-        // Given
-        let request = Scrobble.SubmitScrobbles.Request()
-        sut.playedSongs = [
-            makePlayedSong(persistendId: 1, playedAt: "2017-12-01 14:00:00", artist: "The Dear Hunter", album: "Act II", track: "Red Hands"),
-            makePlayedSong(persistendId: 2, playedAt: "2017-12-01 14:00:00", artist: "Beardfish", album: "Sleeping in Traffic", track: "The Hunter")
-        ]
-        sut.submitScrobbles(request: request)
-        
-        // When
-        sut.submitScrobbles(request: request)
-        
-        // Then
-        spy.verifyPresentedSubmittingToLastFM(called: 1)
-        worker.verifySubmitSongs(callCount: 1)
-        spy.verifyPresentedScrobblingComplete(callCount: 1)
     }
     
     // When a user signs in...
@@ -325,29 +281,8 @@ class ScrobbleInteractorTests: XCTestCase {
     }
     
     func test_userSignedIn_submitsPendingScrobbles() {
-        // Given
-        let songs = [
-            makePlayedSong(persistendId: 1, playedAt: "2017-12-01 14:00:00", artist: "The Dear Hunter", album: "Act II", track: "Red Hands"),
-            makePlayedSong(persistendId: 2, playedAt: "2017-12-01 14:00:00", artist: "Beardfish", album: "Sleeping in Traffic", track: "The Hunter")
-        ]
-        sut.playedSongs = songs
-
-        // When
         sut.userSignedIn()
-
-        // Then
-        worker.verifySubmitted(songs: songs)
-    }
-    
-    func test_userSignedIn_doesNotSubmitWhenThereAreNoPendingScrobbles() {
-        // Given
-        sut.playedSongs = []
-        
-        // When
-        sut.userSignedIn()
-        
-        // Then
-        worker.verifySubmitSongs(callCount: 0)
+        worker.verifySubmitted()
     }
     
     

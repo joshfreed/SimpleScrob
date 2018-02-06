@@ -17,6 +17,7 @@ enum Scrobble {
 
     enum Refresh {
         struct Request {
+            var delay: Bool
         }
 
         struct Response {
@@ -42,7 +43,8 @@ enum Scrobble {
     
     enum SearchForNewScrobbles {
         struct Request {
-            
+            var autoSubmit: Bool
+            var delay: Bool
         }
         
         struct Response {

@@ -24,7 +24,11 @@ extension LastFM {
         func post(method: String, params: [String: String], completion: @escaping (LastFM.Result<[String: Any]>) -> ()) {
             let params = makeParams(method: method, params: params)
             
-            DDLogDebug("POST \(method) \(params.debugDescription)")
+            var filteredParams = params
+            if filteredParams.keys.contains("password") {
+               filteredParams["password"] = "********"
+            }
+            DDLogDebug("POST \(method) \(filteredParams.debugDescription)")
             
             Alamofire
                 .request("https://ws.audioscrobbler.com/2.0", method: .post, parameters: params)

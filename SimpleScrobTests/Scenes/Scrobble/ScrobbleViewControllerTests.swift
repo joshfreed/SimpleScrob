@@ -71,7 +71,7 @@ class ScrobbleViewControllerTests: XCTestCase {
             
         }
         
-        func getCurrentUser() {
+        func getCurrentUser(request: Scrobble.GetCurrentUser.Request) {
             
         }
         

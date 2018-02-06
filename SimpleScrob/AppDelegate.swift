@@ -16,15 +16,17 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     var window: UIWindow?
     
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
+        application.setMinimumBackgroundFetchInterval(UIApplicationBackgroundFetchIntervalMinimum)
+        
         DDLog.add(DDOSLogger.sharedInstance) // TTY = Xcode console
         
-        let paperTrailLogger = RMPaperTrailLogger.sharedInstance()
-        #if !DEBUG
-        paperTrailLogger?.host = "logs6.papertrailapp.com"
-        paperTrailLogger?.port = 22232
-        paperTrailLogger?.machineName = "SimpleScrob"
-        paperTrailLogger?.programName = "no user"
-        DDLog.add(paperTrailLogger!, with: .debug)
+        #if DEBUG
+            Container.shared.lastFM = FakeLastFM()
+            Container.shared.mediaLibrary = FakeMediaLibrary()
+//            (Container.shared.mediaLibrary as? FakeMediaLibrary)?.play(id: 1, times: 15, lastPlayedDate: "2018-02-05 17:22:58")
+//            enablePapertrailLogger()
+        #else
+            enablePapertrailLogger()
         #endif
         
         NotificationCenter.default.addObserver(self, selector: #selector(userSignedIn), name: .signedIn, object: nil)
@@ -33,7 +35,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         Container.shared.scrobbleService.resumeSession()
         
         if Container.shared.scrobbleService.isLoggedIn {
-            paperTrailLogger?.programName = Container.shared.scrobbleService.currentUserName
+            setPapertrailProgramName()
         }
         
         DDLogVerbose("Hi papertrailapp.com")
@@ -47,16 +49,36 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         } else {
             window?.rootViewController = storyboard.instantiateViewController(withIdentifier: "GetStartedViewController")
         }
-        
+
         return true
     }
     
+    private func enablePapertrailLogger() {
+        let paperTrailLogger = RMPaperTrailLogger.sharedInstance()
+        paperTrailLogger?.host = "logs6.papertrailapp.com"
+        paperTrailLogger?.port = 22232
+        paperTrailLogger?.machineName = "SimpleScrob"
+        paperTrailLogger?.programName = "no user"
+        #if DEBUG
+            DDLog.add(paperTrailLogger!)
+        #else
+            DDLog.add(paperTrailLogger!, with: .debug)
+        #endif
+    }
+    
+    private func setPapertrailProgramName() {
+        let username = Container.shared.scrobbleService.currentUserName ?? "no user"
+        let deviceName = UIDevice.current.name.replacingOccurrences(of: "’", with: "'")
+        let vendorId = UIDevice.current.identifierForVendor?.description ?? "nil"
+        RMPaperTrailLogger.sharedInstance()?.programName = "\(username)-\(deviceName)"
+    }
+    
     @objc func userSignedIn() {
-        RMPaperTrailLogger.sharedInstance()?.programName = Container.shared.scrobbleService.currentUserName
+        setPapertrailProgramName()
     }
     
     @objc func userSignedOut() {
-        RMPaperTrailLogger.sharedInstance()?.programName = "no user"
+        setPapertrailProgramName()
     }
 
     func applicationWillResignActive(_ application: UIApplication) {
@@ -86,6 +108,25 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
         DDLogVerbose("applicationWillTerminate")
     }
+    
+    func application(_ application: UIApplication, performFetchWithCompletionHandler completionHandler: @escaping (UIBackgroundFetchResult) -> Void) {
+        DDLogInfo("Performing background refresh")
+        
+        let scrobbleWorker = ScrobbleWorker(
+            database: Container.shared.playedSongStore,
+            mediaSource: Container.shared.mediaSource,
+            scrobbleService: Container.shared.scrobbleService,
+            connectivity: AlamofireConnectivity()
+        )
+        scrobbleWorker.searchForNewSongsToScrobble { songs in
+            DDLogDebug("Background refresh complete; found \(songs.count) songs")
+            if songs.count > 0 {
+                completionHandler(.newData)
+            } else {
+                completionHandler(.noData)
+            }
+        }
+    }
 
     // MARK: - Core Data stack
     
@@ -100,4 +141,3 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         }
     }
 }
-
