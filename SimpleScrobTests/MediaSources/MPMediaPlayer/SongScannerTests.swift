@@ -51,246 +51,154 @@ class SongScannerTests: XCTestCase {
     //
     
     func test_getSongsPlayedSinceLastTime() {
-        // Given
         deviceMediaLibrary._items = [
-            makeMediaItem(id: 1, lastPlayedDate: "2018-01-29 15:16:00", playCount: 2, artist: "The Dear Hunter", album: "Migrant", title: "Bring You Down")
+            MediaItemBuilder.anItem(id: 1).with(playCount: 2).build(),
+            MediaItemBuilder.anItem(id: 2).with(playCount: 1).build(),
+            MediaItemBuilder.anItem(id: 3).with(playCount: 3).build(),
+            MediaItemBuilder.anItem(id: 4).neverPlayed().build()
         ]
         cachedMediaItemStore.items = [
-            makeCachedItem(id: 1, playCount: 1, lastPlayedDate: "2018-01-28 10:00:00")
+            CachedMediaItemBuilder.anItem(id: 1).with(playCount: 1).build(),
+            CachedMediaItemBuilder.anItem(id: 2).with(playCount: 1).build(),
+            CachedMediaItemBuilder.anItem(id: 3).with(playCount: 2).build()
         ]
-        let completionExpectation = expectation(description: "searchForNewScrobbles")
+        var playedSongs: [PlayedSong] = []
         
         // When
-        var playedSongs: [PlayedSong] = []
         sut.getSongsPlayedSinceLastTime() { _playedSongs in
             playedSongs = _playedSongs
-            completionExpectation.fulfill()
         }
         
         // Then
-        wait(for: [completionExpectation], timeout: 3)
-        expect(playedSongs).to(haveCount(1))
-        verifyPlayedSong(playedSongs[0], id: 1, date: "2018-01-29 15:16:00", artist: "The Dear Hunter", album: "Migrant", title: "Bring You Down")
-        expect(self.cachedMediaItemStore.save_savedItems).toNot(beNil())
-        expect(self.cachedMediaItemStore.save_savedItems).to(haveCount(1))
-        expect(self.cachedMediaItemStore.save_savedItems?[0].id).to(equal(1))
-        expect(self.cachedMediaItemStore.save_savedItems?[0].playCount).to(equal(2))
-        expect(self.cachedMediaItemStore.save_savedItems?[0].lastPlayedDate).to(equal(Date.makeDate(from: "2018-01-29 15:16:00")))
-    }
-    
-    func test_getSongsPlayedSinceLastTime_updatesCacheForEntireMediaLibrary() {
-        deviceMediaLibrary._items = [
-            makeMediaItem(id: 1, lastPlayedDate: "2018-01-29 15:16:00", playCount: 2, artist: "The Dear Hunter", album: "Migrant", title: "Bring You Down"),
-            makeMediaItem(id: 2, lastPlayedDate: "2018-01-29 15:20:00", playCount: 1, artist: "The Dear Hunter", album: "Migrant", title: "Whisper"),
-            makeMediaItem(id: 3, lastPlayedDate: "2018-01-29 15:24:00", playCount: 3, artist: "The Dear Hunter", album: "Migrant", title: "Shame"),
-            makeMediaItem(id: 4, lastPlayedDate: nil, playCount: 0, artist: "The Dear Hunter", album: "Migrant", title: "An Escape")
-        ]
-        cachedMediaItemStore.items = [
-            makeCachedItem(id: 1, playCount: 1, lastPlayedDate: "2018-01-28 10:00:00"),
-            makeCachedItem(id: 2, playCount: 1, lastPlayedDate: "2018-01-28 10:00:00"),
-            makeCachedItem(id: 3, playCount: 2, lastPlayedDate: "2018-01-28 10:00:00")
-        ]
-        let completionExpectation = expectation(description: "searchForNewScrobbles")
-        
-        // When
-        sut.getSongsPlayedSinceLastTime() { _ in
-            completionExpectation.fulfill()
-        }
-        
-        // Then
-        wait(for: [completionExpectation], timeout: 3)
+        expect(playedSongs).to(haveCount(2))
+        expect(playedSongs[0].persistentId).to(equal(1))
+        expect(playedSongs[1].persistentId).to(equal(3))
         expect(self.cachedMediaItemStore.save_savedItems).to(haveCount(4))
         expect(self.cachedMediaItemStore.save_savedItems).to(allPass({ [1, 2, 3, 4].contains($0!.id) }))
+        expect(self.cachedMediaItemStore.save_savedItems?[0].playCount).to(equal(2))
+        expect(self.cachedMediaItemStore.save_savedItems?[1].playCount).to(equal(1))
+        expect(self.cachedMediaItemStore.save_savedItems?[2].playCount).to(equal(3))
+        expect(self.cachedMediaItemStore.save_savedItems?[3].playCount).to(equal(0))
     }
     
     //
     // makeSongsToScrobble
     //
     
-    func test_makeSongsToScrobble_returnsSongIfItDoesNotExistInMediaItemStore() {
+    func test_makeSongsToScrobble() {
         // Given
-        let cachedMediaItems: [ScrobbleMediaItem] = []
         let currentMediaItems = [
-            makeMediaItem(id: 1, lastPlayedDate: "2018-01-29 15:16:00", playCount: 1, artist: "The Dear Hunter", album: "Migrant", title: "Bring You Down")
-        ]        
-        
-        // When
-        let actual = sut.makeSongsToScrobble(currentMediaItems: currentMediaItems, cachedMediaItems: cachedMediaItems)
-        
-        // Then
-        expect(actual).to(haveCount(1))
-        verifyPlayedSong(actual[0], id: 1, date: "2018-01-29 15:16:00", artist: "The Dear Hunter", album: "Migrant", title: "Bring You Down")
-    }
-    
-    func test_makeSongsToScrobble_scrobblesSongIfItHasBeenPlayedSinceLastSeen() {
-        // Given
-        let cachedMediaItems = [
-            makeCachedItem(id: 1, playCount: 1, lastPlayedDate: "2018-01-28 10:00:00")
+            MediaItemBuilder.anItem(id: 1).with(playCount: 1).build(),
+            MediaItemBuilder.anItem(id: 2).with(playCount: 2).build(),
+            MediaItemBuilder.anItem(id: 3).with(playCount: 1).build(),
         ]
-        let currentMediaItems = [
-            makeMediaItem(id: 1, lastPlayedDate: "2018-01-29 15:16:00", playCount: 2, artist: "The Dear Hunter", album: "Migrant", title: "Bring You Down")
+        let cachedMediaItems: [ScrobbleMediaItem] = [
+            CachedMediaItemBuilder.anItem(id: 2).with(playCount: 1).build(),
+            CachedMediaItemBuilder.anItem(id: 3).with(playCount: 1).build()
         ]
         
         // When
         let actual = sut.makeSongsToScrobble(currentMediaItems: currentMediaItems, cachedMediaItems: cachedMediaItems)
         
         // Then
-        expect(actual).to(haveCount(1))
-        verifyPlayedSong(actual[0], id: 1, date: "2018-01-29 15:16:00", artist: "The Dear Hunter", album: "Migrant", title: "Bring You Down")
-    }
-    
-    func test_makeSongsToScrobble_doesNotIncludeTheSongIfItHasNotBeenPlayedSinceLastTime() {
-        // Given
-        let cachedMediaItems = [
-            makeCachedItem(id: 1, playCount: 1, lastPlayedDate: "2018-01-29 15:16:00")
-        ]
-        let currentMediaItems = [
-            makeMediaItem(id: 1, lastPlayedDate: "2018-01-29 15:16:00", playCount: 1, artist: "The Dear Hunter", album: "Migrant", title: "Bring You Down")
-        ]
-        
-        // When
-        let actual = sut.makeSongsToScrobble(currentMediaItems: currentMediaItems, cachedMediaItems: cachedMediaItems)
-        
-        // Then
-        expect(actual).to(haveCount(0))
+        expect(actual).to(haveCount(2))
+        expect(actual[0].persistentId).to(equal(1))
+        expect(actual[1].persistentId).to(equal(2))
     }
     
     //
-    // makeSongToScrobble
+    // makePlayedSongsArray
     //
     
-    func test_makeSongToScrobble_scrobblesTheSongIfItIsNewToTheMediaLibrary() {
+    func test_makeSongToScrobble_mediaItemNotCachedYet() {
         // Given
-        let currentItem = makeMediaItem(id: 1, lastPlayedDate: "2018-01-29 15:16:00", playCount: 1, artist: "The Dear Hunter", album: "Migrant", title: "Bring You Down")
+        let currentItem = MediaItemBuilder.anItem(id: 1).with(playCount: 1).build()
         
         // When
-        let actual = sut.makeSongToScrobble(currentItem: currentItem, cachedItem: nil)
+        let actual = sut.makePlayedSongsArray(currentItem: currentItem, cachedItem: nil)
         
         // Then
         expect(actual).to(haveCount(1))
-        verifyPlayedSong(actual[0],
-            id: 1,
-            date: "2018-01-29 15:16:00",
-            artist: "The Dear Hunter",
-            album: "Migrant",
-            title: "Bring You Down"
-        )
+        expect(actual[0].persistentId).to(equal(1))
     }
     
-    func test_makeSongToScrobble_scrobblesTheSongIfThePlayCountIsHigherThanTheLastTime() {
+    func test_makeSongToScrobble_currentPlayCountHigherThanTheCachedPlayCount() {
         // Given
-        let currentItem = makeMediaItem(id: 1, lastPlayedDate: "2018-01-29 15:16:00", playCount: 2, artist: "The Dear Hunter", album: "Migrant", title: "Bring You Down")
-        let cachedItem = makeCachedItem(id: 1, playCount: 1, lastPlayedDate: "2018-01-28 10:00:00")
+        let currentItem = MediaItemBuilder.anItem(id: 1).with(playCount: 2).build()
+        let cachedItem = CachedMediaItemBuilder.anItem(id: 1).with(playCount: 1).build()
         
         // When
-        let actual = sut.makeSongToScrobble(currentItem: currentItem, cachedItem: cachedItem)
+        let actual = sut.makePlayedSongsArray(currentItem: currentItem, cachedItem: cachedItem)
         
         // Then
         expect(actual).to(haveCount(1))
-        verifyPlayedSong(actual[0],
-             id: 1,
-             date: "2018-01-29 15:16:00",
-             artist: "The Dear Hunter",
-             album: "Migrant",
-             title: "Bring You Down"
-        )
+        expect(actual[0].persistentId).to(equal(1))
     }
     
-    func test_makeSongToScrobble_doesNotScrobbleTheSongIfThePlayHasNotChanged() {
+    func test_makeSongToScrobble_returnsEmptyArrayIfPlayCountsAreTheSame() {
         // Given
-        let currentItem = makeMediaItem(id: 1, lastPlayedDate: "2018-01-29 15:16:00", playCount: 1, artist: "The Dear Hunter", album: "Migrant", title: "Bring You Down")
-        let cachedItem = makeCachedItem(id: 1, playCount: 1, lastPlayedDate: "2018-01-29 15:16:00")
+        let currentItem = MediaItemBuilder.anItem(id: 1).with(playCount: 3).build()
+        let cachedItem = CachedMediaItemBuilder.anItem(id: 1).with(playCount: 3).build()
         
         // When
-        let actual = sut.makeSongToScrobble(currentItem: currentItem, cachedItem: cachedItem)
+        let actual = sut.makePlayedSongsArray(currentItem: currentItem, cachedItem: cachedItem)
         
         // Then
         expect(actual).to(beEmpty())
     }
     
-    func test_makeSongToScrobble_makesAsManySongsAsTheDifferenceInPlayCount() {
+    func test_makeSongToScrobble_makesOnePlayedSongForEachTimeTheItemWasPlayed() {
         // Given
-        let currentItem = makeMediaItem(id: 1, lastPlayedDate: "2018-01-29 15:16:00", playCount: 3, artist: "The Dear Hunter", album: "Migrant", title: "Bring You Down")
+        let currentItem = MediaItemBuilder.anItem(id: 9).with(playCount: 6).build()
+        let cachedItem = CachedMediaItemBuilder.anItem(id: 9).with(playCount: 3).build()
         
         // When
-        let actual = sut.makeSongToScrobble(currentItem: currentItem, cachedItem: nil)
+        let actual = sut.makePlayedSongsArray(currentItem: currentItem, cachedItem: cachedItem)
         
         // Then
         expect(actual).to(haveCount(3))
-        verifyPlayedSong(actual[0], id: 1, date: "2018-01-29 15:16:00", artist: "The Dear Hunter", album: "Migrant", title: "Bring You Down")
-        verifyPlayedSong(actual[1], id: 1, date: "2018-01-29 15:15:59", artist: "The Dear Hunter", album: "Migrant", title: "Bring You Down")
-        verifyPlayedSong(actual[2], id: 1, date: "2018-01-29 15:15:58", artist: "The Dear Hunter", album: "Migrant", title: "Bring You Down")
+        expect(actual).to(allPass({ $0?.persistentId == 9 }))        
     }
     
-    func test_makeSongToScrobble_makesAsManySongsAsTheDifferenceInPlayCount_inCache() {
+    func test_makeSongToScrobble_returnsEmptyArrayIfTheSongWasNeverPlayed() {
         // Given
-        let currentItem = makeMediaItem(id: 1, lastPlayedDate: "2018-01-29 15:16:00", playCount: 8, artist: "The Dear Hunter", album: "Migrant", title: "Bring You Down")
-        let cachedItem = makeCachedItem(id: 1, playCount: 4, lastPlayedDate: "2018-01-29 00:30:00")
+        let currentItem = MediaItemBuilder.anItem(id: 7).neverPlayed().build()
         
         // When
-        let actual = sut.makeSongToScrobble(currentItem: currentItem, cachedItem: cachedItem)
-        
-        // Then
-        expect(actual).to(haveCount(4))
-        verifyPlayedSong(actual[0], id: 1, date: "2018-01-29 15:16:00", artist: "The Dear Hunter", album: "Migrant", title: "Bring You Down")
-        verifyPlayedSong(actual[1], id: 1, date: "2018-01-29 15:15:59", artist: "The Dear Hunter", album: "Migrant", title: "Bring You Down")
-        verifyPlayedSong(actual[2], id: 1, date: "2018-01-29 15:15:58", artist: "The Dear Hunter", album: "Migrant", title: "Bring You Down")
-        verifyPlayedSong(actual[3], id: 1, date: "2018-01-29 15:15:57", artist: "The Dear Hunter", album: "Migrant", title: "Bring You Down")
-    }
-
-    func test_makeSongToScrobble_returnsArrayIfSongNotPlayed() {
-        // Given
-        let currentItem = makeMediaItem(id: 1, lastPlayedDate: nil, playCount: 0, artist: "The Dear Hunter", album: "Migrant", title: "Bring You Down")
-        
-        // When
-        let actual = sut.makeSongToScrobble(currentItem: currentItem, cachedItem: nil)
+        let actual = sut.makePlayedSongsArray(currentItem: currentItem, cachedItem: nil)
         
         // Then
         expect(actual).to(beEmpty())
-    }
+    }    
     
     //
-    // Helper Funcs
+    // makePlayedSong
     //
     
-    private func makeMediaItem(
-        id: MediaItemId,
-        lastPlayedDate dateString: String?,
-        playCount: Int,
-        artist: String,
-        album: String,
-        title: String
-    ) -> MediaItem {
-        let lastPlayedDate = dateString != nil ? Date.makeDate(from: dateString!) : nil
-        let item = MediaItem(
-            id: id,
-            lastPlayedDate: lastPlayedDate,
-            playCount: playCount,
-            artist: artist,
-            album: album,
-            title: title
-        )        
-        return item
-    }
-    
-    private func makeCachedItem(id: MediaItemId, playCount: Int, lastPlayedDate: String) -> ScrobbleMediaItem {
-        var item = ScrobbleMediaItem(id: id)
-        item.playCount = playCount
-        item.lastPlayedDate = Date.makeDate(from: lastPlayedDate)
-        return item
-    }
-    
-    private func verifyPlayedSong(_ playedSong: PlayedSong?, id: MediaItemId, date dateString: String, artist: String, album: String, title: String) {
-        guard let actual = playedSong else {
-            expect(playedSong).toNot(beNil())
-            return
-        }
+    func test_makePlayedSong_mapsMediaItemToPlayedSongModel() {
+        let item = MediaItemBuilder
+            .anItem()
+            .lastPlayedAt(Date().subtract(15.minutes))
+            .build()
         
-        let date = Date.makeDate(from: dateString)!
-        expect(actual.id).to(equal(PlayedSongId(persistentId: 1, date: date)))
-        expect(actual.date).to(equal(date))
-        expect(actual.artist).to(equal(artist))
-        expect(actual.album).to(equal(album))
-        expect(actual.track).to(equal(title))
+        let actual = sut.makePlayedSong(from: item, playedIndex: 0)
+        
+        expect(actual?.persistentId).to(equal(item.id))
+        expect(actual?.date).to(equal(item.lastPlayedDate))
+        expect(actual?.artist).to(equal(item.artist))
+        expect(actual?.album).to(equal(item.album))
+        expect(actual?.track).to(equal(item.title))
+        expect(actual?.status).to(equal(ScrobbleStatus.notScrobbled))
+    }
+    
+    func test_makePlayedSong_subtracts_1_second_from_the_scrobble_date_for_each_time_the_song_was_played() {
+        let item = MediaItemBuilder
+            .anItem()
+            .lastPlayedAt(Date().subtract(15.minutes))
+            .build()
+        
+        let actual = sut.makePlayedSong(from: item, playedIndex: 3)
+        
+        expect(actual?.date).to(equal(item.lastPlayedDate?.subtract(3.seconds)))
     }
 }

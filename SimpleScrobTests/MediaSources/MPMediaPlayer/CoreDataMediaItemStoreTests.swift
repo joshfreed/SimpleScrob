@@ -72,8 +72,8 @@ class CoreDataMediaItemStoreTests: XCTestCase {
     
     func testSave_updatesExistingEntitiesFromTheGivenItems() {
         // Given
-        let initialItem = ScrobbleMediaItem(id: 1, playCount: 2, lastPlayedDate: Date.makeDate(from: "2018-01-30 10:30:00"))
-        let updatedItem = ScrobbleMediaItem(id: 1, playCount: 5, lastPlayedDate: Date.makeDate(from: "2018-02-01 12:45:00"))
+        let initialItem = ScrobbleMediaItem(id: 1, playCount: 2)
+        let updatedItem = ScrobbleMediaItem(id: 1, playCount: 5)
         insert(initialItem)
         saveContext()
         let completionExpectation = expectation(description: "operation complete")
@@ -89,7 +89,6 @@ class CoreDataMediaItemStoreTests: XCTestCase {
         expect(managedItems).to(haveCount(1))
         expect(managedItems[0].persistentId).to(equal(String(1)))
         expect(managedItems[0].playCount).to(equal(5))
-        expect(managedItems[0].lastPlayedDate).to(equal(Date.makeDate(from: "2018-02-01 12:45:00")))
     }
     
     //
@@ -114,7 +113,6 @@ class CoreDataMediaItemStoreTests: XCTestCase {
         let entity = NSEntityDescription.insertNewObject(forEntityName: "MediaItem", into: container.viewContext) as! ManagedMediaItem
         entity.persistentId = String(mediaItem.id)
         entity.playCount = Int16(mediaItem.playCount)
-        entity.lastPlayedDate = mediaItem.lastPlayedDate
     }
     
     func saveContext() {

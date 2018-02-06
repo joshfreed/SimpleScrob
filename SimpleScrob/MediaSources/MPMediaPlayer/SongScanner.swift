@@ -42,7 +42,6 @@ class SongScanner: MediaSource {
             DDLogDebug("Loaded \(cachedMediaItems.count) cached media items")
             
             let songs = self.makeSongsToScrobble(currentMediaItems: currentMediaItems, cachedMediaItems: cachedMediaItems)
-            DDLogDebug("Found \(songs.count) songs played since last time")
             
             self.updateCachedMediaItems(from: currentMediaItems) {
                 completion(songs)
@@ -51,52 +50,48 @@ class SongScanner: MediaSource {
     }
     
     func makeSongsToScrobble(currentMediaItems: [MediaItem], cachedMediaItems: [ScrobbleMediaItem]) -> [PlayedSong] {
-        var playedSongs: [PlayedSong] = []
         let cachedItemsDictionary = cachedMediaItems.reduce(into: [MediaItemId: ScrobbleMediaItem]()) { $0[$1.id] = $1 }
 
+        var playedSongs: [PlayedSong] = []
+        
         for currentItem in currentMediaItems {
             let cachedItem = cachedItemsDictionary[currentItem.id]
-            playedSongs.append(contentsOf: makeSongToScrobble(currentItem: currentItem, cachedItem: cachedItem))
+            playedSongs.append(contentsOf: makePlayedSongsArray(currentItem: currentItem, cachedItem: cachedItem))
         }
 
+        DDLogDebug("Found \(playedSongs.count) songs played since last time")
+        
         return playedSongs
     }
     
-    func makeSongToScrobble(currentItem: MediaItem, cachedItem: ScrobbleMediaItem?) -> [PlayedSong] {
-        let cachedPlayedCount = cachedItem?.playCount ?? 0
-        return makePlayedSongForEachTimePlayed(currentItem: currentItem, cachedPlayCount: cachedPlayedCount)
+    func makePlayedSongsArray(currentItem: MediaItem, cachedItem: ScrobbleMediaItem?) -> [PlayedSong] {
+        let cachedPlayCount = cachedItem?.playCount ?? 0
+        let timesPlayed = currentItem.playCount - cachedPlayCount
+        return makePlayedSongsArray(from: currentItem, timesPlayed: timesPlayed)
     }
     
-    private func makePlayedSongForEachTimePlayed(currentItem: MediaItem, cachedPlayCount: Int) -> [PlayedSong] {
-        guard currentItem.playCount > cachedPlayCount else {
-            return []
-        }
-        
-        let numberOfPlaysToScrobble = currentItem.playCount - cachedPlayCount
-        
+    func makePlayedSongsArray(from currentItem: MediaItem, timesPlayed: Int) -> [PlayedSong] {
         var songs: [PlayedSong] = []
         
-        for i in 0..<numberOfPlaysToScrobble {
-            let timeChunk = TimeChunk(seconds: i, minutes: 0, hours: 0, days: 0, weeks: 0, months: 0, years: 0)
-            let overrideDate = currentItem.lastPlayedDate!.subtract(timeChunk)
-            songs.append(makePlayedSong(from: currentItem, overrideLastPlayedDate: overrideDate))
+        for i in 0..<timesPlayed {
+            if let playedSong = makePlayedSong(from: currentItem, playedIndex: i) {
+                songs.append(playedSong)
+            }
         }
         
         return songs
     }
     
-    private func makePlayedSong(from item: MediaItem, overrideLastPlayedDate: Date? = nil) -> PlayedSong {
-        if item.lastPlayedDate == nil {
-            // This should be impossible; to even get there the media item needs to have been played at least once
-            DDLogError("MediaItem has been played but does not have a last played date? Id: \(item.id), play count: \(item.playCount)")
-            fatalError("Media item has been played but does not have a last played date?")
+    func makePlayedSong(from item: MediaItem, playedIndex: Int) -> PlayedSong? {
+        guard let lastPlayedDate = item.lastPlayedDate else {
+            return nil
         }
         
-        let lastPlayedDate = overrideLastPlayedDate != nil ? overrideLastPlayedDate : item.lastPlayedDate
+        let scrobbleDate = lastPlayedDate.subtract(playedIndex.seconds)
         
         return PlayedSong(
             persistentId: item.id,
-            date: lastPlayedDate!,
+            date: scrobbleDate,
             artist: item.artist,
             album: item.album,
             track: item.title
@@ -107,7 +102,7 @@ class SongScanner: MediaSource {
         DDLogDebug("updateCachedMediaItems")
 
         let cachedItems = currentItems.map {
-            ScrobbleMediaItem(id: $0.id, playCount: $0.playCount, lastPlayedDate: $0.lastPlayedDate)
+            ScrobbleMediaItem(id: $0.id, playCount: $0.playCount)
         }
         
         mediaItemStore.save(mediaItems: cachedItems, completion: completion)

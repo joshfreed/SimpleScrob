@@ -52,16 +52,14 @@ struct MediaItem {
 struct ScrobbleMediaItem: Equatable {
     let id: MediaItemId
     var playCount: Int = 0
-    var lastPlayedDate: Date?
     
     init(id: MediaItemId) {
         self.id = id
     }
     
-    init(id: MediaItemId, playCount: Int, lastPlayedDate: Date?) {
+    init(id: MediaItemId, playCount: Int) {
         self.id = id
         self.playCount = playCount
-        self.lastPlayedDate = lastPlayedDate
     }
     
     static func ==(lhs: ScrobbleMediaItem, rhs: ScrobbleMediaItem) -> Bool {

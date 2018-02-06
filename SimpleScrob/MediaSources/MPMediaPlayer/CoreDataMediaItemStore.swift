@@ -35,7 +35,6 @@ class CoreDataMediaItemStore: MediaItemStore {
                 let managedItem = managedMediaItems[String(item.id)]
                 if let managedItem = managedItem {
                     managedItem.playCount = Int16(item.playCount)
-                    managedItem.lastPlayedDate = item.lastPlayedDate
                 } else {
                     let _ = CoreDataMediaItemTranslator.makeEntity(from: item, into: context)
                 }
@@ -89,18 +88,13 @@ class CoreDataMediaItemTranslator {
         else {
             return nil
         }
-        return ScrobbleMediaItem(
-            id: persistentId,
-            playCount: Int(entity.playCount),
-            lastPlayedDate: entity.lastPlayedDate
-        )
+        return ScrobbleMediaItem(id: persistentId, playCount: Int(entity.playCount))
     }
     
     static func makeEntity(from model: ScrobbleMediaItem, into context: NSManagedObjectContext) -> ManagedMediaItem {
         let entity = NSEntityDescription.insertNewObject(forEntityName: "MediaItem", into: context) as! ManagedMediaItem
         entity.persistentId = String(model.id)
         entity.playCount = Int16(model.playCount)
-        entity.lastPlayedDate = model.lastPlayedDate
         return entity
     }
 }
