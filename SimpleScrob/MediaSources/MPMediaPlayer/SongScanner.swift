@@ -87,7 +87,9 @@ class SongScanner: MediaSource {
             return nil
         }
         
-        let scrobbleDate = lastPlayedDate.subtract(playedIndex.seconds)
+        let duration = item.playbackDuration ?? 0
+        var scrobbleDate = lastPlayedDate.addingTimeInterval(-duration)
+        scrobbleDate = scrobbleDate.subtract(playedIndex.seconds)
         
         return PlayedSong(
             persistentId: item.id,

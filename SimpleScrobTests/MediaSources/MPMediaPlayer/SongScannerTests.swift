@@ -176,15 +176,15 @@ class SongScannerTests: XCTestCase {
     //
     
     func test_makePlayedSong_mapsMediaItemToPlayedSongModel() {
-        let item = MediaItemBuilder
-            .anItem()
-            .lastPlayedAt(Date().subtract(15.minutes))
-            .build()
+        let lastPlayedDate = Date().subtract(15.minutes)
+        let duration = 400
+        let playbackStartDate = lastPlayedDate.subtract(duration.seconds)
+        let item = MediaItemBuilder.anItem().lastPlayedAt(lastPlayedDate).withDuration(seconds: duration).build()
         
         let actual = sut.makePlayedSong(from: item, playedIndex: 0)
         
         expect(actual?.persistentId).to(equal(item.id))
-        expect(actual?.date).to(equal(item.lastPlayedDate))
+        expect(actual?.date).to(equal(playbackStartDate))
         expect(actual?.artist).to(equal(item.artist))
         expect(actual?.album).to(equal(item.album))
         expect(actual?.track).to(equal(item.title))
@@ -192,13 +192,17 @@ class SongScannerTests: XCTestCase {
     }
     
     func test_makePlayedSong_subtracts_1_second_from_the_scrobble_date_for_each_time_the_song_was_played() {
-        let item = MediaItemBuilder
-            .anItem()
-            .lastPlayedAt(Date().subtract(15.minutes))
-            .build()
+        // Given
+        let lastPlayedDate = Date().subtract(15.minutes)
+        let duration = 400
+        let playbackStartDate = lastPlayedDate.subtract(duration.seconds)
+        let scrobbleDate = playbackStartDate.subtract(3.seconds)
+        let item = MediaItemBuilder.anItem().lastPlayedAt(lastPlayedDate).withDuration(seconds: duration).build()
         
+        // When
         let actual = sut.makePlayedSong(from: item, playedIndex: 3)
         
-        expect(actual?.date).to(equal(item.lastPlayedDate?.subtract(3.seconds)))
+        // Then
+        expect(actual?.date).to(equal(scrobbleDate))
     }
 }

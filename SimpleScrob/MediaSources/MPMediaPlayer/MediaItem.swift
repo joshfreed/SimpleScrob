@@ -21,6 +21,7 @@ struct MediaItem {
     let artist: String?
     let album: String?
     let title: String?
+    var playbackDuration: TimeInterval?
     
     init(item: MPMediaItem) {
         self.id = item.persistentID
@@ -29,6 +30,7 @@ struct MediaItem {
         self.artist = item.artist
         self.album = item.albumTitle
         self.title = item.title
+        self.playbackDuration = item.playbackDuration
     }
 
     init(

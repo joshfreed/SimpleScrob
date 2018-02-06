@@ -78,21 +78,22 @@ class FakeMediaLibrary: MediaLibrary {
     var items: [MediaItem] = []
     
     init() {
-        addItem(id: 1, playCount: 0, lastPlayedDate: nil, artist: "I the Mighty", album: "Connector", track: "Lady of Death")
+        addItem(id: 1, playCount: 0, lastPlayedDate: nil, artist: "I the Mighty", album: "Connector", track: "Lady of Death", duration: 312)
     }
     
-    private func addItem(id: MediaItemId, playCount: Int, lastPlayedDate dateString: String?, artist: String, album: String, track: String) {
+    private func addItem(id: MediaItemId, playCount: Int, lastPlayedDate dateString: String?, artist: String, album: String, track: String, duration: TimeInterval) {
         var lastPlayedDate: Date? = nil
         if let dateString = dateString {
             lastPlayedDate = Date(dateString: dateString, format: "yyyy-MM-dd HH:mm:ss")
         }
-        let item = MediaItem(id: id, lastPlayedDate: lastPlayedDate, playCount: playCount, artist: artist, album: album, title: track)
+        var item = MediaItem(id: id, lastPlayedDate: lastPlayedDate, playCount: playCount, artist: artist, album: album, title: track)
+        item.playbackDuration = duration
         items.append(item)
     }
     
     func play(id: Int, times: Int, lastPlayedDate dateString: String) {
         if let index = items.index(where: { $0.id == id }) {
-            let updated = MediaItem(
+            var updated = MediaItem(
                 id: items[index].id,
                 lastPlayedDate: Date(dateString: dateString, format: "yyyy-MM-dd HH:mm:ss"),
                 playCount: times,
@@ -100,6 +101,7 @@ class FakeMediaLibrary: MediaLibrary {
                 album: items[index].album,
                 title: items[index].title
             )
+            updated.playbackDuration = items[index].playbackDuration
             items[index] = updated
         }
     }

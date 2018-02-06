@@ -17,6 +17,7 @@ class MediaItemBuilder {
     private var artist: String?
     private var album: String?
     private var title: String?
+    private var duration: Int?
     
     static func anItem() -> MediaItemBuilder {
         return MediaItemBuilder()
@@ -52,8 +53,11 @@ class MediaItemBuilder {
         if playCount > 0 && lastPlayedDate == nil {
             lastPlayedDate = Date().subtract(10.minutes)
         }
+        if duration == nil {
+            duration = 300
+        }
         
-        let item = MediaItem(
+        var item = MediaItem(
             id: id!,
             lastPlayedDate: lastPlayedDate,
             playCount: playCount,
@@ -61,6 +65,7 @@ class MediaItemBuilder {
             album: album,
             title: title
         )
+        item.playbackDuration = TimeInterval(duration!)
         return item
     }
     
@@ -102,6 +107,11 @@ class MediaItemBuilder {
     func neverPlayed() -> MediaItemBuilder {
         self.playCount = 0
         self.lastPlayedDate = nil
+        return self
+    }
+    
+    func withDuration(seconds: Int) -> MediaItemBuilder {
+        self.duration = seconds
         return self
     }
 }
