@@ -85,6 +85,7 @@ class ViewScrobblesViewController: UITableViewController, ViewScrobblesDisplayLo
         let cell = tableView.dequeueReusableCell(withIdentifier: "SongCell", for: indexPath) as! SongCell
         let scrobble = scrobbles[indexPath.row]
         cell.configure(scrobble: scrobble)
+        cell.updateConstraintsIfNeeded()
         
         if indexPath.row == scrobbles.count - 1 && !reachedEndOfItems {
             let request = ViewScrobbles.LoadMore.Request()
@@ -141,9 +142,6 @@ class ViewScrobblesViewController: UITableViewController, ViewScrobblesDisplayLo
             hideEmptyMessage()
         }
         
-        tableView.reloadData()
-        tableView.setNeedsLayout()
-        tableView.layoutIfNeeded()
         tableView.reloadData()
     }
 }

@@ -71,6 +71,10 @@ class SongScanner: MediaSource {
     }
     
     func makePlayedSongsArray(from currentItem: MediaItem, timesPlayed: Int) -> [PlayedSong] {
+        guard timesPlayed > 0 else {
+            return []            
+        }
+        
         var songs: [PlayedSong] = []
         
         for i in 0..<timesPlayed {
