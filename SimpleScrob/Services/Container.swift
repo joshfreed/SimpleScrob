@@ -21,8 +21,8 @@ class Container {
         mediaItemStore: mediaItemStore
     )
     lazy var lastFM: LastFMAPI = {
-        let apiKey = "f27fb27503f9aa73c6f308fd9e3bc7f0"
-        let secret = "f0ec0f81ae932843046997ef89ce60cc"
+        let apiKey = ApiKeys.lastFmApiKey
+        let secret = ApiKeys.lastFmSecret
         return LastFM.API(engine: LastFM.RestEngine(apiKey: apiKey, secret: secret))
     }()
     lazy var scrobbleService: ScrobbleService = LastFmScrobbleService(api: lastFM)
@@ -58,4 +58,16 @@ class Container {
         })
         return container
     }()
+}
+
+class ApiKeys {
+    static var lastFmApiKey: String { return ApiKeys.valueFor(key: "LAST_FM_API_KEY") }
+    static var lastFmSecret: String { return ApiKeys.valueFor(key: "LAST_FM_SECRET") }
+    
+    static func valueFor(key: String) -> String {
+        let filePath = Bundle.main.path(forResource: "ApiKeys", ofType: "plist")
+        let plist = NSDictionary(contentsOfFile: filePath!)
+        let value = plist?.object(forKey: key) as! String
+        return value
+    }
 }

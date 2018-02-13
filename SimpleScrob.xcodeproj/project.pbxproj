@@ -13,6 +13,7 @@
 		53075DEC1F85425800A19189 /* Podfile in Resources */ = {isa = PBXBuildFile; fileRef = 53075DE91F85425800A19189 /* Podfile */; };
 		5309DD48202A3FD70055F531 /* MediaItemBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5309DD47202A3FD70055F531 /* MediaItemBuilder.swift */; };
 		5309DD4B202A43A80055F531 /* CachedMediaItemBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5309DD4A202A43A80055F531 /* CachedMediaItemBuilder.swift */; };
+		53151D54203333950027A883 /* ApiKeys.plist in Resources */ = {isa = PBXBuildFile; fileRef = 53151D53203333950027A883 /* ApiKeys.plist */; };
 		5316A6511F82BFB5005193EB /* SongScanner.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5316A6501F82BFB5005193EB /* SongScanner.swift */; };
 		5316A6561F82CBD7005193EB /* SimpleScrob.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 5316A6541F82CBD6005193EB /* SimpleScrob.xcdatamodeld */; };
 		5318F69F2021027E00340CAC /* CoreDataMediaItemStoreTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5318F69E2021027E00340CAC /* CoreDataMediaItemStoreTests.swift */; };
@@ -145,6 +146,7 @@
 		53075DED1F85498300A19189 /* SimpleScrob-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "SimpleScrob-Bridging-Header.h"; sourceTree = "<group>"; };
 		5309DD47202A3FD70055F531 /* MediaItemBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MediaItemBuilder.swift; sourceTree = "<group>"; };
 		5309DD4A202A43A80055F531 /* CachedMediaItemBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CachedMediaItemBuilder.swift; sourceTree = "<group>"; };
+		53151D53203333950027A883 /* ApiKeys.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = ApiKeys.plist; sourceTree = "<group>"; };
 		5316A6501F82BFB5005193EB /* SongScanner.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SongScanner.swift; sourceTree = "<group>"; };
 		5316A6551F82CBD6005193EB /* SimpleScrob.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = SimpleScrob.xcdatamodel; sourceTree = "<group>"; };
 		5318F69E2021027E00340CAC /* CoreDataMediaItemStoreTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataMediaItemStoreTests.swift; sourceTree = "<group>"; };
@@ -404,6 +406,7 @@
 				53825BCF1F803F2400566F2C /* Models */,
 				53825BCE1F80330E00566F2C /* Services */,
 				53825BBF1F80325400566F2C /* Scenes */,
+				53151D53203333950027A883 /* ApiKeys.plist */,
 				53825B871F7E8CC600566F2C /* AppDelegate.swift */,
 				5316A6541F82CBD6005193EB /* SimpleScrob.xcdatamodeld */,
 				53825B8B1F7E8CC600566F2C /* Main.storyboard */,
@@ -748,6 +751,7 @@
 				53B7DA9820080BEA00C60283 /* LogoView.xib in Resources */,
 				53825B921F7E8CC600566F2C /* LaunchScreen.storyboard in Resources */,
 				53B06FEF1F83EE7200FC9AB9 /* SSTextField.xib in Resources */,
+				53151D54203333950027A883 /* ApiKeys.plist in Resources */,
 				53825B8F1F7E8CC600566F2C /* Assets.xcassets in Resources */,
 				53825B8D1F7E8CC600566F2C /* Main.storyboard in Resources */,
 			);
