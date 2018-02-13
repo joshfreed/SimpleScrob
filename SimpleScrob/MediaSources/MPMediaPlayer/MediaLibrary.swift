@@ -78,7 +78,7 @@ class FakeMediaLibrary: MediaLibrary {
     var items: [MediaItem] = []
     
     init() {
-        addItem(id: 1, playCount: 0, lastPlayedDate: nil, artist: "I the Mighty", album: "Connector", track: "Lady of Death", duration: 312)
+        addItem(id: 1, playCount: 1, lastPlayedDate: "2018-02-11 15:16:10", artist: "I the Mighty", album: "Connector", track: "Lady of Death", duration: 312)
     }
     
     private func addItem(id: MediaItemId, playCount: Int, lastPlayedDate dateString: String?, artist: String, album: String, track: String, duration: TimeInterval) {

@@ -48,7 +48,8 @@ class ScrobbleInteractor: ScrobbleBusinessLogic, ScrobbleDataStore {
         let response = Scrobble.GetCurrentUser.Response(username: worker.currentUserName)
         presenter?.presentCurrentUser(response: response)
 
-        submitScrobbles(request: Scrobble.SubmitScrobbles.Request())
+        let request = Scrobble.SearchForNewScrobbles.Request(autoSubmit: true, delay: false)
+        searchForNewScrobbles(request: request)
     }
 
     // MARK: Refresh

@@ -62,6 +62,11 @@ class ScrobbleWorker {
 
     func submitUnscrobbledSongs(completion: @escaping ([PlayedSong], Error?) -> ()) {
         database.findUnscrobbledSongs { songs in
+            guard songs.count > 0 else {
+                completion([], nil)
+                return
+            }
+            
             guard self.connectivity.isConnectedToInternet else {
                 let updatedSongs = self.markNotScrobbled(songs: songs, with: ScrobbleError.notConnected.description)
                 self.database.save(playedSongs: updatedSongs, completion: {})

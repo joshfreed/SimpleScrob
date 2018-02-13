@@ -281,6 +281,7 @@ class ScrobbleInteractorTests: XCTestCase {
     }
     
     func test_userSignedIn_submitsPendingScrobbles() {
+        worker.newSongsToScrobble = [PlayedSongBuilder.aSong().build()]
         sut.userSignedIn()
         worker.verifySubmitted()
     }
