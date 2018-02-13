@@ -23,7 +23,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         #if DEBUG
             Container.shared.lastFM = FakeLastFM()
             Container.shared.mediaLibrary = FakeMediaLibrary()
-//            (Container.shared.mediaLibrary as? FakeMediaLibrary)?.play(id: 1, times: 3, lastPlayedDate: "2018-02-06 17:14:01")
 //            enablePapertrailLogger()
         #else
             enablePapertrailLogger()
