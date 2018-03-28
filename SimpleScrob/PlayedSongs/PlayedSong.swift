@@ -31,6 +31,7 @@ struct PlayedSong: Equatable {
     var artist: String?
     var album: String?
     var track: String?
+    var albumArtist: String?
     var artwork: MediaItemArtwork?
     
     init(persistentId: MediaItemId, date: Date) {

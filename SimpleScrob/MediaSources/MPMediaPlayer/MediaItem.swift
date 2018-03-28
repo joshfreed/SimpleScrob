@@ -20,6 +20,7 @@ struct MediaItem {
     let playCount: Int
     let artist: String?
     let album: String?
+    let albumArtist: String?
     let title: String?
     var playbackDuration: TimeInterval?
     
@@ -29,6 +30,7 @@ struct MediaItem {
         self.playCount = item.playCount
         self.artist = item.artist
         self.album = item.albumTitle
+        self.albumArtist = item.albumArtist
         self.title = item.title
         self.playbackDuration = item.playbackDuration
     }
@@ -39,14 +41,31 @@ struct MediaItem {
         playCount: Int,
         artist: String?,
         album: String?,
-        title: String?
+        title: String?,
+        albumArtist: String?
     ) {
         self.id = id
         self.lastPlayedDate = lastPlayedDate
         self.playCount = playCount
         self.artist = artist
         self.album = album
+        self.albumArtist = albumArtist
         self.title = title
+    }
+}
+
+// Constructs a played song and fills its aatributes from the given media item
+extension PlayedSong {
+    static func from(mediaItem: MediaItem, scrobbleDate: Date) -> PlayedSong {
+        var song = PlayedSong(
+            persistentId: mediaItem.id,
+            date: scrobbleDate,
+            artist: mediaItem.artist,
+            album: mediaItem.album,
+            track: mediaItem.title
+        )
+        song.albumArtist = mediaItem.albumArtist
+        return song
     }
 }
 

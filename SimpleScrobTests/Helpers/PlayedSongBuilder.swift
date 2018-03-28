@@ -18,6 +18,7 @@ class PlayedSongBuilder {
     private var artist: String?
     private var album: String?
     private var track: String?
+    private var albumArtist: String?
     
     static func aSong() -> PlayedSongBuilder {
         return PlayedSongBuilder()
@@ -49,6 +50,7 @@ class PlayedSongBuilder {
         song.artist = artist
         song.album = album
         song.track = track
+        song.albumArtist = albumArtist
         return song
     }
     
@@ -85,6 +87,11 @@ class PlayedSongBuilder {
     
     func playedAt(_ playedDate: String) -> PlayedSongBuilder {
         self.playedDate = Date.makeDate(from: playedDate)
+        return self
+    }
+    
+    func with(albumArtist: String?) -> PlayedSongBuilder {
+        self.albumArtist = albumArtist
         return self
     }
 }

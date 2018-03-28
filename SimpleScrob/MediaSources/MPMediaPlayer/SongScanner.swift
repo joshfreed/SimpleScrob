@@ -95,13 +95,7 @@ class SongScanner: MediaSource {
         var scrobbleDate = lastPlayedDate.addingTimeInterval(-duration)
         scrobbleDate = scrobbleDate.subtract(playedIndex.seconds)
         
-        return PlayedSong(
-            persistentId: item.id,
-            date: scrobbleDate,
-            artist: item.artist,
-            album: item.album,
-            track: item.title
-        )
+        return PlayedSong.from(mediaItem: item, scrobbleDate: scrobbleDate)
     }
     
     private func updateCachedMediaItems(from currentItems: [MediaItem], completion: @escaping () -> ()) {

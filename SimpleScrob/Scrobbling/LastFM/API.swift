@@ -52,10 +52,7 @@ extension LastFM {
             var params: [String: String] = [:]
             params["sk"] = sessionKey
             for (index, song) in songs.enumerated() {
-                params["artist[\(index)]"] = song.artist
-                params["album[\(index)]"] = song.album
-                params["track[\(index)]"] = song.track
-                params["timestamp[\(index)]"] = song.scrobbleTimestamp
+                addSongParams(params: &params, song: song, index: index)
             }
             
             engine.post(method: "track.scrobble", params: params) { result in
@@ -67,6 +64,14 @@ extension LastFM {
                     completion(.failure(error))
                 }
             }
+        }
+        
+        func addSongParams(params: inout [String: String], song: PlayedSong, index: Int) {
+            params["artist[\(index)]"] = song.artist
+            params["album[\(index)]"] = song.album
+            params["track[\(index)]"] = song.track
+            params["timestamp[\(index)]"] = song.scrobbleTimestamp
+            params["albumArtist[\(index)]"] = song.albumArtist
         }
         
         private func buildScrobbleResponse(json: JSON) -> LastFM.ScrobbleResponse {

@@ -50,8 +50,8 @@ class LastFmScrobbleServiceTests: XCTestCase {
         // Given
         sut.configureWithSession()
         let songs = [
-            PlayedSong(persistentId: 1, date: Date(), artist: "Beardfish", album: "Sleeping in Traffic", track: "Sunrise"),
-            PlayedSong(persistentId: 2, date: Date(), artist: "Beardfish", album: "Sleeping in Traffic", track: "Afternoon Conversation")
+            PlayedSongBuilder.aSong().build(),
+            PlayedSongBuilder.aSong().build()
         ]
         let response = LastFM.ScrobbleResponse(accepted: [], ignored: [])
         api.scrobbleResults.append(.success(response))

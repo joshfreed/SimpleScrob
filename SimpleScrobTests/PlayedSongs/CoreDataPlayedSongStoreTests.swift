@@ -63,6 +63,38 @@ class CoreDataPlayedSongStoreTests: XCTestCase {
         expect(managedSongs).to(haveCount(3))
     }
     
+    func testInsertMapsSongPropertiesToCoreData() {
+        // Given
+        let song = PlayedSongBuilder
+            .aSong()
+            .playedAt("2018-03-28 14:15:16")
+            .with(artist: "The Dear Hunter")
+            .with(albumArtist: "TDH & BF")
+            .with(album: "All Is As All Should Be")
+            .with(track: "The Right Wrong")
+            .with(status: ScrobbleStatus.notScrobbled, because: "Because reasons")
+            .build()
+        let songs = [song]
+        let insertExpectation = expectation(description: "insert complete")
+        
+        // When
+        sut.insert(playedSongs: songs) {
+            insertExpectation.fulfill()
+        }
+        
+        // Then
+        wait(for: [insertExpectation], timeout: 5)
+        let managedSong = getAll()[0]
+        expect(managedSong.persistentId).to(equal(String(song.persistentId)))
+        expect(managedSong.datePlayed).to(equal(song.date))
+        expect(managedSong.artist).to(equal("The Dear Hunter"))
+        expect(managedSong.albumArtist).to(equal("TDH & BF"))
+        expect(managedSong.album).to(equal("All Is As All Should Be"))
+        expect(managedSong.track).to(equal("The Right Wrong"))
+        expect(managedSong.reason).to(equal("Because reasons"))
+        expect(managedSong.status).to(equal(ScrobbleStatus.notScrobbled.rawValue))
+    }
+    
     func testDoesNotInsertSongsThatWereAlreadyInserted() {
         // Given
         let songs = [
@@ -114,6 +146,38 @@ class CoreDataPlayedSongStoreTests: XCTestCase {
         expect(unscrobbledSongs).to(containElementSatisfying({ $0.id == song4.id }))
     }
     
+    // MARK: Make played song
+    
+    func testMakePlayedSongFromEntity() {
+        // Given
+        let song = PlayedSongBuilder
+            .aSong()
+            .playedAt("2018-03-28 14:15:16")
+            .with(artist: "The Dear Hunter")
+            .with(albumArtist: "TDH & BF")
+            .with(album: "All Is As All Should Be")
+            .with(track: "The Right Wrong")
+            .with(status: ScrobbleStatus.notScrobbled, because: "Because reasons")
+            .build()
+        insert(song)
+        saveContext()
+        let managedSong = getAll().first!
+        
+        // When
+        let actual = sut.makePlayedSong(entity: managedSong)
+        
+        // Then
+        expect(actual).toNot(beNil())
+        expect(actual?.persistentId).to(equal(song.persistentId))
+        expect(actual?.date).to(equal(song.date))
+        expect(actual?.artist).to(equal("The Dear Hunter"))
+        expect(actual?.albumArtist).to(equal("TDH & BF"))
+        expect(actual?.album).to(equal("All Is As All Should Be"))
+        expect(actual?.track).to(equal("The Right Wrong"))
+        expect(actual?.reason).to(equal("Because reasons"))
+        expect(actual?.status).to(equal(ScrobbleStatus.notScrobbled))
+    }
+    
     // MARK: Helper Funcs
     
     func getAll() -> [ManagedPlayedSong] {
@@ -131,10 +195,7 @@ class CoreDataPlayedSongStoreTests: XCTestCase {
     }
     
     func insert(_ playedSong: PlayedSong) {
-        let entity = NSEntityDescription.insertNewObject(forEntityName: "PlayedSong", into: container.viewContext) as! ManagedPlayedSong
-        entity.persistentId = String(playedSong.persistentId)
-        entity.datePlayed = playedSong.date
-        entity.status = playedSong.status.rawValue
+        _ = sut.makeEntity(from: playedSong, into: container.viewContext)
     }
     
     func saveContext() {

@@ -18,6 +18,7 @@ class MediaItemBuilder {
     private var album: String?
     private var title: String?
     private var duration: Int?
+    private var albumArtist: String?
     
     static func anItem() -> MediaItemBuilder {
         return MediaItemBuilder()
@@ -63,7 +64,8 @@ class MediaItemBuilder {
             playCount: playCount,
             artist: artist,
             album: album,
-            title: title
+            title: title,
+            albumArtist: albumArtist
         )
         item.playbackDuration = TimeInterval(duration!)
         return item
@@ -112,6 +114,11 @@ class MediaItemBuilder {
     
     func withDuration(seconds: Int) -> MediaItemBuilder {
         self.duration = seconds
+        return self
+    }
+    
+    func withAlbumArtist(_ albumArtist: String) -> MediaItemBuilder {
+        self.albumArtist = albumArtist
         return self
     }
 }

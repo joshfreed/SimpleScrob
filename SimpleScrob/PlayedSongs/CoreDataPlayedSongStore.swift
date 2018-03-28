@@ -90,6 +90,7 @@ class CoreDataPlayedSongStore: PlayedSongStore {
         
         var playedSong = PlayedSong(persistentId: persistentId, date: date, status: status)
         playedSong.artist = entity.artist
+        playedSong.albumArtist = entity.albumArtist
         playedSong.album = entity.album
         playedSong.track = entity.track
         playedSong.reason = entity.reason
@@ -100,6 +101,7 @@ class CoreDataPlayedSongStore: PlayedSongStore {
         let entity = NSEntityDescription.insertNewObject(forEntityName: "PlayedSong", into: context) as! ManagedPlayedSong
         entity.persistentId = String(playedSong.persistentId)
         entity.artist = playedSong.artist
+        entity.albumArtist = playedSong.albumArtist
         entity.album = playedSong.album
         entity.track = playedSong.track
         entity.datePlayed = playedSong.date

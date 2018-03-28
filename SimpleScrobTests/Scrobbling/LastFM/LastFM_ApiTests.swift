@@ -42,28 +42,49 @@ class LastFM_ApiTests: XCTestCase {
         }
     }
     
-    // MARK: scrobble
+    // MARK: Song params
     
     func testSongParams() {
-        var cmp = DateComponents()
-        cmp.hour = -1
-        let calendar = Calendar.current
-        let date = Date()
-        let lastPlayedDate = calendar.date(byAdding: cmp, to: date)!
+        let song = PlayedSongBuilder
+            .aSong()
+            .playedAt("2018-03-28 14:15:16")
+            .with(artist: "Beardfish")
+            .with(album: "Sleeping in Traffic")
+            .with(track: "Sunrise")
+            .with(albumArtist: "Something Something")
+            .build()
+        var params: [String: String] = [:]
         
-        let songs = [
-            PlayedSong(persistentId: 1, date: lastPlayedDate, artist: "Beardfish", album: "Sleeping in Traffic", track: "Sunrise")
-        ]
+        sut.addSongParams(params: &params, song: song, index: 0)
         
-        sut.scrobble(songs: songs) { _ in }
-        
-        expect(self.engine.post_params).toNot(beNil())
-        let params = engine.post_params!
         expect(params["artist[0]"]).to(equal("Beardfish"))
         expect(params["album[0]"]).to(equal("Sleeping in Traffic"))
         expect(params["track[0]"]).to(equal("Sunrise"))
-        expect(params["timestamp[0]"]).to(equal(songs[0].scrobbleTimestamp))
+        expect(params["albumArtist[0]"]).to(equal("Something Something"))
+        expect(params["timestamp[0]"]).to(equal(song.scrobbleTimestamp))
     }
+    
+    func testSongParams_doesNotIncludeAlbumArtistWhenNil() {
+        let song = PlayedSongBuilder
+            .aSong()
+            .playedAt("2018-03-28 14:15:16")
+            .with(artist: "Beardfish")
+            .with(album: "Sleeping in Traffic")
+            .with(track: "Sunrise")
+            .with(albumArtist: nil)
+            .build()
+        var params: [String: String] = [:]
+        
+        sut.addSongParams(params: &params, song: song, index: 0)
+        
+        expect(params.keys.contains("albumArtist[0]")).to(beFalse())
+        expect(params["artist[0]"]).to(equal("Beardfish"))
+        expect(params["album[0]"]).to(equal("Sleeping in Traffic"))
+        expect(params["track[0]"]).to(equal("Sunrise"))
+        expect(params["timestamp[0]"]).to(equal(song.scrobbleTimestamp))
+    }
+
+    // MARK: scrobble
     
     func testTranslatesJSONToResponseObject() {
         let json: [String: Any] = [
