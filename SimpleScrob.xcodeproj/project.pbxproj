@@ -613,7 +613,6 @@
 				53825B821F7E8CC600566F2C /* Resources */,
 				53D6AD1D1F82AD82005F6972 /* Embed Frameworks */,
 				0AC90B05616E7874942B2D6F /* [CP] Embed Pods Frameworks */,
-				0C32E4B76EAAE77095D80CE2 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -633,7 +632,6 @@
 				53825B951F7E8CC700566F2C /* Frameworks */,
 				53825B961F7E8CC700566F2C /* Resources */,
 				B8BC72ACF413D51FDCF53E02 /* [CP] Embed Pods Frameworks */,
-				C8024E4D49C368ABCDE9D327 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -653,8 +651,6 @@
 				53825B9F1F7E8CC700566F2C /* Sources */,
 				53825BA01F7E8CC700566F2C /* Frameworks */,
 				53825BA11F7E8CC700566F2C /* Resources */,
-				F55D1E58F6759F7B3E559129 /* [CP] Embed Pods Frameworks */,
-				88CFA439D99042F0B34568B5 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -802,21 +798,6 @@
 			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-SimpleScrob/Pods-SimpleScrob-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
-		0C32E4B76EAAE77095D80CE2 /* [CP] Copy Pods Resources */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "[CP] Copy Pods Resources";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-SimpleScrob/Pods-SimpleScrob-resources.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
 		15F8FE463CB68D42D6BA4368 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -853,21 +834,6 @@
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
-		88CFA439D99042F0B34568B5 /* [CP] Copy Pods Resources */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "[CP] Copy Pods Resources";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-SimpleScrobUITests/Pods-SimpleScrobUITests-resources.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
 		AAEE1CBC0B9A04F23AC252AB /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -902,36 +868,6 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-SimpleScrobTests/Pods-SimpleScrobTests-frameworks.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		C8024E4D49C368ABCDE9D327 /* [CP] Copy Pods Resources */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "[CP] Copy Pods Resources";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-SimpleScrobTests/Pods-SimpleScrobTests-resources.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		F55D1E58F6759F7B3E559129 /* [CP] Embed Pods Frameworks */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "[CP] Embed Pods Frameworks";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-SimpleScrobUITests/Pods-SimpleScrobUITests-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 /* End PBXShellScriptBuildPhase section */
@@ -1179,6 +1115,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = Q96RZM5NAK;
 				INFOPLIST_FILE = SimpleScrob/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.3;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.joshfreed.SimpleScrob;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -1198,6 +1135,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = Q96RZM5NAK;
 				INFOPLIST_FILE = SimpleScrob/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.3;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.joshfreed.SimpleScrob;
 				PRODUCT_NAME = "$(TARGET_NAME)";
