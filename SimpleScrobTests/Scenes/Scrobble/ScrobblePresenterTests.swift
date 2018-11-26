@@ -38,6 +38,10 @@ class ScrobblePresenterTests: XCTestCase {
     // MARK: Test doubles
 
     class ScrobbleDisplayLogicSpy: ScrobbleDisplayLogic {
+        func requestAppStoreReview() {
+            
+        }
+        
         func displayFirstTimeView(viewModel: Scrobble.Refresh.ViewModel) {
             
         }

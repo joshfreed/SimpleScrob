@@ -30,6 +30,9 @@ class ScrobbleInteractorTests: XCTestCase {
         continueAfterFailure = false
         df.dateFormat = "yyyy-MM-dd HH:mm:ss"
         setupScrobbleInteractor()
+        
+        UserDefaults.standard.removeObject(forKey: UserDefaultsKeys.successfulScrobbleCount)
+        UserDefaults.standard.removeObject(forKey: UserDefaultsKeys.lastAppStoreReviewRequestDate)
     }
 
     override func tearDown() {
@@ -187,6 +190,14 @@ class ScrobbleInteractorTests: XCTestCase {
             
             expect(response.username).to(beNil())
         }
+        
+        var presentRequestAppStoreReviewCalled = false
+        func presentRequestAppStoreReview() {
+            presentRequestAppStoreReviewCalled = true
+        }
+        func verifyPresentedRequestAppStoreReview() {
+            expect(self.presentRequestAppStoreReviewCalled).to(beTrue())
+        }
     }
 
     // MARK: Tests
@@ -286,6 +297,87 @@ class ScrobbleInteractorTests: XCTestCase {
         worker.verifySubmitted()
     }
     
+    // MARK: Requesting app store reviews
+    
+    func test_shouldRequestAppStoreReview_false_if_there_has_not_been_enough_successful_scrobbles() {
+        UserDefaults.standard.set(0, forKey: UserDefaultsKeys.successfulScrobbleCount)
+        UserDefaults.standard.set(10.days.earlier.timeIntervalSince1970, forKey: UserDefaultsKeys.lastAppStoreReviewRequestDate)
+        expect(self.sut.shouldRequestAppStoreReview()).to(beFalse())
+    }
+
+    func test_shouldRequestAppStoreReview_true_if_there_was_enough_activity_and_have_never_asked_before() {
+        UserDefaults.standard.set(5, forKey: UserDefaultsKeys.successfulScrobbleCount)
+        UserDefaults.standard.removeObject(forKey: UserDefaultsKeys.lastAppStoreReviewRequestDate)
+        expect(self.sut.shouldRequestAppStoreReview()).to(beTrue())
+    }
+    
+    func test_shouldRequestAppStoreReview_true_if_there_was_enough_activity_and_enough_time_has_passed() {
+        UserDefaults.standard.set(5, forKey: UserDefaultsKeys.successfulScrobbleCount)
+        UserDefaults.standard.set(8.days.earlier.timeIntervalSince1970, forKey: UserDefaultsKeys.lastAppStoreReviewRequestDate)
+        expect(self.sut.shouldRequestAppStoreReview()).to(beTrue())
+    }
+    
+    func test_shouldRequestAppStoreReview_false_if_there_has_not_been_enough_time_since_last_requested() {
+        UserDefaults.standard.set(5, forKey: UserDefaultsKeys.successfulScrobbleCount)
+        UserDefaults.standard.set(4.days.earlier.timeIntervalSince1970, forKey: UserDefaultsKeys.lastAppStoreReviewRequestDate)
+        expect(self.sut.shouldRequestAppStoreReview()).to(beFalse())
+    }
+    
+    func test_requestAppStoreReview_resets_count() {
+        UserDefaults.standard.set(5, forKey: UserDefaultsKeys.successfulScrobbleCount)
+        
+        sut.requestAppStoreReview()
+        
+        let count = UserDefaults.standard.integer(forKey: UserDefaultsKeys.successfulScrobbleCount)
+        expect(count).to(equal(0))
+    }
+    
+    func test_requestAppStoreReview_stores_current_timestamp() {
+        UserDefaults.standard.set(15.days.earlier.timeIntervalSince1970, forKey: UserDefaultsKeys.lastAppStoreReviewRequestDate)
+        
+        sut.requestAppStoreReview()
+        
+        let timestamp = UserDefaults.standard.double(forKey: UserDefaultsKeys.lastAppStoreReviewRequestDate)
+        expect(timestamp).to(beCloseTo(Date().timeIntervalSince1970, within: 0.01))
+    }
+    
+    func test_requestAppStoreReview_calls_presenter() {
+        sut.requestAppStoreReview()
+        spy.verifyPresentedRequestAppStoreReview()
+    }
+    
+    func test_processComplete_increments_count() {
+        // Given
+        let songs = [
+            PlayedSongBuilder.aSong().with(status: .scrobbled).build(),
+            PlayedSongBuilder.aSong().with(status: .scrobbled).build(),
+            PlayedSongBuilder.aSong().with(status: .scrobbled).build()
+        ]
+        
+        // When
+        sut.processComplete(songs)
+        
+        // Then
+        let count = UserDefaults.standard.integer(forKey: UserDefaultsKeys.successfulScrobbleCount)
+        expect(count).to(equal(1))
+    }
+    
+    func test_processComplete_does_not_increase_count_if_any_songs_failed_to_scrobble() {
+        // Given
+        UserDefaults.standard.set(2, forKey: UserDefaultsKeys.successfulScrobbleCount)
+        let songs = [
+            PlayedSongBuilder.aSong().with(status: .scrobbled).build(),
+            PlayedSongBuilder.aSong().with(status: .failed).build(),
+            PlayedSongBuilder.aSong().with(status: .scrobbled).build()
+        ]
+        
+        // When
+        sut.processComplete(songs)
+        
+        // Then
+        let count = UserDefaults.standard.integer(forKey: UserDefaultsKeys.successfulScrobbleCount)
+        expect(count).to(equal(2))
+    }
     
     // Helper Funcs
     

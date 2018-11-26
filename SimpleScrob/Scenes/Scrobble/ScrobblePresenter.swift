@@ -19,6 +19,7 @@ protocol ScrobblePresentationLogic {
     func presentScrobblingComplete(response: Scrobble.SubmitScrobbles.Response)
     func presentScrobbleFailedNotLoggedIn()
     func presentCurrentUser(response: Scrobble.GetCurrentUser.Response)
+    func presentRequestAppStoreReview()
 }
 
 class ScrobblePresenter: ScrobblePresentationLogic {
@@ -66,6 +67,12 @@ class ScrobblePresenter: ScrobblePresentationLogic {
     func presentCurrentUser(response: Scrobble.GetCurrentUser.Response) {
         let viewModel = Scrobble.GetCurrentUser.ViewModel(username: currentUserText(currentUserName: response.username))
         viewController?.displayCurrentUser(viewModel: viewModel)
+    }
+    
+    // MARK: Request app store review
+    
+    func presentRequestAppStoreReview() {
+        viewController?.requestAppStoreReview()
     }
 
     // MARK: Helpers

@@ -128,6 +128,8 @@ class ScrobbleInteractor: ScrobbleBusinessLogic, ScrobbleDataStore {
             }
 
             self.isSubmittingScrobbles = false
+            
+            self.requestAppStoreReviewIfAppropriate(updatedSongs)
         }
     }
     
@@ -144,5 +146,39 @@ class ScrobbleInteractor: ScrobbleBusinessLogic, ScrobbleDataStore {
         
         let response = Scrobble.GetCurrentUser.Response(username: worker.currentUserName)
         presenter?.presentCurrentUser(response: response)
+    }
+    
+    // MARK: Request app store review
+    
+    func requestAppStoreReviewIfAppropriate(_ updatedSongs: [PlayedSong]) {
+        processComplete(updatedSongs)
+        
+        if shouldRequestAppStoreReview() {
+            requestAppStoreReview()
+        }
+    }
+    
+    func processComplete(_ updatedSongs: [PlayedSong]) {
+        if updatedSongs.contains(where: { $0.status != .scrobbled }) {
+            return
+        }
+        
+        var count = UserDefaults.standard.integer(forKey: UserDefaultsKeys.successfulScrobbleCount)
+        count += 1
+        DDLogDebug("Setting new successful scrobble count to \(count)")
+        UserDefaults.standard.set(count, forKey: UserDefaultsKeys.successfulScrobbleCount)
+    }
+    
+    func shouldRequestAppStoreReview() -> Bool {
+        let count = UserDefaults.standard.integer(forKey: UserDefaultsKeys.successfulScrobbleCount)
+        let lastRequestTimeStamp = UserDefaults.standard.double(forKey: UserDefaultsKeys.lastAppStoreReviewRequestDate)
+        return count >= 5 && lastRequestTimeStamp < 7.days.earlier.timeIntervalSince1970
+    }
+    
+    func requestAppStoreReview() {
+        DDLogDebug("Requesting app store review")
+        UserDefaults.standard.set(0, forKey: UserDefaultsKeys.successfulScrobbleCount)
+        UserDefaults.standard.set(Date().timeIntervalSince1970, forKey: UserDefaultsKeys.lastAppStoreReviewRequestDate)
+        presenter?.presentRequestAppStoreReview()
     }
 }

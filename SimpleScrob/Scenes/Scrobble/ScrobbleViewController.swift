@@ -13,6 +13,7 @@
 import UIKit
 import CocoaLumberjack
 import MediaPlayer
+import StoreKit
 
 protocol ScrobbleDisplayLogic: class {
     func displaySearchingForNewScrobbles()
@@ -22,6 +23,7 @@ protocol ScrobbleDisplayLogic: class {
     func displayScrobblingComplete(viewModel: Scrobble.SubmitScrobbles.ViewModel)
     func displayScrobbleFailedNotSignedIn()
     func displayCurrentUser(viewModel: Scrobble.GetCurrentUser.ViewModel)
+    func requestAppStoreReview()
 }
 
 class ScrobbleViewController: UIViewController, ScrobbleDisplayLogic {
@@ -268,6 +270,15 @@ class ScrobbleViewController: UIViewController, ScrobbleDisplayLogic {
     func signOut() {
         let request = Scrobble.SignOut.Request()
         interactor?.signOut(request: request)
+    }
+    
+    // MARK: Request app store review
+    
+    func requestAppStoreReview() {
+        let twoSecondsFromNow = DispatchTime.now() + 2.0
+        DispatchQueue.main.asyncAfter(deadline: twoSecondsFromNow) {
+            SKStoreReviewController.requestReview()
+        }        
     }
 }
 

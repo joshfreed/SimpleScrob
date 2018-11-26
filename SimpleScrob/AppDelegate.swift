@@ -141,3 +141,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         }
     }
 }
+
+struct UserDefaultsKeys {
+    static var successfulScrobbleCount: String = "successfulScrobbleCount"
+    static var lastAppStoreReviewRequestDate: String = "lastAppStoreReviewRequestDate"    
+}
