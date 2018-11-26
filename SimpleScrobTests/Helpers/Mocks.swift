@@ -45,10 +45,6 @@ class MockMediaLibrary: ScrobbleMediaLibrary {
 }
 
 class MockDatabase: PlayedSongStore {
-    func findById(_ id: PlayedSongId) -> PlayedSong? {
-        return nil
-    }
-    
     var unscrobbledSongs: [PlayedSong] = []
     func findUnscrobbledSongs(completion: @escaping ([PlayedSong]) -> ()) {
         completion(unscrobbledSongs)

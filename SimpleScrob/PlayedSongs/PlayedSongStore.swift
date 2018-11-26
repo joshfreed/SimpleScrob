@@ -9,7 +9,6 @@
 import Foundation
 
 protocol PlayedSongStore: GetRecentScrobbles {
-    func findById(_ id: PlayedSongId) -> PlayedSong?
     func findUnscrobbledSongs(completion: @escaping ([PlayedSong]) -> ())
     func insert(playedSongs: [PlayedSong], completion: @escaping () -> ())
     func save(playedSongs: [PlayedSong], completion: @escaping () -> ())    

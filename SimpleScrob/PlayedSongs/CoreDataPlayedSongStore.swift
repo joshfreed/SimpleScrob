@@ -34,13 +34,13 @@ class CoreDataPlayedSongStore: PlayedSongStore {
         }
     }
     
-    func findById(_ id: PlayedSongId) -> PlayedSong? {
+    func findById(_ id: PlayedSongId, in context: NSManagedObjectContext) -> PlayedSong? {
         let request: NSFetchRequest<ManagedPlayedSong> = ManagedPlayedSong.fetchRequest()
         request.predicate = NSPredicate(format: "persistentId == %@ AND datePlayed == %@", String(id.persistentId), id.date as NSDate)
         
         var managedSong: ManagedPlayedSong?
         do {
-            let managedSongs: [ManagedPlayedSong] = try container.viewContext.fetch(request)
+            let managedSongs: [ManagedPlayedSong] = try context.fetch(request)
             if managedSongs.count == 1 {
                 managedSong = managedSongs.first
             } else if managedSongs.count > 1 {
@@ -60,21 +60,26 @@ class CoreDataPlayedSongStore: PlayedSongStore {
     }
     
     func findUnscrobbledSongs(completion: @escaping ([PlayedSong]) -> ()) {
-        let request: NSFetchRequest<ManagedPlayedSong> = ManagedPlayedSong.fetchRequest()
-        request.predicate = NSPredicate(format: "status != 'scrobbled' && status != 'ignored'")
-        
-        let managedSongs: [ManagedPlayedSong]
-        
-        do {
-            managedSongs = try container.viewContext.fetch(request)
-        } catch {
-            let nserror = error as NSError
-            DDLogError("Unresolved error \(nserror), \(nserror.userInfo)")
-            fatalError("Unresolved error \(nserror), \(nserror.userInfo)")
+        DDLogVerbose("Finding unscrobbled songs")
+
+        container.performBackgroundTask { context in
+            let request: NSFetchRequest<ManagedPlayedSong> = ManagedPlayedSong.fetchRequest()
+            request.predicate = NSPredicate(format: "status != 'scrobbled' && status != 'ignored'")
+            
+            let managedSongs: [ManagedPlayedSong]
+            
+            do {
+                managedSongs = try context.fetch(request)
+            } catch {
+                let nserror = error as NSError
+                DDLogError("Unresolved error \(nserror), \(nserror.userInfo)")
+                fatalError("Unresolved error \(nserror), \(nserror.userInfo)")
+            }
+            
+            let playedSongs = managedSongs.compactMap(self.makePlayedSong)
+            DDLogVerbose("Found \(playedSongs.count) unscrobbled songs from core data")
+            completion(playedSongs)
         }
-        
-        let playedSongs = managedSongs.flatMap(makePlayedSong)
-        completion(playedSongs)
     }
     
     func makePlayedSong(entity: ManagedPlayedSong) -> PlayedSong? {
@@ -84,8 +89,8 @@ class CoreDataPlayedSongStore: PlayedSongStore {
             let statusStr = entity.status,
             let status = ScrobbleStatus(rawValue: statusStr),
             let date = entity.datePlayed
-            else {
-                return nil
+        else {
+            return nil
         }
         
         var playedSong = PlayedSong(persistentId: persistentId, date: date, status: status)
@@ -111,9 +116,10 @@ class CoreDataPlayedSongStore: PlayedSongStore {
     }
     
     func insert(playedSongs: [PlayedSong], completion: @escaping () -> ()) {
+        DDLogVerbose("Inserting new played songs. Count: \(playedSongs.count)")
         container.performBackgroundTask { context in
             for song in playedSongs {
-                if self.findById(song.id) == nil {
+                if self.findById(song.id, in: context) == nil {
                     let _ = self.makeEntity(from: song, into: context)
                 }
             }
@@ -125,6 +131,7 @@ class CoreDataPlayedSongStore: PlayedSongStore {
                 fatalError("Failure to save context: \(error)")
             }
             
+            DDLogVerbose("Done inserting new played songs")
             completion()
         }
     }

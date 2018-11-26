@@ -34,7 +34,7 @@ class CoreDataPlayedSongStoreTests: XCTestCase {
         saveContext()
         
         // When
-        let actual = sut.findById(playedSong.id)
+        let actual = sut.findById(playedSong.id, in: container.viewContext)
         
         // Then
         expect(actual).toNot(beNil())
