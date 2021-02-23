@@ -1,5 +1,4 @@
 PODS:
-  - Alamofire (5.4.1)
   - CocoaAsyncSocket (7.6.5)
   - CocoaLumberjack (3.7.0):
     - CocoaLumberjack/Core (= 3.7.0)
@@ -14,23 +13,18 @@ PODS:
   - PaperTrailLumberjack/Swift (0.1.8):
     - CocoaLumberjack/Swift (~> 3.0)
     - PaperTrailLumberjack/Core
-  - SwiftyJSON (5.0.0)
 
 DEPENDENCIES:
-  - Alamofire
   - DateToolsSwift
   - Nimble
   - PaperTrailLumberjack/Swift (from `https://github.com/joshfreed/papertraillumberjack`)
-  - SwiftyJSON
 
 SPEC REPOS:
   trunk:
-    - Alamofire
     - CocoaAsyncSocket
     - CocoaLumberjack
     - DateToolsSwift
     - Nimble
-    - SwiftyJSON
 
 EXTERNAL SOURCES:
   PaperTrailLumberjack:
@@ -42,14 +36,12 @@ CHECKOUT OPTIONS:
     :git: https://github.com/joshfreed/papertraillumberjack
 
 SPEC CHECKSUMS:
-  Alamofire: 2291f7d21ca607c491dd17642e5d40fdcda0e65c
   CocoaAsyncSocket: 065fd1e645c7abab64f7a6a2007a48038fdc6a99
   CocoaLumberjack: e8955b9d337ac307103b0a34fd141c32f27e53c5
   DateToolsSwift: 4207ada6ad615d8dc076323d27037c94916dbfa6
   Nimble: 3b4ec3fd40f1dc178058e0981107721c615643d8
   PaperTrailLumberjack: fb0664959c23b17e9663ad01ebd242d34d2082fd
-  SwiftyJSON: 36413e04c44ee145039d332b4f4e2d3e8d6c4db7
 
-PODFILE CHECKSUM: dc1ee70979455b3d57b86b55cc1937a86317c90d
+PODFILE CHECKSUM: 5d4e8c68993c403411f4b399bb1c964aa2e80fbc
 
 COCOAPODS: 1.10.1

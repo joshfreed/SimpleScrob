@@ -6,10 +6,8 @@ target 'SimpleScrob' do
   use_frameworks!
 
   # Pods for SimpleScrob
-  pod 'Alamofire'
   pod 'DateToolsSwift'
   pod 'PaperTrailLumberjack/Swift', :git => 'https://github.com/joshfreed/papertraillumberjack'
-  pod 'SwiftyJSON'
 
   target 'SimpleScrobTests' do
     inherit! :search_paths
