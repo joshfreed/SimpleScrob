@@ -12,7 +12,6 @@
 
 import UIKit
 import CocoaLumberjack
-import JFLib
 
 protocol ScrobbleBusinessLogic {
     func refresh(request: Scrobble.Refresh.Request)
@@ -82,7 +81,7 @@ class ScrobbleInteractor: ScrobbleBusinessLogic, ScrobbleDataStore {
         presenter?.presentSearchingForNewScrobbles()
 
         if request.delay {
-            delay(seconds: 1) {
+            DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(1)) {
                 self.doSearchForNewSongsToScrobble(request: request)
             }
         } else {

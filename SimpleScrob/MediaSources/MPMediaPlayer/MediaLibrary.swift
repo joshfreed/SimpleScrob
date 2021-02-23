@@ -8,7 +8,6 @@
 
 import Foundation
 import MediaPlayer
-import JFLib
 import CocoaLumberjack
 
 typealias MediaItemArtwork = MPMediaItemArtwork

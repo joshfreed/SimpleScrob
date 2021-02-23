@@ -12,7 +12,6 @@
 
 import UIKit
 import CocoaLumberjack
-import JFLib
 
 protocol ViewScrobblesPresentationLogic {
     func presentScrobbleHistory(response: ViewScrobbles.GetScrobbleHistory.Response)

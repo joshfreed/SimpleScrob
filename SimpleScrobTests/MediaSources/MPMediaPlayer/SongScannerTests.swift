@@ -9,7 +9,6 @@
 import XCTest
 @testable import SimpleScrob
 import Nimble
-import JFLib
 
 class SongScannerTests: XCTestCase {
     var sut: SongScanner!

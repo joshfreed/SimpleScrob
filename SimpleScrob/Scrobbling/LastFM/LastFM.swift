@@ -7,7 +7,6 @@
 //
 
 import Foundation
-import JFLib
 import Alamofire
 import CocoaLumberjack
 
@@ -92,7 +91,7 @@ class FakeLastFM: LastFMAPI {
     }
     
     func scrobble(songs: [PlayedSong], completion: @escaping (LastFM.Result<LastFM.ScrobbleResponse>) -> ()) {
-        delay(seconds: 1.2) {
+        DispatchQueue.main.asyncAfter(deadline: .now() + .milliseconds(1200)) {
 //            completion(.failure(LastFM.ErrorType.error(code: 77, message: "YOU SUCK")))
             
 //            var ignored = LastFM.ScrobbleResponse.Scrobble()

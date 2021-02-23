@@ -7,7 +7,6 @@
 //
 
 import UIKit
-import JFLib
 
 @IBDesignable
 class SSTextField: NibDesignable {

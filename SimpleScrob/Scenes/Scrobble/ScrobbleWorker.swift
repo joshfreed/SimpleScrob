@@ -11,7 +11,6 @@
 //
 
 import UIKit
-import JFLib
 import CocoaLumberjack
 
 class ScrobbleWorker {
