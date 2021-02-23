@@ -11,7 +11,6 @@ import CocoaLumberjack
 import Alamofire
 
 extension LastFM {
-    
     class RestEngine: LastFMAPIEngine {
         let apiKey: String
         let secret: String
@@ -30,12 +29,11 @@ extension LastFM {
             }
             DDLogDebug("POST \(method) \(filteredParams.debugDescription)")
             
-            Alamofire
-                .request("https://ws.audioscrobbler.com/2.0", method: .post, parameters: params)
+            AF.request("https://ws.audioscrobbler.com/2.0", method: .post, parameters: params)
                 .responseJSON { response in
                     DDLogVerbose(response.debugDescription)
                     
-                    if let json = response.result.value as? [String: Any] {
+                    if let json = response.value as? [String: Any] {
                         if let code = json["error"] as? Int {
                             let error = LastFM.ErrorType.error(code: code, message: json["message"] as? String)
                             completion(.failure(error))
@@ -47,7 +45,7 @@ extension LastFM {
                     }
             }
         }
-        
+
         func makeParams(method: String, params: [String: String]) -> [String: String] {
             var _params = params
             _params["method"] = method
