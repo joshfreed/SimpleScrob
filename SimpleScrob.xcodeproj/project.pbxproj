@@ -776,7 +776,7 @@
 			files = (
 			);
 			inputPaths = (
-				"${SRCROOT}/Pods/Target Support Files/Pods-SimpleScrob/Pods-SimpleScrob-frameworks.sh",
+				"${PODS_ROOT}/Target Support Files/Pods-SimpleScrob/Pods-SimpleScrob-frameworks.sh",
 				"${BUILT_PRODUCTS_DIR}/Alamofire/Alamofire.framework",
 				"${BUILT_PRODUCTS_DIR}/CocoaAsyncSocket/CocoaAsyncSocket.framework",
 				"${BUILT_PRODUCTS_DIR}/CocoaLumberjack/CocoaLumberjack.framework",
@@ -795,7 +795,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-SimpleScrob/Pods-SimpleScrob-frameworks.sh\"\n";
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-SimpleScrob/Pods-SimpleScrob-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		15F8FE463CB68D42D6BA4368 /* [CP] Check Pods Manifest.lock */ = {
@@ -858,7 +858,7 @@
 			files = (
 			);
 			inputPaths = (
-				"${SRCROOT}/Pods/Target Support Files/Pods-SimpleScrobTests/Pods-SimpleScrobTests-frameworks.sh",
+				"${PODS_ROOT}/Target Support Files/Pods-SimpleScrobTests/Pods-SimpleScrobTests-frameworks.sh",
 				"${BUILT_PRODUCTS_DIR}/Nimble/Nimble.framework",
 			);
 			name = "[CP] Embed Pods Frameworks";
@@ -867,7 +867,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-SimpleScrobTests/Pods-SimpleScrobTests-frameworks.sh\"\n";
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-SimpleScrobTests/Pods-SimpleScrobTests-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 /* End PBXShellScriptBuildPhase section */
