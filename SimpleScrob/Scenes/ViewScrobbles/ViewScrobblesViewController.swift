@@ -69,7 +69,7 @@ class ViewScrobblesViewController: UITableViewController, ViewScrobblesDisplayLo
         super.viewDidLoad()
         
         tableView.tableFooterView = UIView(frame: CGRect.zero)
-        tableView.rowHeight = UITableViewAutomaticDimension
+        tableView.rowHeight = UITableView.automaticDimension
         tableView.estimatedRowHeight = 80
         
         getScrobbleHistory()

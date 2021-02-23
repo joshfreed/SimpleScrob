@@ -15,7 +15,7 @@ class ReadyToScrobbleViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        NotificationCenter.default.addObserver(self, selector: #selector(applicationWillEnterForeground), name: .UIApplicationWillEnterForeground, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(applicationWillEnterForeground), name: UIApplication.willEnterForegroundNotification, object: nil)
         
         mediaSource.initialize(completion: {})
     }
@@ -25,7 +25,7 @@ class ReadyToScrobbleViewController: UIViewController {
             let storyboard = UIStoryboard(name: "Main", bundle: Bundle.main)
             let vc = storyboard.instantiateViewController(withIdentifier: "ScrobbleViewController")
             present(vc, animated: false) {
-                NotificationCenter.default.removeObserver(self, name: .UIApplicationWillEnterForeground, object: nil)
+                NotificationCenter.default.removeObserver(self, name: UIApplication.willEnterForegroundNotification, object: nil)
             }
         }
     }

@@ -108,7 +108,7 @@ class FakeMediaLibrary: MediaLibrary {
     }
     
     func play(id: Int, times: Int, lastPlayedDate dateString: String) {
-        if let index = items.index(where: { $0.id == id }) {
+        if let index = items.firstIndex(where: { $0.id == id }) {
             var updated = MediaItem(
                 id: items[index].id,
                 lastPlayedDate: Date(dateString: dateString, format: "yyyy-MM-dd HH:mm:ss"),

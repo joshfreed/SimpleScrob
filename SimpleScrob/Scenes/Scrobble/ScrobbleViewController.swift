@@ -93,7 +93,7 @@ class ScrobbleViewController: UIViewController, ScrobbleDisplayLogic {
         super.viewDidLoad()
         
         if !UserDefaults.standard.bool(forKey: "isTest") {
-            NotificationCenter.default.addObserver(self, selector: #selector(applicationDidBecomeActive), name: .UIApplicationDidBecomeActive, object: nil)
+            NotificationCenter.default.addObserver(self, selector: #selector(applicationDidBecomeActive), name: UIApplication.didBecomeActiveNotification, object: nil)
             NotificationCenter.default.addObserver(self, selector: #selector(mediaLibraryDidChange), name: .MPMediaLibraryDidChange, object: nil)
         }
 

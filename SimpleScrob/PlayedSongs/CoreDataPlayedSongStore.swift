@@ -195,7 +195,7 @@ class CoreDataPlayedSongStore: PlayedSongStore {
                 fatalError("Unresolved error \(nserror), \(nserror.userInfo)")
             }
             
-            completion(scrobbles.flatMap(self.makePlayedSong))
+            completion(scrobbles.compactMap(self.makePlayedSong))
         }
     }
 }

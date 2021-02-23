@@ -21,7 +21,7 @@ class CoreDataMediaItemStore: MediaItemStore {
         // todo: make async? background thread?
         
         let managedItems = fetchManagedMediaItems(for: ids, in: container.viewContext)
-        let models = managedItems.flatMap { CoreDataMediaItemTranslator.makeScrobbleMediaItem(entity: $0) }
+        let models = managedItems.compactMap { CoreDataMediaItemTranslator.makeScrobbleMediaItem(entity: $0) }
         completion(models)
     }
     

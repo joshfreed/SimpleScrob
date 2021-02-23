@@ -15,7 +15,8 @@ class MediaAuthDeniedViewController: UIViewController {
     }
     
     @IBAction func openSettings(_ sender: UIButton) {
-        let settingUrl = URL(string: UIApplicationOpenSettingsURLString)!
+        let settingUrl = URL(string: UIApplication.openSettingsURLString)!
+        
         UIApplication.shared.open(settingUrl) { isOpen in
             if !isOpen {
                 debugPrint("Error opening:\(settingUrl.absoluteString)")
