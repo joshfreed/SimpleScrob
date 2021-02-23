@@ -58,11 +58,10 @@ extension LastFM {
         }
         
         func sign(_ params: [String: String]) -> String {
-            var _params = params
             var signature = ""
-            for key in _params.keys.sorted() {
+            for key in params.keys.sorted() {
                 signature += key
-                signature += _params[key] ?? ""
+                signature += params[key] ?? ""
             }
             signature += secret
             DDLogVerbose(signature)
@@ -70,12 +69,17 @@ extension LastFM {
         }
         
         func MD5(string: String) -> String {
-            let messageData = string.data(using:.utf8)!
-            var digestData = Data(count: Int(CC_MD5_DIGEST_LENGTH))
-            
-            _ = digestData.withUnsafeMutableBytes {digestBytes in
-                messageData.withUnsafeBytes {messageBytes in
-                    CC_MD5(messageBytes, CC_LONG(messageData.count), digestBytes)
+            let length = Int(CC_MD5_DIGEST_LENGTH)
+            let messageData = string.data(using: .utf8)!
+            var digestData = Data(count: length)
+
+            _ = digestData.withUnsafeMutableBytes { digestBytes -> UInt8 in
+                messageData.withUnsafeBytes { messageBytes -> UInt8 in
+                    if let messageBytesBaseAddress = messageBytes.baseAddress, let digestBytesBlindMemory = digestBytes.bindMemory(to: UInt8.self).baseAddress {
+                        let messageLength = CC_LONG(messageData.count)
+                        CC_MD5(messageBytesBaseAddress, messageLength, digestBytesBlindMemory)
+                    }
+                    return 0
                 }
             }
             

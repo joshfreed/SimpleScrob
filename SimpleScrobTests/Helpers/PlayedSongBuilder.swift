@@ -33,13 +33,13 @@ class PlayedSongBuilder {
             playedDate = Date()
         }
         if artist == nil {
-            artist = "Artist\(persistentId)"
+            artist = "Artist\(persistentId!)"
         }
         if album == nil {
-            album = "Album\(persistentId)"
+            album = "Album\(persistentId!)"
         }
         if track == nil {
-            track = "Track\(persistentId)"
+            track = "Track\(persistentId!)"
         }
         
         var song = PlayedSong(persistentId: persistentId!, date: playedDate!)

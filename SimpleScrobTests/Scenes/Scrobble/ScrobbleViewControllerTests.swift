@@ -38,7 +38,7 @@ class ScrobbleViewControllerTests: XCTestCase {
     func setupScrobbleViewController() {
         let bundle = Bundle.main
         let storyboard = UIStoryboard(name: "Main", bundle: bundle)
-        sut = storyboard.instantiateViewController(withIdentifier:"ScrobbleViewController") as! ScrobbleViewController
+        sut = storyboard.instantiateViewController(withIdentifier:"ScrobbleViewController") as? ScrobbleViewController
     }
 
     func loadView() {

@@ -151,7 +151,7 @@ class ScrobbleInteractorTests: XCTestCase {
         func verifyPresentedScrobblingComplete(error: Error?) {
             expect(self.presentScrobblingCompleteCallCount).to(equal(1))
             expect(self.presentScrobblingCompleteResponse).toNot(beNil())
-            if let error = error {
+            if error != nil {
                 expect(self.presentScrobblingCompleteResponse?.error).toNot(beNil())
 //                expect(self.presentScrobblingCompleteResponse?.error).to(matchError(error)) // this should work, but doesn't compile?!
             } else {

@@ -43,13 +43,13 @@ class MediaItemBuilder {
             lastId += 1
         }
         if artist == nil {
-            artist = "Artist\(id)"
+            artist = "Artist\(id!)"
         }
         if album == nil {
-            album = "Album\(id)"
+            album = "Album\(id!)"
         }
         if title == nil {
-            title = "Track\(id)"
+            title = "Track\(id!)"
         }
         if playCount > 0 && lastPlayedDate == nil {
             lastPlayedDate = Date().subtract(10.minutes)

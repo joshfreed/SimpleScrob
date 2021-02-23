@@ -68,7 +68,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     private func setPapertrailProgramName() {
         let username = Container.shared.scrobbleService.currentUserName ?? "no user"
         let deviceName = UIDevice.current.name.replacingOccurrences(of: "’", with: "'")
-        let vendorId = UIDevice.current.identifierForVendor?.description ?? "nil"
         RMPaperTrailLogger.sharedInstance()?.programName = "\(username)-\(deviceName)"
     }
     
